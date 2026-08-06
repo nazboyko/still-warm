@@ -1,0 +1,18 @@
+# --- Private working files (local only, never committed) ---
+CLAUDE.md
+PROJECT.md
+ROADMAP.md
+WORKLOG.md
+docs/
+.claude/
+
+# --- Standard ---
+node_modules/
+dist/
+coverage/
+test-results/
+playwright-report/
+.env
+.env.*
+*.local
+.DS_Store
