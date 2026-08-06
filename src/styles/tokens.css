@@ -7,9 +7,11 @@
   --brass: #9c8154;
   --steam: rgb(239 230 216 / 0.1);
 
-  --font-display: "Young Serif", georgia, serif;
-  --font-body: "Familjen Grotesk", system-ui, sans-serif;
-  --font-utility: "IBM Plex Mono", ui-monospace, monospace;
+  --font-display: "Young Serif", "Young Serif Fallback", georgia, serif;
+  --font-body:
+    "Familjen Grotesk", "Familjen Grotesk Fallback", system-ui, sans-serif;
+  --font-utility:
+    "IBM Plex Mono", "IBM Plex Mono Fallback", ui-monospace, monospace;
   --text-display: clamp(2.6rem, 1.8rem + 3.5vw, 4.5rem);
   --text-h2: clamp(1.8rem, 1.35rem + 2vw, 2.6rem);
   --text-body: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
