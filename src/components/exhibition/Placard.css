@@ -1,5 +1,7 @@
 .placard {
   max-width: 34rem;
+  /* The walk lands the label top in view with breathing room. */
+  scroll-margin-top: var(--space-6);
   padding: var(--space-6) var(--space-6) var(--space-4);
   background: var(--plaster);
   color: var(--ink);

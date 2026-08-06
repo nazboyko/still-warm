@@ -10,6 +10,7 @@ import { Room } from "./Room.tsx";
 export function Exhibition() {
   const [openRoomId, setOpenRoomId] = useState<ExhibitId | null>(null);
   const scrollCompensation = useRef(0);
+  const pendingWalk = useRef<ExhibitId | null>(null);
 
   function toggleRoom(id: ExhibitId) {
     const next = openRoomId === id ? null : id;
@@ -29,11 +30,33 @@ export function Exhibition() {
     setOpenRoomId(next);
   }
 
-  // Keep the clicked room visually still when a taller room collapses above it.
+  function walkToRoom(id: ExhibitId) {
+    pendingWalk.current = id;
+    setOpenRoomId(id);
+  }
+
+  // Keep the clicked room visually still when a taller room collapses above it;
+  // after a walk, land the opened label comfortably in view and focus its trigger.
   useLayoutEffect(() => {
     if (scrollCompensation.current) {
       window.scrollBy(0, -scrollCompensation.current);
       scrollCompensation.current = 0;
+    }
+    if (pendingWalk.current) {
+      const placard = document.querySelector(
+        `#${pendingWalk.current} .placard`,
+      );
+      const trigger =
+        placard?.querySelector<HTMLButtonElement>(".placard-toggle");
+      const instantScroll = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      placard?.scrollIntoView({
+        behavior: instantScroll ? "auto" : "smooth",
+        block: "start",
+      });
+      trigger?.focus({ preventScroll: true });
+      pendingWalk.current = null;
     }
   }, [openRoomId]);
 
@@ -57,7 +80,10 @@ export function Exhibition() {
           exhibit={exhibit}
           flip={index % 2 === 1}
           isOpen={openRoomId === exhibit.id}
+          prev={exhibits[index - 1]}
+          next={exhibits[index + 1]}
           onToggle={() => toggleRoom(exhibit.id)}
+          onWalk={walkToRoom}
         />
       ))}
     </section>

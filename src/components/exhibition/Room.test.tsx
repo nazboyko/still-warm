@@ -8,7 +8,13 @@ const noop = vi.fn();
 
 test("room is an article named by its dish", () => {
   render(
-    <Room exhibit={room003} flip={false} isOpen={false} onToggle={noop} />,
+    <Room
+      exhibit={room003}
+      flip={false}
+      isOpen={false}
+      onToggle={noop}
+      onWalk={noop}
+    />,
   );
   const article = screen.getByRole("article");
   expect(article).toHaveAccessibleName(room003.dish);
@@ -17,14 +23,26 @@ test("room is an article named by its dish", () => {
 
 test("curator note hangs beside the placard", () => {
   render(
-    <Room exhibit={room003} flip={false} isOpen={false} onToggle={noop} />,
+    <Room
+      exhibit={room003}
+      flip={false}
+      isOpen={false}
+      onToggle={noop}
+      onWalk={noop}
+    />,
   );
   expect(screen.getByText(room003.curatorNote)).toBeInTheDocument();
 });
 
 test("artwork is decorative", () => {
   const { container } = render(
-    <Room exhibit={room003} flip={false} isOpen={false} onToggle={noop} />,
+    <Room
+      exhibit={room003}
+      flip={false}
+      isOpen={false}
+      onToggle={noop}
+      onWalk={noop}
+    />,
   );
   expect(container.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
 });
@@ -32,7 +50,13 @@ test("artwork is decorative", () => {
 test("the trigger reports up", () => {
   const onToggle = vi.fn();
   render(
-    <Room exhibit={room003} flip={false} isOpen={false} onToggle={onToggle} />,
+    <Room
+      exhibit={room003}
+      flip={false}
+      isOpen={false}
+      onToggle={onToggle}
+      onWalk={noop}
+    />,
   );
   fireEvent.click(screen.getByRole("button", { name: "Read the label" }));
   expect(onToggle).toHaveBeenCalledOnce();

@@ -1,18 +1,29 @@
 import { motion, useReducedMotion } from "motion/react";
 import type { KeyboardEvent } from "react";
 import { useRef, useState } from "react";
-import type { Exhibit } from "../../content/exhibits.ts";
+import type { Exhibit, ExhibitId } from "../../content/exhibits.ts";
 import "./Placard.css";
+import { PlacardWalk } from "./PlacardWalk.tsx";
 
 const foldEase = [0.22, 1, 0.36, 1] as const;
 
 interface PlacardProps {
   exhibit: Exhibit;
   isOpen: boolean;
+  prev?: Exhibit;
+  next?: Exhibit;
   onToggle: () => void;
+  onWalk: (id: ExhibitId) => void;
 }
 
-export function Placard({ exhibit, isOpen, onToggle }: PlacardProps) {
+export function Placard({
+  exhibit,
+  isOpen,
+  prev,
+  next,
+  onToggle,
+  onWalk,
+}: PlacardProps) {
   const storyId = `${exhibit.id}-story`;
   const reducedMotion = useReducedMotion();
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -122,6 +133,12 @@ export function Placard({ exhibit, isOpen, onToggle }: PlacardProps) {
               ) : null}
               {exhibit.sensory}
             </p>
+            <PlacardWalk
+              from={exhibit}
+              prev={prev}
+              next={next}
+              onWalk={onWalk}
+            />
           </motion.div>
         ) : null}
       </div>
