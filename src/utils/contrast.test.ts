@@ -21,6 +21,7 @@ describe("token pairs hold WCAG AA", () => {
     ["plaster", "ink"],
     ["ink", "plaster"],
     ["beet", "plaster"],
+    ["brass", "ink"],
   ])("text: %s on %s is at least 4.5", (fg, bg) => {
     expect(contrastRatio(token(fg), token(bg))).toBeGreaterThanOrEqual(4.5);
   });
