@@ -60,9 +60,9 @@ describe("fitFontSize", () => {
       measure,
     );
     expect(size).toBeLessThan(64);
-    expect(measure(maxed.dish, postcardFonts.display, size)).toBeLessThanOrEqual(
-      900,
-    );
+    expect(
+      measure(maxed.dish, postcardFonts.display, size),
+    ).toBeLessThanOrEqual(900);
   });
 });
 

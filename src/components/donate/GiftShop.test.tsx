@@ -46,11 +46,11 @@ test("a working canvas downloads the png postcard", async () => {
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(
     fakeContext as unknown as CanvasRenderingContext2D,
   );
-  vi.spyOn(HTMLCanvasElement.prototype, "toBlob").mockImplementation(
-    function (callback: BlobCallback) {
-      callback(new Blob(["png"], { type: "image/png" }));
-    },
-  );
+  vi.spyOn(HTMLCanvasElement.prototype, "toBlob").mockImplementation(function (
+    callback: BlobCallback,
+  ) {
+    callback(new Blob(["png"], { type: "image/png" }));
+  });
 
   render(<GiftShop donated={donated} />);
   fireEvent.click(

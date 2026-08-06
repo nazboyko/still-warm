@@ -1,4 +1,7 @@
-import type { DonatedExhibit, ExhibitSubmission } from "../../content/donate.ts";
+import type {
+  DonatedExhibit,
+  ExhibitSubmission,
+} from "../../content/donate.ts";
 import { donateForm } from "../../content/donate.ts";
 
 const months = [

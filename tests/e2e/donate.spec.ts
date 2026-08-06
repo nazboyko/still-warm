@@ -37,9 +37,7 @@ test("the full donation loop, keyboard only", async ({ page }) => {
     "data-inked",
     "true",
   );
-  await expect(
-    page.getByText("Your exhibit is now on display."),
-  ).toBeVisible();
+  await expect(page.getByText("Your exhibit is now on display.")).toBeVisible();
 
   const postcardButton = page.getByRole("button", {
     name: "Take a postcard from the gift shop",
@@ -92,9 +90,7 @@ test("the default donor is a visitor", async ({ page }) => {
   );
 });
 
-test("maxed-out fields keep the page inside the viewport", async ({
-  page,
-}) => {
+test("maxed-out fields keep the page inside the viewport", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 });
   await page.goto("/");
   await field(page, "Dish").fill("M".repeat(40));

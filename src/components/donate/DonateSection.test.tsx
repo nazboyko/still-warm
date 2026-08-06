@@ -50,9 +50,7 @@ test("typing renders the visitor's placard live", () => {
     target: { value: "Quiet evenings" },
   });
   expect(placard).toHaveAccessibleName("CAT. 007 - QUIET EVENINGS");
-  expect(
-    screen.queryByText(reservedExhibit.placard),
-  ).not.toBeInTheDocument();
+  expect(screen.queryByText(reservedExhibit.placard)).not.toBeInTheDocument();
 });
 
 test("donation inks the frame and announces the exhibit", () => {

@@ -1,4 +1,7 @@
-import type { ExhibitSubmission, SubmissionField } from "../../content/donate.ts";
+import type {
+  ExhibitSubmission,
+  SubmissionField,
+} from "../../content/donate.ts";
 import { donateForm } from "../../content/donate.ts";
 
 export interface SubmissionError {

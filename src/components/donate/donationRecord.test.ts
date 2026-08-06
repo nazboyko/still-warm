@@ -25,7 +25,12 @@ describe("makeVisitorNumber", () => {
 describe("makeDonatedExhibit", () => {
   test("stamps number, date, and the default donor", () => {
     const donated = makeDonatedExhibit(
-      { dish: "Rice pudding", feeling: "Quiet", memory: "A spoon.", donorName: "  " },
+      {
+        dish: "Rice pudding",
+        feeling: "Quiet",
+        memory: "A spoon.",
+        donorName: "  ",
+      },
       () => 0.5,
       new Date(2026, 7, 6),
     );
@@ -36,7 +41,12 @@ describe("makeDonatedExhibit", () => {
 
   test("keeps a given donor name", () => {
     const donated = makeDonatedExhibit(
-      { dish: "Rice pudding", feeling: "Quiet", memory: "A spoon.", donorName: "Marta" },
+      {
+        dish: "Rice pudding",
+        feeling: "Quiet",
+        memory: "A spoon.",
+        donorName: "Marta",
+      },
       () => 0.5,
       new Date(2026, 7, 6),
     );
