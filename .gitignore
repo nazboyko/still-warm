@@ -16,3 +16,5 @@ playwright-report/
 .env.*
 *.local
 .DS_Store
+.idea/
+*.log
