@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "motion/react";
-import { useState } from "react";
+import type { KeyboardEvent } from "react";
+import { useRef, useState } from "react";
 import type { Exhibit } from "../../content/exhibits.ts";
 import "./Placard.css";
 
@@ -14,12 +15,24 @@ interface PlacardProps {
 export function Placard({ exhibit, isOpen, onToggle }: PlacardProps) {
   const storyId = `${exhibit.id}-story`;
   const reducedMotion = useReducedMotion();
+  const triggerRef = useRef<HTMLButtonElement>(null);
   // Only a direct close (this trigger, Escape) folds out; a spotlight swap unmounts at once.
   const [exiting, setExiting] = useState(false);
 
   function handleToggle() {
     if (isOpen && !reducedMotion) setExiting(true);
     onToggle();
+  }
+
+  function restoreTriggerFocus() {
+    triggerRef.current?.focus();
+  }
+
+  function handleStoryKeyDown(event: KeyboardEvent) {
+    if (event.key === "Escape" && isOpen) {
+      restoreTriggerFocus();
+      handleToggle();
+    }
   }
 
   const showRegion = isOpen || exiting;
@@ -52,8 +65,9 @@ export function Placard({ exhibit, isOpen, onToggle }: PlacardProps) {
           <dd>{exhibit.provenance}</dd>
         </div>
       </dl>
-      <div className="placard-story">
+      <div className="placard-story" onKeyDown={handleStoryKeyDown}>
         <button
+          ref={triggerRef}
           type="button"
           className="placard-toggle"
           aria-expanded={isOpen}

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { expect, test, vi } from "vitest";
 import { exhibits } from "../../content/exhibits.ts";
 import { Placard } from "./Placard.tsx";
@@ -49,6 +49,17 @@ test("room 001 marks ukrainian text with lang", () => {
   const ukrainian = container.querySelectorAll('[lang="uk"]');
   expect(ukrainian).toHaveLength(2);
   expect(ukrainian[0]).toHaveTextContent("вареники");
+});
+
+test("escape closes and returns focus to the trigger", () => {
+  const onToggle = vi.fn();
+  const { container } = render(
+    <Placard exhibit={room002} isOpen={true} onToggle={onToggle} />,
+  );
+  const region = container.querySelector(".placard-story-region")!;
+  fireEvent.keyDown(region, { key: "Escape" });
+  expect(onToggle).toHaveBeenCalledOnce();
+  expect(screen.getByRole("button", { name: "Read the label" })).toHaveFocus();
 });
 
 test("fold mark is hidden from assistive tech", () => {
