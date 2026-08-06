@@ -39,14 +39,59 @@
   color: var(--beet);
 }
 
-.sketch-inked {
-  opacity: 0;
+/* Ink surfacing: glow, then body, then rim - the second act of the signature. */
+.sketch-dotted {
+  transition: opacity var(--dur-quiet) var(--ease-soft);
 }
 
-[data-inked="true"] .sketch-inked {
-  opacity: 1;
+.sketch-inked > * {
+  opacity: 0;
+  transition: opacity 280ms var(--ease-soft);
 }
 
 [data-inked="true"] .sketch-dotted {
   opacity: 0;
+}
+
+[data-inked="true"] .sketch-inked > * {
+  opacity: 1;
+}
+
+[data-inked="true"] .inked-body {
+  transition-delay: 120ms;
+}
+
+[data-inked="true"] .inked-rim {
+  transition-delay: 240ms;
+}
+
+.reserved-frame {
+  position: relative;
+  isolation: isolate;
+}
+
+.reserved-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse at 50% 65%,
+    rgb(232 169 78 / 0.22),
+    transparent 72%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-quiet) var(--ease-soft);
+}
+
+[data-donated="true"] .reserved-frame::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sketch-dotted,
+  .sketch-inked > *,
+  .reserved-frame::after {
+    transition: none;
+  }
 }
