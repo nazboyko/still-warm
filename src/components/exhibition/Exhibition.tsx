@@ -1,3 +1,4 @@
+import { domAnimation, LazyMotion } from "motion/react";
 import { useLayoutEffect, useRef, useState } from "react";
 import type { ExhibitId } from "../../content/exhibits.ts";
 import { exhibits } from "../../content/exhibits.ts";
@@ -63,31 +64,33 @@ export function Exhibition() {
   }, [openRoomId]);
 
   return (
-    <section
-      id="exhibition"
-      className="exhibition"
-      aria-labelledby="exhibition-title"
-    >
-      <Container>
-        <SectionHeading
-          id="exhibition-title"
-          eyebrow="On view"
-          title="Current Exhibition"
-        />
-      </Container>
-      <RampExhibit />
-      {exhibits.map((exhibit, index) => (
-        <Room
-          key={exhibit.id}
-          exhibit={exhibit}
-          flip={index % 2 === 1}
-          isOpen={openRoomId === exhibit.id}
-          prev={exhibits[index - 1]}
-          next={exhibits[index + 1]}
-          onToggle={() => toggleRoom(exhibit.id)}
-          onWalk={walkToRoom}
-        />
-      ))}
-    </section>
+    <LazyMotion features={domAnimation} strict>
+      <section
+        id="exhibition"
+        className="exhibition"
+        aria-labelledby="exhibition-title"
+      >
+        <Container>
+          <SectionHeading
+            id="exhibition-title"
+            eyebrow="On view"
+            title="Current Exhibition"
+          />
+        </Container>
+        <RampExhibit />
+        {exhibits.map((exhibit, index) => (
+          <Room
+            key={exhibit.id}
+            exhibit={exhibit}
+            flip={index % 2 === 1}
+            isOpen={openRoomId === exhibit.id}
+            prev={exhibits[index - 1]}
+            next={exhibits[index + 1]}
+            onToggle={() => toggleRoom(exhibit.id)}
+            onWalk={walkToRoom}
+          />
+        ))}
+      </section>
+    </LazyMotion>
   );
 }

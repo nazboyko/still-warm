@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from "motion/react";
+import { m, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import type { Exhibit, ExhibitId } from "../../content/exhibits.ts";
 import "./Placard.css";
@@ -94,7 +94,7 @@ export function Placard({
           Read the label
         </button>
         {showRegion ? (
-          <motion.div
+          <m.div
             id={storyId}
             className="placard-story-region"
             inert={!isOpen || undefined}
@@ -144,7 +144,7 @@ export function Placard({
               next={next}
               onWalk={onWalk}
             />
-          </motion.div>
+          </m.div>
         ) : null}
       </div>
     </div>
