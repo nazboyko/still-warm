@@ -42,3 +42,8 @@
   --touch-target: 44px;
   --radius-placard: 2px;
 }
+
+/* Issue #4: tungsten fails 3:1 on light surfaces; beet holds 7.5:1 there. */
+[data-surface="plaster"] {
+  --focus-ring: var(--beet);
+}
