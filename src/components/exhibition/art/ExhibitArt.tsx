@@ -9,9 +9,9 @@ const artByExhibit = {
   "cat-002": GrilledCheeseArt,
   "cat-003": EmpanadasArt,
   "cat-004": PancakesArt,
-} satisfies Record<ExhibitId, () => React.JSX.Element>;
+} satisfies Record<ExhibitId, (props: { lit: boolean }) => React.JSX.Element>;
 
-export function ExhibitArt({ id }: { id: ExhibitId }) {
+export function ExhibitArt({ id, lit }: { id: ExhibitId; lit: boolean }) {
   const Art = artByExhibit[id];
-  return <Art />;
+  return <Art lit={lit} />;
 }

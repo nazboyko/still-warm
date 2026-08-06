@@ -24,14 +24,18 @@ test("homepage has no unresolved axe incompletes", async ({ page }) => {
   expect(reportable(results.incomplete)).toEqual([]);
 });
 
-test("page with every placard open stays clean", async ({ page }) => {
+test("each expanded room stays clean", async ({ page }) => {
   await page.goto("/");
-  await page
-    .locator(".placard-story")
-    .evaluateAll((stories) =>
-      stories.forEach((story) => story.setAttribute("open", "")),
-    );
-  const results = await new AxeBuilder({ page }).analyze();
-  expect(reportable(results.violations)).toEqual([]);
-  expect(reportable(results.incomplete)).toEqual([]);
+  const triggers = page.getByRole("button", { name: "Read the label" });
+  const count = await triggers.count();
+  for (let index = 0; index < count; index += 1) {
+    await triggers.nth(index).click();
+    await expect(triggers.nth(index)).toHaveAttribute("aria-expanded", "true");
+    const regionId = await triggers.nth(index).getAttribute("aria-controls");
+    // Let the fold settle: axe measures contrast mid-fade otherwise.
+    await expect(page.locator(`#${regionId}`)).toHaveCSS("opacity", "1");
+    const results = await new AxeBuilder({ page }).analyze();
+    expect(reportable(results.violations)).toEqual([]);
+    expect(reportable(results.incomplete)).toEqual([]);
+  }
 });

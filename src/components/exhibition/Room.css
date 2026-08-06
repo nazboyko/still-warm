@@ -29,6 +29,31 @@
   width: min(100%, 24rem);
 }
 
+/* The spotlight warms when the label opens; the room dims by contrast. */
+.room-art .art-cone,
+.room-art .art-glow-lit {
+  transition: opacity var(--dur-quiet) var(--ease-soft);
+}
+
+.room-art .art-glow-lit {
+  opacity: 0;
+}
+
+.room-art[data-lit="true"] .art-glow-lit {
+  opacity: 1;
+}
+
+.room-art[data-lit="true"] .art-cone {
+  opacity: 0.12;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .room-art .art-cone,
+  .room-art .art-glow-lit {
+    transition: none;
+  }
+}
+
 @media (min-width: 64rem) {
   .room-grid {
     grid-template-columns: 1fr 1fr;

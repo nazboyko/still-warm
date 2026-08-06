@@ -1,10 +1,28 @@
-import type { Exhibit } from "../../content/exhibits.ts";
+import type { Exhibit, ExhibitId } from "../../content/exhibits.ts";
 import { Container } from "../layout/Container.tsx";
 import { ExhibitArt } from "./art/ExhibitArt.tsx";
 import { Placard } from "./Placard.tsx";
 import "./Room.css";
 
-export function Room({ exhibit, flip }: { exhibit: Exhibit; flip: boolean }) {
+interface RoomProps {
+  exhibit: Exhibit;
+  flip: boolean;
+  isOpen: boolean;
+  prev?: Exhibit;
+  next?: Exhibit;
+  onToggle: () => void;
+  onWalk: (id: ExhibitId) => void;
+}
+
+export function Room({
+  exhibit,
+  flip,
+  isOpen,
+  prev,
+  next,
+  onToggle,
+  onWalk,
+}: RoomProps) {
   return (
     <article
       id={exhibit.id}
@@ -13,9 +31,16 @@ export function Room({ exhibit, flip }: { exhibit: Exhibit; flip: boolean }) {
     >
       <Container>
         <div className="room-grid">
-          <ExhibitArt id={exhibit.id} />
+          <ExhibitArt id={exhibit.id} lit={isOpen} />
           <div className="room-text">
-            <Placard exhibit={exhibit} />
+            <Placard
+              exhibit={exhibit}
+              isOpen={isOpen}
+              prev={prev}
+              next={next}
+              onToggle={onToggle}
+              onWalk={onWalk}
+            />
             <p className="curator-note">{exhibit.curatorNote}</p>
           </div>
         </div>

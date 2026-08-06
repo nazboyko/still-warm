@@ -1,6 +1,11 @@
-export function PancakesArt() {
+export function PancakesArt({ lit }: { lit: boolean }) {
   return (
-    <svg className="room-art" viewBox="0 0 320 240" aria-hidden="true">
+    <svg
+      className="room-art"
+      viewBox="0 0 320 240"
+      aria-hidden="true"
+      data-lit={lit}
+    >
       <defs>
         <radialGradient id="pancakes-glow" cx="50%" cy="66%" r="58%">
           <stop offset="0%" stopColor="#e8a94e" stopOpacity="0.45" />
@@ -8,8 +13,21 @@ export function PancakesArt() {
           <stop offset="100%" stopColor="#e8a94e" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <path d="M160 6 L100 196 H220 Z" fill="#e8a94e" opacity="0.06" />
+      <path
+        className="art-cone"
+        d="M160 6 L100 196 H220 Z"
+        fill="#e8a94e"
+        opacity="0.06"
+      />
       <ellipse cx="160" cy="172" rx="118" ry="52" fill="url(#pancakes-glow)" />
+      <ellipse
+        className="art-glow-lit"
+        cx="160"
+        cy="172"
+        rx="118"
+        ry="52"
+        fill="url(#pancakes-glow)"
+      />
       <ellipse cx="160" cy="192" rx="94" ry="14" fill="#0f0c0a" />
       <path
         d="M70 190 A94 13 0 0 1 250 190"
