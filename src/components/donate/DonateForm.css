@@ -1,0 +1,54 @@
+.donate-form {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: start;
+  width: min(100%, 26rem);
+}
+
+.desk-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.4rem, 1.2rem + 1vw, 1.9rem);
+}
+
+.desk-field {
+  display: grid;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.desk-field label {
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+}
+
+.desk-field input,
+.desk-field textarea {
+  width: 100%;
+  min-height: var(--touch-target);
+  padding: var(--space-2) var(--space-3);
+  font: inherit;
+  color: var(--plaster);
+  background: rgb(239 230 216 / 0.05);
+  border: 1px solid var(--brass);
+  border-radius: var(--radius-placard);
+}
+
+.desk-field textarea {
+  resize: vertical;
+}
+
+.desk-hint {
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: 0.04em;
+  color: var(--brass);
+}
+
+.desk-error,
+.desk-alert {
+  padding-left: var(--space-3);
+  border-left: 3px solid var(--beet);
+}
