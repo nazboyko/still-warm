@@ -20,7 +20,7 @@ export function Room({ exhibit, flip, isOpen, onToggle }: RoomProps) {
     >
       <Container>
         <div className="room-grid">
-          <ExhibitArt id={exhibit.id} />
+          <ExhibitArt id={exhibit.id} lit={isOpen} />
           <div className="room-text">
             <Placard exhibit={exhibit} isOpen={isOpen} onToggle={onToggle} />
             <p className="curator-note">{exhibit.curatorNote}</p>

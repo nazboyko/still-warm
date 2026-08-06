@@ -1,6 +1,11 @@
-export function VarenykyArt() {
+export function VarenykyArt({ lit }: { lit: boolean }) {
   return (
-    <svg className="room-art" viewBox="0 0 320 240" aria-hidden="true">
+    <svg
+      className="room-art"
+      viewBox="0 0 320 240"
+      aria-hidden="true"
+      data-lit={lit}
+    >
       <defs>
         <radialGradient id="varenyky-glow" cx="50%" cy="70%" r="55%">
           <stop offset="0%" stopColor="#e8a94e" stopOpacity="0.4" />
@@ -8,8 +13,21 @@ export function VarenykyArt() {
           <stop offset="100%" stopColor="#e8a94e" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <path d="M160 6 L100 196 H220 Z" fill="#e8a94e" opacity="0.05" />
+      <path
+        className="art-cone"
+        d="M160 6 L100 196 H220 Z"
+        fill="#e8a94e"
+        opacity="0.05"
+      />
       <ellipse cx="160" cy="176" rx="118" ry="50" fill="url(#varenyky-glow)" />
+      <ellipse
+        className="art-glow-lit"
+        cx="160"
+        cy="176"
+        rx="118"
+        ry="50"
+        fill="url(#varenyky-glow)"
+      />
       <ellipse cx="160" cy="190" rx="100" ry="16" fill="#0f0c0a" />
       <path
         d="M64 188 A100 15 0 0 1 256 188"
