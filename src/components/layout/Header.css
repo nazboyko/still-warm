@@ -20,16 +20,15 @@
 }
 
 .site-header-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2) var(--space-6);
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
 }
 
 .lockup {
   display: grid;
   gap: var(--space-1);
+  justify-items: center;
   text-decoration: none;
 }
 
@@ -52,10 +51,27 @@
 .site-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-1) var(--space-2);
+  justify-content: center;
+  gap: 0 var(--space-2);
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+@media (min-width: 40rem) {
+  .site-header-bar {
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .lockup {
+    justify-items: start;
+  }
+
+  .site-nav {
+    justify-content: flex-end;
+  }
 }
 
 .site-nav a {

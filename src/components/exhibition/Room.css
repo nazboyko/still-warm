@@ -1,0 +1,62 @@
+.room {
+  padding-block: var(--space-section);
+}
+
+.room-001 {
+  background: var(--room-homesickness);
+}
+
+.room-002 {
+  background: var(--room-rainy);
+}
+
+.room-003 {
+  background: var(--room-celebration);
+}
+
+.room-004 {
+  background: var(--room-sunday);
+}
+
+.room-grid {
+  display: grid;
+  gap: var(--space-8);
+  align-items: center;
+  justify-items: center;
+}
+
+.room-art {
+  width: min(100%, 24rem);
+}
+
+@media (min-width: 64rem) {
+  .room-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-12);
+    justify-items: start;
+  }
+
+  .room-art {
+    width: min(100%, 28rem);
+  }
+
+  .room-flip .room-art {
+    order: 2;
+    justify-self: end;
+  }
+}
+
+.room-text {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: start;
+}
+
+.curator-note {
+  max-width: 34rem;
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--brass);
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: 0.04em;
+}

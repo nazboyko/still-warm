@@ -1,0 +1,20 @@
+.ramp-exhibit {
+  padding-bottom: var(--space-section);
+}
+
+.ramp-placard {
+  margin-inline: auto;
+}
+
+.ramp-subtitle {
+  margin-top: var(--space-1);
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--beet);
+}
+
+.ramp-body {
+  margin-block: var(--space-4);
+}

@@ -1,0 +1,87 @@
+.placard {
+  max-width: 34rem;
+  padding: var(--space-6) var(--space-6) var(--space-4);
+  background: var(--plaster);
+  color: var(--ink);
+  border-top: 2px solid var(--brass);
+  border-radius: var(--radius-placard);
+  /* Flat plaster: any texture gradient under text turns axe contrast checks incomplete. */
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.35);
+}
+
+.placard-cat {
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--beet);
+}
+
+.placard-dish {
+  margin-top: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.4rem, 1.2rem + 1vw, 1.9rem);
+  line-height: var(--leading-display);
+}
+
+.placard-fields {
+  margin: var(--space-4) 0 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.placard-fields dt {
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--beet);
+}
+
+.placard-fields dd {
+  margin: 0;
+}
+
+.placard-story {
+  margin-top: var(--space-4);
+  border-top: 1px solid var(--brass);
+}
+
+.placard-story summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  cursor: pointer;
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--beet);
+  list-style: none;
+}
+
+.placard-story summary::-webkit-details-marker {
+  display: none;
+}
+
+.placard-fold-mark::before {
+  content: "+";
+  margin-right: var(--space-2);
+}
+
+.placard-story[open] .placard-fold-mark::before {
+  content: "-";
+}
+
+.placard-story summary:hover {
+  text-decoration: underline;
+}
+
+.placard-story p {
+  padding-bottom: var(--space-4);
+}
+
+.placard-sensory {
+  font-style: italic;
+}

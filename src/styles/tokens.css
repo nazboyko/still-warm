@@ -35,6 +35,12 @@
   --dur-unfold: 480ms;
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 
+  /* Room grounds: ink shifted per emotion (+/-4% luminance, +/-6deg hue), per art direction. */
+  --room-homesickness: #181417;
+  --room-rainy: #131519;
+  --room-celebration: #201810;
+  --room-sunday: #231d14;
+
   --focus-ring: var(--tungsten);
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;

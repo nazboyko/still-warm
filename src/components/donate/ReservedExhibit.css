@@ -1,0 +1,25 @@
+.reserved {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: center;
+}
+
+.reserved-frame {
+  width: min(100%, 26rem);
+  padding: var(--space-4);
+  border: 3px solid var(--brass);
+  /* The reserved spot stays dimmer than any lit exhibit. */
+  background: radial-gradient(
+    ellipse at 50% 65%,
+    rgb(232 169 78 / 0.07),
+    transparent 70%
+  );
+}
+
+.reserved-placard {
+  width: min(100%, 26rem);
+}
+
+.reserved-text {
+  margin-top: var(--space-2);
+}

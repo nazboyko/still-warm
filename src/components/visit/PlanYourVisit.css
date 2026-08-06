@@ -1,0 +1,29 @@
+.visit {
+  padding-block: var(--space-section);
+  border-top: 1px solid var(--brass);
+}
+
+.visit-facts {
+  margin: var(--space-12) auto 0;
+  max-width: 34rem;
+  display: grid;
+  gap: var(--space-6);
+}
+
+.visit-facts dt {
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
+.visit-facts dd {
+  margin: var(--space-1) 0 0;
+  font-size: calc(var(--text-body) * 1.1);
+}
+
+.visit .section-heading {
+  text-align: center;
+  justify-items: center;
+}

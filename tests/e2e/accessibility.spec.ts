@@ -23,3 +23,15 @@ test("homepage has no unresolved axe incompletes", async ({ page }) => {
   const results = await new AxeBuilder({ page }).analyze();
   expect(reportable(results.incomplete)).toEqual([]);
 });
+
+test("page with every placard open stays clean", async ({ page }) => {
+  await page.goto("/");
+  await page
+    .locator(".placard-story")
+    .evaluateAll((stories) =>
+      stories.forEach((story) => story.setAttribute("open", "")),
+    );
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(reportable(results.violations)).toEqual([]);
+  expect(reportable(results.incomplete)).toEqual([]);
+});
