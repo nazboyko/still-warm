@@ -1,0 +1,15 @@
+.donate {
+  padding-block: var(--space-section);
+}
+
+.donate .section-heading,
+.donate-intro {
+  text-align: center;
+  justify-items: center;
+}
+
+.donate-intro {
+  margin-block: var(--space-4) var(--space-12);
+  margin-inline: auto;
+  max-width: 40ch;
+}

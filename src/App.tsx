@@ -1,3 +1,4 @@
+import { DonateSection } from "./components/donate/DonateSection.tsx";
 import { Exhibition } from "./components/exhibition/Exhibition.tsx";
 import { Hero } from "./components/hero/Hero.tsx";
 import { Footer } from "./components/layout/Footer.tsx";
@@ -10,6 +11,7 @@ function App() {
       <main id="main">
         <Hero />
         <Exhibition />
+        <DonateSection />
       </main>
       <Footer />
     </>
