@@ -2,6 +2,7 @@ import { exhibits } from "../../content/exhibits.ts";
 import { Container } from "../layout/Container.tsx";
 import { SectionHeading } from "../layout/SectionHeading.tsx";
 import "./Exhibition.css";
+import { RampExhibit } from "./RampExhibit.tsx";
 import { Room } from "./Room.tsx";
 
 export function Exhibition() {
@@ -18,6 +19,7 @@ export function Exhibition() {
           title="Current Exhibition"
         />
       </Container>
+      <RampExhibit />
       {exhibits.map((exhibit, index) => (
         <Room key={exhibit.id} exhibit={exhibit} flip={index % 2 === 1} />
       ))}
