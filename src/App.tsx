@@ -1,3 +1,4 @@
+import { Hero } from "./components/hero/Hero.tsx";
 import { Footer } from "./components/layout/Footer.tsx";
 import { Header } from "./components/layout/Header.tsx";
 
@@ -6,7 +7,7 @@ function App() {
     <>
       <Header />
       <main id="main">
-        <h1>Still Warm</h1>
+        <Hero />
       </main>
       <Footer />
     </>

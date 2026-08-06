@@ -1,4 +1,8 @@
 .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   min-width: var(--touch-target);
   min-height: var(--touch-target);
   padding: 0 1rem;
