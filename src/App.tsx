@@ -1,8 +1,15 @@
+import { Footer } from "./components/layout/Footer.tsx";
+import { Header } from "./components/layout/Header.tsx";
+
 function App() {
   return (
-    <main>
-      <h1>Still Warm</h1>
-    </main>
+    <>
+      <Header />
+      <main id="main">
+        <h1>Still Warm</h1>
+      </main>
+      <Footer />
+    </>
   );
 }
 

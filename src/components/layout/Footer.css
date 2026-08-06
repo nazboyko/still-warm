@@ -1,0 +1,19 @@
+.site-footer {
+  margin-top: var(--space-section);
+  padding-block: var(--space-8);
+  border-top: 1px solid var(--brass);
+}
+
+.site-footer-line {
+  font-family: var(--font-display);
+  font-size: var(--text-body);
+}
+
+.site-footer-meta {
+  margin-top: var(--space-2);
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--brass);
+}
