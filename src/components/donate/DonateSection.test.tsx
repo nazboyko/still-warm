@@ -1,9 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { expect, test } from "vitest";
-import {
-  donateIntro,
-  reservedExhibit,
-} from "../../content/exhibits.ts";
+import { donateIntro, reservedExhibit } from "../../content/exhibits.ts";
 import { DonateSection } from "./DonateSection.tsx";
 
 test("donate section is named and holds the intro", () => {

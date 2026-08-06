@@ -22,7 +22,8 @@ export function PlanYourVisit() {
           <div>
             <dt>{accessFact.label}</dt>
             <dd>
-              {accessFact.value} <a href={accessFact.href}>{accessFact.linkText}</a>
+              {accessFact.value}{" "}
+              <a href={accessFact.href}>{accessFact.linkText}</a>
             </dd>
           </div>
         </dl>

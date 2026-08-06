@@ -19,8 +19,5 @@ test("curator note hangs beside the placard", () => {
 
 test("artwork is decorative", () => {
   const { container } = render(<Room exhibit={room003} flip={false} />);
-  expect(container.querySelector("svg")).toHaveAttribute(
-    "aria-hidden",
-    "true",
-  );
+  expect(container.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
 });

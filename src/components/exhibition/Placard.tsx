@@ -12,7 +12,8 @@ export function Placard({ exhibit }: { exhibit: Exhibit }) {
         {exhibit.dishNative ? (
           <>
             {" "}
-            (<span lang={exhibit.dishNative.lang}>
+            (
+            <span lang={exhibit.dishNative.lang}>
               {exhibit.dishNative.text}
             </span>
             )

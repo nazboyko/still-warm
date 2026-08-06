@@ -12,8 +12,7 @@ test("visit section lists the four museum facts", () => {
 
 test("access points to the ramp", () => {
   render(<PlanYourVisit />);
-  expect(screen.getByRole("link", { name: "See Exhibit 000." })).toHaveAttribute(
-    "href",
-    "#exhibit-000",
-  );
+  expect(
+    screen.getByRole("link", { name: "See Exhibit 000." }),
+  ).toHaveAttribute("href", "#exhibit-000");
 });
