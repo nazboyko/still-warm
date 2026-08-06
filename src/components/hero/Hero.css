@@ -1,0 +1,62 @@
+.hero {
+  padding-block: var(--space-section);
+  /* The case glow spill is decorative; never let it widen the page. */
+  overflow: hidden;
+}
+
+.hero-grid {
+  display: grid;
+  gap: var(--space-12);
+  align-items: center;
+  justify-items: center;
+}
+
+@media (min-width: 64rem) {
+  .hero-grid {
+    grid-template-columns: 1fr auto;
+    justify-items: start;
+  }
+
+  .hero-grid .display-case {
+    justify-self: end;
+  }
+}
+
+.hero-copy {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+@media (min-width: 64rem) {
+  .hero-copy {
+    justify-items: start;
+    text-align: left;
+  }
+}
+
+.hero-eyebrow {
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
+.hero-title {
+  margin-top: var(--space-4);
+  font-size: var(--text-display);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.hero-thesis {
+  margin-top: var(--space-6);
+  max-width: 30ch;
+  text-wrap: balance;
+  font-size: calc(var(--text-body) * 1.15);
+}
+
+.hero-cta {
+  margin-top: var(--space-8);
+}

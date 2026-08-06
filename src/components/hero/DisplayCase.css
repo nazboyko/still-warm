@@ -1,0 +1,40 @@
+.display-case {
+  margin: 0;
+  width: min(100%, 320px);
+}
+
+.display-case-scene {
+  position: relative;
+}
+
+/* The case light spills out of the glass toward the lockup. The pseudo
+   lives on the scene, not the figure, so the label's ground stays plain
+   ink that axe can verify; the spill also ends at the case base. */
+.display-case-scene::before {
+  content: "";
+  position: absolute;
+  inset: -12% -35% 0;
+  background: radial-gradient(
+    55% 50% at 40% 62%,
+    rgb(232 169 78 / 0.12),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.display-case-scene svg {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.display-case-label {
+  position: relative;
+  margin-top: var(--space-3);
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--brass);
+  text-align: center;
+}

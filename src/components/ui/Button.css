@@ -1,4 +1,8 @@
 .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   min-width: var(--touch-target);
   min-height: var(--touch-target);
   padding: 0 1rem;
@@ -13,11 +17,6 @@
 .button:hover:not(:disabled) {
   border-color: var(--beet);
   color: var(--beet);
-}
-
-.button:focus-visible {
-  outline: 2px solid var(--tungsten);
-  outline-offset: 2px;
 }
 
 .button:disabled {
