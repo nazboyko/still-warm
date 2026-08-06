@@ -48,21 +48,19 @@
   border-top: 1px solid var(--brass);
 }
 
-.placard-story summary {
+.placard-toggle {
   display: inline-flex;
   align-items: center;
   min-height: var(--touch-target);
+  padding: 0;
+  border: 0;
+  background: none;
   cursor: pointer;
   font-family: var(--font-utility);
   font-size: var(--text-utility);
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
   color: var(--beet);
-  list-style: none;
-}
-
-.placard-story summary::-webkit-details-marker {
-  display: none;
 }
 
 .placard-fold-mark::before {
@@ -70,15 +68,15 @@
   margin-right: var(--space-2);
 }
 
-.placard-story[open] .placard-fold-mark::before {
+.placard-toggle[aria-expanded="true"] .placard-fold-mark::before {
   content: "-";
 }
 
-.placard-story summary:hover {
+.placard-toggle:hover {
   text-decoration: underline;
 }
 
-.placard-story p {
+.placard-story-region p {
   padding-bottom: var(--space-4);
 }
 

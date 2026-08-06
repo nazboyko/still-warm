@@ -30,15 +30,15 @@ test("the walk reads in catalog order", async ({ page }) => {
 
 test("every story opens by keyboard and reads in full", async ({ page }) => {
   await page.goto("/");
-  const summaries = page.locator(".placard-story summary");
-  await expect(summaries).toHaveCount(4);
+  const triggers = page.getByRole("button", { name: "Read the label" });
+  await expect(triggers).toHaveCount(4);
   for (let index = 0; index < 4; index += 1) {
-    const summary = summaries.nth(index);
-    await summary.focus();
+    const trigger = triggers.nth(index);
+    await trigger.focus();
     await page.keyboard.press("Enter");
-    await expect(
-      summary.locator("xpath=following-sibling::p[1]"),
-    ).toBeVisible();
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
+    const regionId = await trigger.getAttribute("aria-controls");
+    await expect(page.locator(`#${regionId}`)).toBeVisible();
   }
 });
 

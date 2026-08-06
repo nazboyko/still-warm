@@ -1,7 +1,14 @@
 import type { Exhibit } from "../../content/exhibits.ts";
 import "./Placard.css";
 
-export function Placard({ exhibit }: { exhibit: Exhibit }) {
+interface PlacardProps {
+  exhibit: Exhibit;
+  isOpen: boolean;
+  onToggle: () => void;
+}
+
+export function Placard({ exhibit, isOpen, onToggle }: PlacardProps) {
+  const storyId = `${exhibit.id}-story`;
   return (
     <div className="placard" data-surface="plaster">
       <p className="placard-cat">
@@ -30,24 +37,34 @@ export function Placard({ exhibit }: { exhibit: Exhibit }) {
           <dd>{exhibit.provenance}</dd>
         </div>
       </dl>
-      <details className="placard-story">
-        <summary>
+      <div className="placard-story">
+        <button
+          type="button"
+          className="placard-toggle"
+          aria-expanded={isOpen}
+          aria-controls={isOpen ? storyId : undefined}
+          onClick={onToggle}
+        >
           <span aria-hidden="true" className="placard-fold-mark" />
           Read the label
-        </summary>
-        <p>{exhibit.story}</p>
-        <p className="placard-sensory">
-          {exhibit.sensoryNative ? (
-            <>
-              <span lang={exhibit.sensoryNative.lang}>
-                {exhibit.sensoryNative.text}
-              </span>{" "}
-              /{" "}
-            </>
-          ) : null}
-          {exhibit.sensory}
-        </p>
-      </details>
+        </button>
+        {isOpen ? (
+          <div id={storyId} className="placard-story-region">
+            <p>{exhibit.story}</p>
+            <p className="placard-sensory">
+              {exhibit.sensoryNative ? (
+                <>
+                  <span lang={exhibit.sensoryNative.lang}>
+                    {exhibit.sensoryNative.text}
+                  </span>{" "}
+                  /{" "}
+                </>
+              ) : null}
+              {exhibit.sensory}
+            </p>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
