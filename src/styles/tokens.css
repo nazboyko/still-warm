@@ -1,0 +1,10 @@
+/* After Hours palette. Values are fixed; changes need an art-direction reason. */
+:root {
+  --ink: #191411;
+  --plaster: #efe6d8;
+  --tungsten: #e8a94e;
+  --beet: #7a2e35;
+  --brass: #9c8154;
+
+  --touch-target: 44px;
+}
