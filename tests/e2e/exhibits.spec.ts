@@ -39,6 +39,17 @@ test("escape closes and returns focus to the trigger", async ({ page }) => {
   await expect(trigger).toBeFocused();
 });
 
+test("escape with focus elsewhere leaves the page alone", async ({ page }) => {
+  await page.goto("/");
+  await triggers(page).first().click();
+  await expect(triggers(page).first()).toHaveAttribute("aria-expanded", "true");
+  const footerLink = page.getByRole("link", { name: "Source on GitHub" });
+  await footerLink.focus();
+  await page.keyboard.press("Escape");
+  await expect(triggers(page).first()).toHaveAttribute("aria-expanded", "true");
+  await expect(footerLink).toBeFocused();
+});
+
 test("closed stories are not in the tab order", async ({
   page,
   browserName,

@@ -25,6 +25,7 @@ export function Placard({
 }: PlacardProps) {
   const storyId = `${exhibit.id}-story`;
   const reducedMotion = useReducedMotion();
+  const placardRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   // Only a direct close (this trigger, Escape) folds out; a spotlight swap unmounts at once.
   const [exiting, setExiting] = useState(false);
@@ -34,18 +35,18 @@ export function Placard({
     onToggle();
   }
 
-  function restoreTriggerFocus() {
-    triggerRef.current?.focus();
-  }
-
-  // Window-level so Escape works even where a click does not focus the button (WebKit).
+  // Window-level so Escape works even where a click does not focus the button (WebKit
+  // leaves focus on body). Escape belongs to the reader's context: with focus in some
+  // other control it must neither close the room nor steal focus or scroll.
   useEffect(() => {
     if (!isOpen) return;
     function closeOnEscape(event: WindowEventMap["keydown"]) {
-      if (event.key === "Escape") {
-        restoreTriggerFocus();
-        handleToggle();
-      }
+      if (event.key !== "Escape") return;
+      const active = document.activeElement;
+      const inPlacard = Boolean(placardRef.current?.contains(active));
+      if (!inPlacard && active !== document.body && active !== null) return;
+      triggerRef.current?.focus({ preventScroll: !inPlacard });
+      handleToggle();
     }
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
@@ -54,7 +55,7 @@ export function Placard({
   const showRegion = isOpen || exiting;
 
   return (
-    <div className="placard" data-surface="plaster">
+    <div ref={placardRef} className="placard" data-surface="plaster">
       <p className="placard-cat">
         CAT. {exhibit.number} - {exhibit.emotion.toUpperCase()}
       </p>

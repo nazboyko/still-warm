@@ -73,6 +73,26 @@ test("escape closes and returns focus to the trigger", () => {
   expect(screen.getByRole("button", { name: "Read the label" })).toHaveFocus();
 });
 
+test("escape with focus in another control is not a close", () => {
+  const onToggle = vi.fn();
+  render(
+    <>
+      <Placard
+        exhibit={room002}
+        isOpen={true}
+        onToggle={onToggle}
+        onWalk={noop}
+      />
+      <button type="button">Elsewhere</button>
+    </>,
+  );
+  const elsewhere = screen.getByRole("button", { name: "Elsewhere" });
+  elsewhere.focus();
+  fireEvent.keyDown(elsewhere, { key: "Escape" });
+  expect(onToggle).not.toHaveBeenCalled();
+  expect(elsewhere).toHaveFocus();
+});
+
 test("fold mark is hidden from assistive tech", () => {
   const { container } = render(
     <Placard exhibit={room002} isOpen={false} onToggle={noop} onWalk={noop} />,
