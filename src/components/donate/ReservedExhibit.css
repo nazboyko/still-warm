@@ -23,3 +23,30 @@
 .reserved-text {
   margin-top: var(--space-2);
 }
+
+.reserved-dish {
+  margin-top: var(--space-2);
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 1.05rem + 0.75vw, 1.6rem);
+  line-height: var(--leading-display);
+}
+
+.reserved-donor {
+  margin-top: var(--space-2);
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: 0.04em;
+  color: var(--beet);
+}
+
+.sketch-inked {
+  opacity: 0;
+}
+
+[data-inked="true"] .sketch-inked {
+  opacity: 1;
+}
+
+[data-inked="true"] .sketch-dotted {
+  opacity: 0;
+}
