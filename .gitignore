@@ -15,6 +15,7 @@ playwright-report/
 .env
 .env.*
 *.local
+.playwright-mcp/
 .DS_Store
 .idea/
 *.log
