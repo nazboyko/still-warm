@@ -14,7 +14,9 @@ export function Exhibition() {
 
   function toggleRoom(id: ExhibitId) {
     const next = openRoomId === id ? null : id;
-    if (openRoomId && next) {
+    // Engines with scroll anchoring keep the clicked room still on their own.
+    const browserAnchors = CSS.supports("overflow-anchor", "auto");
+    if (openRoomId && next && !browserAnchors) {
       const closingStory = document.getElementById(`${openRoomId}-story`);
       const closingRoom = document.getElementById(openRoomId);
       const openingRoom = document.getElementById(next);

@@ -1,6 +1,5 @@
 import { motion, useReducedMotion } from "motion/react";
-import type { KeyboardEvent } from "react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Exhibit, ExhibitId } from "../../content/exhibits.ts";
 import "./Placard.css";
 import { PlacardWalk } from "./PlacardWalk.tsx";
@@ -39,12 +38,18 @@ export function Placard({
     triggerRef.current?.focus();
   }
 
-  function handleStoryKeyDown(event: KeyboardEvent) {
-    if (event.key === "Escape" && isOpen) {
-      restoreTriggerFocus();
-      handleToggle();
+  // Window-level so Escape works even where a click does not focus the button (WebKit).
+  useEffect(() => {
+    if (!isOpen) return;
+    function closeOnEscape(event: WindowEventMap["keydown"]) {
+      if (event.key === "Escape") {
+        restoreTriggerFocus();
+        handleToggle();
+      }
     }
-  }
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  });
 
   const showRegion = isOpen || exiting;
 
@@ -76,7 +81,7 @@ export function Placard({
           <dd>{exhibit.provenance}</dd>
         </div>
       </dl>
-      <div className="placard-story" onKeyDown={handleStoryKeyDown}>
+      <div className="placard-story">
         <button
           ref={triggerRef}
           type="button"
