@@ -10,6 +10,7 @@ import { SectionHeading } from "../layout/SectionHeading.tsx";
 import { Button } from "../ui/Button.tsx";
 import { DonateForm } from "./DonateForm.tsx";
 import "./DonateSection.css";
+import { GiftShop } from "./GiftShop.tsx";
 import { makeDonatedExhibit } from "./donationRecord.ts";
 import { ReservedExhibit } from "./ReservedExhibit.tsx";
 
@@ -59,6 +60,7 @@ export function DonateSection() {
           <div className="donate-desk">
             {donated ? (
               <div ref={afterRef} className="donate-after">
+                <GiftShop donated={donated} />
                 <Button onClick={resetDesk}>{donateForm.reset}</Button>
               </div>
             ) : (

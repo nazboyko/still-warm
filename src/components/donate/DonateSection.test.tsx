@@ -67,10 +67,13 @@ test("donation inks the frame and announces the exhibit", () => {
     "data-inked",
     "true",
   );
-  expect(screen.getByRole("status")).toHaveTextContent(
-    "Your exhibit is now on display.",
+  expect(screen.getByText("Your exhibit is now on display.")).toHaveAttribute(
+    "role",
+    "status",
   );
-  expect(screen.getByRole("button", { name: "Reset the form" })).toHaveFocus();
+  expect(
+    screen.getByRole("button", { name: "Take a postcard from the gift shop" }),
+  ).toHaveFocus();
 });
 
 test("reset returns the frame to the reserved state", () => {
