@@ -84,6 +84,7 @@ function DeskField({
 
 export function DonateForm({ draft, onChange, onDonate }: DonateFormProps) {
   const [errors, setErrors] = useState<SubmissionError[]>([]);
+  const [attempt, setAttempt] = useState(0);
   const dishRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
   const feelingRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(
     null,
@@ -99,6 +100,8 @@ export function DonateForm({ draft, onChange, onDonate }: DonateFormProps) {
     const found = validateSubmission(draft);
     setErrors(found);
     if (found.length > 0) {
+      // Remount the alert per attempt so a repeat submit is announced again.
+      setAttempt((count) => count + 1);
       refs[found[0]!.field].current?.focus();
       return;
     }
@@ -119,7 +122,7 @@ export function DonateForm({ draft, onChange, onDonate }: DonateFormProps) {
         {donateForm.heading}
       </h3>
       {errors.length > 0 ? (
-        <p role="alert" className="desk-alert">
+        <p key={attempt} role="alert" className="desk-alert">
           {errors.map((error) => error.message).join(" ")}
         </p>
       ) : null}

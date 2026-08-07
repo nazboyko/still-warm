@@ -49,6 +49,16 @@ test("empty submit announces errors and focuses the first invalid field", () => 
   expect(dish.getAttribute("aria-describedby")).toContain("donate-dish-error");
 });
 
+test("a repeat failed submit announces the errors again", () => {
+  render(<DonateForm draft={empty} onChange={noop} onDonate={noop} />);
+  fireEvent.submit(screen.getByRole("form"));
+  const firstAlert = screen.getByRole("alert");
+  fireEvent.submit(screen.getByRole("form"));
+  const secondAlert = screen.getByRole("alert");
+  expect(secondAlert).not.toBe(firstAlert);
+  expect(secondAlert).toHaveTextContent("This exhibit needs a name.");
+});
+
 test("a complete submission donates without complaint", () => {
   const onDonate = vi.fn();
   render(<DonateForm draft={complete} onChange={noop} onDonate={onDonate} />);
