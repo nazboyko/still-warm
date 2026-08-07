@@ -106,3 +106,46 @@ test("opening a lower room while one is open does not jump", async ({
   // Sub-pixel anchoring rounding is fine; a real jump is the region height (~390px).
   expect(Math.abs(after - before)).toBeLessThanOrEqual(8);
 });
+
+test("opening a label plays one serving detail, then the dish is still", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await triggers(page).first().click();
+  const sheen = page.locator("#cat-001 .serve-sheen");
+  const animation = await sheen.evaluate((element) => {
+    const computed = getComputedStyle(element);
+    return {
+      name: computed.animationName,
+      count: computed.animationIterationCount,
+      fill: computed.animationFillMode,
+    };
+  });
+  expect(animation.name).toBe("serve-sheen");
+  expect(animation.count).toBe("1");
+  expect(animation.fill).toBe("forwards");
+});
+
+test("the room light warms when a visitor reaches the room", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const glow = page.locator("#cat-002 .art-glow-lit");
+  expect(await glow.evaluate((el) => getComputedStyle(el).opacity)).toBe("0");
+  await page
+    .locator("#cat-002")
+    .getByRole("button", { name: "Read the label" })
+    .focus();
+  await expect
+    .poll(() => glow.evaluate((el) => getComputedStyle(el).opacity))
+    .toBe("0.45");
+});
+
+test("dish steam runs in view and pauses off screen", async ({ page }) => {
+  await page.goto("/");
+  const art = page.locator("#cat-001 .room-art");
+  await page.locator("#cat-001").scrollIntoViewIfNeeded();
+  await expect(art).toHaveAttribute("data-steam", "live");
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect(art).toHaveAttribute("data-steam", "paused");
+});

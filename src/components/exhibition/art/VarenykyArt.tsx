@@ -10,15 +10,27 @@ const onions = [
   { x: 128, y: 185, r: 192, s: 1.1, tone: "toast" },
 ];
 
-export function VarenykyArt({ lit }: { lit: boolean }) {
+export function VarenykyArt({
+  lit,
+  steaming,
+}: {
+  lit: boolean;
+  steaming: boolean;
+}) {
   return (
     <svg
       className="room-art"
       viewBox="0 0 320 240"
       aria-hidden="true"
       data-lit={lit}
+      data-steam={steaming ? "live" : "paused"}
     >
       <defs>
+        <linearGradient id="rv-steam" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stopColor="#efe6d8" stopOpacity="0" />
+          <stop offset="45%" stopColor="#efe6d8" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#efe6d8" stopOpacity="0" />
+        </linearGradient>
         <VarenykDefs id="rv" />
         <radialGradient id="varenyky-glow" cx="50%" cy="70%" r="55%">
           <stop offset="0%" stopColor="#e8a94e" stopOpacity="0.4" />
@@ -71,6 +83,14 @@ export function VarenykyArt({ lit }: { lit: boolean }) {
       <g transform="translate(148 172) rotate(-16)">
         <Varenyk id="rv" glossD="M -20 -8 Q -6 -14 8 -11" />
       </g>
+      <path
+        className="serve-sheen"
+        d="M 124 168 Q 176 148 232 170"
+        fill="none"
+        style={{ stroke: "var(--plaster)" }}
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
       <path
         d="M 163 156 Q 157 170 161 184"
         fill="none"
@@ -134,6 +154,32 @@ export function VarenykyArt({ lit }: { lit: boolean }) {
         <ellipse cx="148" cy="189" rx="30" ry="2.8" />
         <ellipse cx="186" cy="187" rx="33" ry="3" />
         <ellipse cx="222" cy="194" rx="27" ry="2.6" />
+      </g>
+      <path
+        className="steam-static"
+        d="M160 150c-6-7-1-12 1-16 2-4 2.4-8-1-13"
+        fill="none"
+        stroke="#efe6d8"
+        strokeOpacity="0.3"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <g fill="none" stroke="url(#rv-steam)" strokeLinecap="round">
+        <path
+          className="steam-wisp"
+          d="M146 154c-6-7-1-12 1-16 2-4 2.4-8-1-13"
+          strokeWidth="5"
+        />
+        <path
+          className="steam-wisp"
+          d="M162 150c-7-6-2-11 0-15 2.3-4.3 2.7-8.6-1.3-13"
+          strokeWidth="6"
+        />
+        <path
+          className="steam-wisp"
+          d="M176 154c5-7 1-12-1-16-2-4-2.2-8 1-13"
+          strokeWidth="5"
+        />
       </g>
     </svg>
   );

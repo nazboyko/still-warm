@@ -73,3 +73,20 @@ test("reduced motion loses no content", async ({ page }) => {
   expect(reducedText).toBe(fullMotionText);
   expect(reducedText).toContain("У повітрі пахне");
 });
+
+test("serving details do not play under reduced motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Read the label" }).first().click();
+  const sheen = await page
+    .locator("#cat-001 .serve-sheen")
+    .evaluate((element) => getComputedStyle(element).animationName);
+  expect(sheen).toBe("none");
+
+  // The ambient steam is a static wisp, not a loop.
+  const wisp = await page
+    .locator("#cat-001 .steam-wisp")
+    .first()
+    .evaluate((element) => getComputedStyle(element).display);
+  expect(wisp).toBe("none");
+});

@@ -97,15 +97,27 @@ function Pancake({ shape }: { shape: number }) {
   );
 }
 
-export function PancakesArt({ lit }: { lit: boolean }) {
+export function PancakesArt({
+  lit,
+  steaming,
+}: {
+  lit: boolean;
+  steaming: boolean;
+}) {
   return (
     <svg
       className="room-art"
       viewBox="0 0 320 240"
       aria-hidden="true"
       data-lit={lit}
+      data-steam={steaming ? "live" : "paused"}
     >
       <defs>
+        <linearGradient id="pan-steam" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stopColor="#efe6d8" stopOpacity="0" />
+          <stop offset="45%" stopColor="#efe6d8" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#efe6d8" stopOpacity="0" />
+        </linearGradient>
         <radialGradient id="pancakes-glow" cx="50%" cy="64%" r="60%">
           <stop offset="0%" stopColor="#f2d9a8" stopOpacity="0.62" />
           <stop offset="45%" stopColor="#e8a94e" stopOpacity="0.34" />
@@ -369,13 +381,31 @@ export function PancakesArt({ lit }: { lit: boolean }) {
       </g>
 
       <path
-        d="M 150 88c-6-7-1-12 1-16 2-4 2.4-8-1-13"
+        className="steam-static"
+        d="M160 92c-6-7-1-12 1-16 2-4 2.4-8-1-13"
         fill="none"
         stroke="#efe6d8"
-        strokeOpacity="0.24"
+        strokeOpacity="0.3"
         strokeWidth="2"
         strokeLinecap="round"
       />
+      <g fill="none" stroke="url(#pan-steam)" strokeLinecap="round">
+        <path
+          className="steam-wisp"
+          d="M146 96c-6-7-1-12 1-16 2-4 2.4-8-1-13"
+          strokeWidth="5"
+        />
+        <path
+          className="steam-wisp"
+          d="M162 92c-7-6-2-11 0-15 2.3-4.3 2.7-8.6-1.3-13"
+          strokeWidth="6"
+        />
+        <path
+          className="steam-wisp"
+          d="M176 96c5-7 1-12-1-16-2-4-2.2-8 1-13"
+          strokeWidth="5"
+        />
+      </g>
     </svg>
   );
 }

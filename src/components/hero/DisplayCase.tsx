@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useInView } from "../../hooks/useInView.ts";
+import "../../styles/steam.css";
 import "./DisplayCase.css";
 import { HeroVarenyky } from "./HeroVarenyky.tsx";
 

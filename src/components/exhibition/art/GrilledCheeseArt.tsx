@@ -63,15 +63,27 @@ function Half() {
   );
 }
 
-export function GrilledCheeseArt({ lit }: { lit: boolean }) {
+export function GrilledCheeseArt({
+  lit,
+  steaming,
+}: {
+  lit: boolean;
+  steaming: boolean;
+}) {
   return (
     <svg
       className="room-art"
       viewBox="0 0 320 240"
       aria-hidden="true"
       data-lit={lit}
+      data-steam={steaming ? "live" : "paused"}
     >
       <defs>
+        <linearGradient id="gc-steam" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stopColor="#efe6d8" stopOpacity="0" />
+          <stop offset="45%" stopColor="#efe6d8" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#efe6d8" stopOpacity="0" />
+        </linearGradient>
         <radialGradient id="grilled-glow" cx="50%" cy="70%" r="55%">
           <stop offset="0%" stopColor="#e8a94e" stopOpacity="0.35" />
           <stop offset="60%" stopColor="#e8a94e" stopOpacity="0.12" />
@@ -156,20 +168,12 @@ export function GrilledCheeseArt({ lit }: { lit: boolean }) {
       </g>
 
       {/* the last strand still bridging the two cut faces */}
-      <g fill="url(#gc-cheese)">
+      <g className="serve-stretch" fill="url(#gc-cheese)">
         <path d="M 152 160 C 156 170 164 174 170 168 L 172 172 C 164 180 154 175 149 162 Z" />
         <path d="M 158 176 C 157 181 160 184 159 188 L 163 188 C 164 184 161 181 162 176 Z" />
       </g>
       <ellipse cx="161" cy="189" rx="9" ry="3" fill="url(#gc-cheese)" />
 
-      <path
-        d="M 172 128c-6-7-1-12 1-16 2-4 2.4-8-1-13"
-        fill="none"
-        stroke="#efe6d8"
-        strokeOpacity="0.2"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
       <g style={{ fill: "var(--toast)" }} fillOpacity="0.75">
         <ellipse
           cx="92"
@@ -187,6 +191,32 @@ export function GrilledCheeseArt({ lit }: { lit: boolean }) {
           transform="rotate(8 224 186)"
         />
         <ellipse cx="238" cy="190" rx="1.6" ry="1.2" />
+      </g>
+      <path
+        className="steam-static"
+        d="M150 120c-6-7-1-12 1-16 2-4 2.4-8-1-13"
+        fill="none"
+        stroke="#efe6d8"
+        strokeOpacity="0.3"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <g fill="none" stroke="url(#gc-steam)" strokeLinecap="round">
+        <path
+          className="steam-wisp"
+          d="M136 124c-6-7-1-12 1-16 2-4 2.4-8-1-13"
+          strokeWidth="5"
+        />
+        <path
+          className="steam-wisp"
+          d="M152 120c-7-6-2-11 0-15 2.3-4.3 2.7-8.6-1.3-13"
+          strokeWidth="6"
+        />
+        <path
+          className="steam-wisp"
+          d="M166 124c5-7 1-12-1-16-2-4-2.2-8 1-13"
+          strokeWidth="5"
+        />
       </g>
     </svg>
   );
