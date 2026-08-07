@@ -3,8 +3,9 @@ import type {
   ExhibitSubmission,
 } from "../../content/donate.ts";
 import { reservedExhibit } from "../../content/exhibits.ts";
+import { generateSculpture } from "./exhibitSculpture.ts";
 import "./ReservedExhibit.css";
-import { ReservedSketch } from "./ReservedSketch.tsx";
+import { ReservedScene } from "./ReservedScene.tsx";
 
 interface ReservedExhibitProps {
   draft: ExhibitSubmission;
@@ -29,7 +30,10 @@ export function ReservedExhibit({ draft, donated }: ReservedExhibitProps) {
       aria-labelledby="reserved-title"
     >
       <div className="reserved-frame">
-        <ReservedSketch inked={Boolean(donated)} />
+        <ReservedScene
+          revealed={Boolean(donated)}
+          spec={donated ? generateSculpture(donated) : null}
+        />
       </div>
       <div className="placard reserved-placard" data-surface="plaster">
         <h3 id="reserved-title" className="placard-cat">
