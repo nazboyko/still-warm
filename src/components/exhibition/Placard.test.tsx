@@ -93,6 +93,15 @@ test("escape with focus in another control is not a close", () => {
   expect(elsewhere).toHaveFocus();
 });
 
+test("the trigger is described by its dish", () => {
+  render(
+    <Placard exhibit={room002} isOpen={false} onToggle={noop} onWalk={noop} />,
+  );
+  const trigger = screen.getByRole("button", { name: "Read the label" });
+  expect(trigger).toHaveAttribute("aria-describedby", `${room002.id}-dish`);
+  expect(trigger).toHaveAccessibleDescription(/grilled cheese/i);
+});
+
 test("fold mark is hidden from assistive tech", () => {
   const { container } = render(
     <Placard exhibit={room002} isOpen={false} onToggle={noop} onWalk={noop} />,

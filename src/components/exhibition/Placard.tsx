@@ -87,6 +87,7 @@ export function Placard({
           ref={triggerRef}
           type="button"
           className="placard-toggle"
+          aria-describedby={`${exhibit.id}-dish`}
           aria-expanded={isOpen}
           aria-controls={isOpen ? storyId : undefined}
           onClick={handleToggle}
