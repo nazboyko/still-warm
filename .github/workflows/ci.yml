@@ -27,11 +27,11 @@ jobs:
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Install browsers
-        run: npx playwright install --with-deps chromium webkit
+        run: npx playwright install --with-deps chromium webkit firefox
 
       # Full matrix on PRs too: engine-specific failures must surface before merge.
       - name: E2E full matrix
-        run: npx playwright test --project=chromium-desktop --project=webkit-desktop --project=mobile-chrome --project=mobile-safari
+        run: npx playwright test --project=chromium-desktop --project=webkit-desktop --project=mobile-chrome --project=mobile-safari --project=firefox-desktop
 
       - name: Upload traces on failure
         if: failure()
