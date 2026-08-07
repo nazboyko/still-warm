@@ -30,17 +30,11 @@ export function VarenykyArt({ lit }: { lit: boolean }) {
           <stop offset="70%" stopColor="#e8a94e" stopOpacity="0.45" />
           <stop offset="100%" stopColor="#e8a94e" stopOpacity="0.05" />
         </linearGradient>
+        {/* Fully opaque stops: any transparency here greys against the plate. */}
         <linearGradient id="rv-cream" x1="0" y1="0" x2="0.2" y2="1">
-          <stop
-            offset="0%"
-            style={{ stopColor: "var(--plaster)" }}
-            stopOpacity="1"
-          />
-          <stop
-            offset="100%"
-            style={{ stopColor: "var(--plaster)" }}
-            stopOpacity="0.68"
-          />
+          <stop offset="0%" style={{ stopColor: "var(--plaster)" }} />
+          <stop offset="58%" style={{ stopColor: "var(--plaster)" }} />
+          <stop offset="100%" style={{ stopColor: "var(--gold-light)" }} />
         </linearGradient>
         <radialGradient id="rv-dish-shadow" cx="50%" cy="50%" r="50%">
           <stop offset="0%" stopColor="#0f0c0a" stopOpacity="0.55" />
@@ -127,19 +121,11 @@ export function VarenykyArt({ lit }: { lit: boolean }) {
         fill="url(#rv-cream)"
       />
       <path
-        d="M 83 179 Q 90 173 98 175"
+        d="M 79 187 Q 94 191 109 185"
         fill="none"
-        style={{ stroke: "var(--plaster)" }}
-        strokeOpacity="0.9"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M 84 188 Q 96 190 108 186"
-        fill="none"
-        style={{ stroke: "var(--tungsten)" }}
-        strokeOpacity="0.25"
-        strokeWidth="1.6"
+        style={{ stroke: "var(--syrup)" }}
+        strokeOpacity="0.3"
+        strokeWidth="1.8"
         strokeLinecap="round"
       />
 
