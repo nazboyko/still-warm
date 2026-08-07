@@ -34,6 +34,8 @@
   --dur-quiet: 200ms;
   --dur-unfold: 480ms;
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Approved entrance dim; also the lever for the gate video's darker take. */
+  --entrance-dim: 0.55;
 
   /* Room grounds: ink shifted per emotion (+/-4% luminance, +/-6deg hue), per art direction. */
   --room-homesickness: #181417;

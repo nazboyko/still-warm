@@ -34,6 +34,12 @@
   background: rgb(239 230 216 / 0.05);
   border: 1px solid var(--brass);
   border-radius: var(--radius-placard);
+  transition: border-color var(--dur-quiet) var(--ease-soft);
+}
+
+.desk-field input:focus-visible,
+.desk-field textarea:focus-visible {
+  border-color: var(--plaster);
 }
 
 .desk-field textarea {

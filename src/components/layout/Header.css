@@ -82,6 +82,7 @@
   align-items: center;
   min-height: var(--touch-target);
   padding-inline: var(--space-2);
+  transition: color var(--dur-quiet) var(--ease-soft);
   font-family: var(--font-utility);
   font-size: var(--text-utility);
   letter-spacing: var(--tracking-utility);

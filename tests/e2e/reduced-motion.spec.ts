@@ -36,6 +36,23 @@ test("the ink transformation is instant under reduced motion", async ({
   expect(styles.duration).toBe("0s");
 });
 
+test("room lighting is static under reduced motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await page.evaluate(() => {
+    const room = document.getElementById("cat-003")!;
+    const top = room.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, top - window.innerHeight + 60);
+  });
+  await expect
+    .poll(() =>
+      page
+        .locator("#cat-003")
+        .evaluate((room) => getComputedStyle(room).backgroundColor),
+    )
+    .toBe("rgb(32, 24, 16)");
+});
+
 test("reduced motion loses no content", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Read the label" }).first().click();

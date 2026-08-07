@@ -1,0 +1,54 @@
+/* The lights come on: dim at 0ms, spotlight at 200ms, signage at 600ms,
+   overlay out at 1200ms, done by 1400ms. Skips land the end state instantly. */
+
+.entrance-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--ink);
+  opacity: var(--entrance-dim);
+  pointer-events: none;
+  animation: entrance-overlay-out 200ms var(--ease-soft) 1200ms both;
+}
+
+@keyframes entrance-overlay-out {
+  to {
+    opacity: 0;
+  }
+}
+
+[data-entrance] .case-light {
+  animation: entrance-spot 500ms var(--ease-soft) 200ms both;
+}
+
+@keyframes entrance-spot {
+  from {
+    opacity: 0;
+  }
+}
+
+[data-entrance] .hero-title,
+[data-entrance] .hero-eyebrow,
+[data-entrance] .hero-thesis,
+[data-entrance] .hero-cta,
+[data-entrance] .room-guide,
+[data-entrance] .site-header-bar {
+  animation: entrance-arrive 600ms var(--ease-soft) 600ms both;
+}
+
+@keyframes entrance-arrive {
+  from {
+    opacity: 0.35;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* The hook never mounts the overlay under reduced motion; this is the belt. */
+@media (prefers-reduced-motion: reduce) {
+  .entrance-overlay {
+    display: none;
+  }
+}

@@ -14,9 +14,25 @@
   cursor: pointer;
 }
 
+.button {
+  transition:
+    color var(--dur-quiet) var(--ease-soft),
+    border-color var(--dur-quiet) var(--ease-soft);
+}
+
 .button:hover:not(:disabled) {
   border-color: var(--beet);
   color: var(--beet);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button:active:not(:disabled) {
+    transform: none;
+  }
 }
 
 .button:disabled {

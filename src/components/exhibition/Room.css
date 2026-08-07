@@ -3,19 +3,50 @@
 }
 
 .room-001 {
+  --room-ground: var(--room-homesickness);
+
   background: var(--room-homesickness);
 }
 
 .room-002 {
+  --room-ground: var(--room-rainy);
+
   background: var(--room-rainy);
 }
 
 .room-003 {
+  --room-ground: var(--room-celebration);
+
   background: var(--room-celebration);
 }
 
 .room-004 {
+  --room-ground: var(--room-sunday);
+
   background: var(--room-sunday);
+}
+
+/* Walking in turns the light on: the ground arrives with the visitor and is
+   fully lit well before the placard reaches the thumb zone. Static grounds
+   above are the fallback and the reduced-motion state. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .room {
+      animation: room-light-on linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+  }
+}
+
+@keyframes room-light-on {
+  from {
+    background-color: var(--ink);
+  }
+
+  to {
+    background-color: var(--room-ground);
+  }
 }
 
 .room-grid {
