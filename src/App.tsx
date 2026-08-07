@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { DonateSection } from "./components/donate/DonateSection.tsx";
 import { EntranceOverlay } from "./components/entrance/EntranceOverlay.tsx";
 import { Exhibition } from "./components/exhibition/Exhibition.tsx";
@@ -11,6 +11,7 @@ import { useEntrance } from "./hooks/useEntrance.ts";
 
 function App() {
   const walkRef = useRef<((id: ExhibitId) => void) | null>(null);
+  const [hasDonated, setHasDonated] = useState(false);
   const entrance = useEntrance();
   return (
     <>
@@ -23,10 +24,10 @@ function App() {
             walkRef.current = walk;
           }}
         />
-        <DonateSection />
+        <DonateSection onDonatedChange={setHasDonated} />
         <PlanYourVisit />
       </main>
-      <Footer />
+      <Footer hasDonated={hasDonated} />
     </>
   );
 }

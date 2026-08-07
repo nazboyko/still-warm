@@ -16,7 +16,7 @@ const donated: DonatedExhibit = {
   feeling: "Quiet evenings",
   memory: "Stirred with a wooden spoon, never a recipe in sight.",
   donorName: "Marta",
-  number: "846",
+  number: "V-0846",
   collectedOn: "06 AUG 2026",
 };
 
@@ -76,13 +76,13 @@ describe("layoutPostcard", () => {
 
   test("catalog line carries number and feeling in catalog voice", () => {
     const layout = layoutPostcard(donated, measure);
-    expect(layout.lines[0]!.text).toBe("CAT. VISITOR-846 - QUIET EVENINGS");
+    expect(layout.lines[0]!.text).toBe("CAT. V-0846 - QUIET EVENINGS");
   });
 
   test("provenance line reads donor and collection date", () => {
     const layout = layoutPostcard(donated, measure);
     const provenance = layout.lines.at(-2)!;
-    expect(provenance.text).toBe("Donated by Marta. COLLECTED 06 AUG 2026.");
+    expect(provenance.text).toBe("Gift of Marta. COLLECTED 06 AUG 2026.");
   });
 
   test("memory never exceeds three lines, even maxed out", () => {

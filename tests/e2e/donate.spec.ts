@@ -31,10 +31,10 @@ test("the full donation loop, keyboard only", async ({ page }) => {
   await field(page, "Donated by (optional)").press("Enter");
 
   const reserved = page.locator(".reserved");
-  await expect(reserved).toContainText(/CAT\. VISITOR-\d{3} - QUIET EVENINGS/);
-  await expect(reserved).toContainText("Donated by Marta.");
+  await expect(reserved).toContainText(/CAT\. V-\d{4} - QUIET EVENINGS/);
+  await expect(reserved).toContainText("Gift of Marta.");
   await expect(page.locator(".reserved-frame svg")).toHaveAttribute(
-    "data-inked",
+    "data-revealed",
     "true",
   );
   await expect(page.getByText("Your exhibit is now on display.")).toBeVisible();
@@ -62,7 +62,7 @@ test("empty submit announces errors and focuses the first field", async ({
   );
   await expect(field(page, "Dish")).toBeFocused();
   await expect(page.locator(".reserved-frame svg")).toHaveAttribute(
-    "data-inked",
+    "data-revealed",
     "false",
   );
 });
@@ -75,7 +75,7 @@ test("reset returns the reserved frame", async ({ page }) => {
 
   await expect(page.locator(".reserved")).toContainText("CAT. 007 - RESERVED");
   await expect(page.locator(".reserved-frame svg")).toHaveAttribute(
-    "data-inked",
+    "data-revealed",
     "false",
   );
   await expect(field(page, "Dish")).toHaveValue("");
@@ -86,9 +86,7 @@ test("the default donor is a visitor", async ({ page }) => {
   await page.goto("/");
   await fillDesk(page);
   await page.getByRole("button", { name: "Donate the exhibit" }).click();
-  await expect(page.locator(".reserved")).toContainText(
-    "Donated by a visitor.",
-  );
+  await expect(page.locator(".reserved")).toContainText("Gift of a visitor.");
 });
 
 test("maxed-out fields keep the page inside the viewport", async ({ page }) => {
@@ -100,7 +98,7 @@ test("maxed-out fields keep the page inside the viewport", async ({ page }) => {
   await field(page, "Donated by (optional)").fill("W".repeat(40));
   await page.getByRole("button", { name: "Donate the exhibit" }).click();
   await expect(page.locator(".reserved-frame svg")).toHaveAttribute(
-    "data-inked",
+    "data-revealed",
     "true",
   );
   const overflow = await page.evaluate(
@@ -109,4 +107,21 @@ test("maxed-out fields keep the page inside the viewport", async ({ page }) => {
       document.documentElement.clientWidth,
   );
   expect(overflow).toBeLessThanOrEqual(0);
+});
+
+test("the footer mirrors the closing line once the visitor joins", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const line = page.locator(".site-footer-line");
+  await expect(line).toHaveText("The exhibits are still warm.");
+
+  await field(page, "Dish").fill("Kasha");
+  await field(page, "Feeling").fill("Monday");
+  await field(page, "Memory").fill("A quiet bowl.");
+  await page.getByRole("button", { name: "Donate the exhibit" }).click();
+  await expect(line).toHaveText("Yours is still warm.");
+
+  await page.getByRole("button", { name: "Reset the form" }).click();
+  await expect(line).toHaveText("The exhibits are still warm.");
 });

@@ -16,9 +16,10 @@ describe("formatCollectedDate", () => {
 });
 
 describe("makeVisitorNumber", () => {
-  test("stays in the 100-999 range at both extremes", () => {
-    expect(makeVisitorNumber(() => 0)).toBe("100");
-    expect(makeVisitorNumber(() => 0.9999)).toBe("999");
+  test("reads as a four-digit visitor catalog number", () => {
+    expect(makeVisitorNumber(() => 0)).toBe("V-0001");
+    expect(makeVisitorNumber(() => 0.9999)).toBe("V-9999");
+    expect(makeVisitorNumber(() => 0.5)).toMatch(/^V-\d{4}$/);
   });
 });
 
@@ -34,7 +35,7 @@ describe("makeDonatedExhibit", () => {
       () => 0.5,
       new Date(2026, 7, 6),
     );
-    expect(donated.number).toBe("550");
+    expect(donated.number).toBe("V-5000");
     expect(donated.collectedOn).toBe("06 AUG 2026");
     expect(donated.donorName).toBe("a visitor");
   });

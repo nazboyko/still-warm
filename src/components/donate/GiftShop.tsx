@@ -37,10 +37,10 @@ function downloadBlob(blob: Blob, fileName: string) {
 // E1 fallback: if canvas is unavailable, the postcard leaves as plain text.
 function downloadTextCard(exhibit: DonatedExhibit) {
   const text = [
-    `CAT. VISITOR-${exhibit.number} - ${exhibit.feeling.toUpperCase()}`,
+    `CAT. ${exhibit.number} - ${exhibit.feeling.toUpperCase()}`,
     exhibit.dish,
     exhibit.memory,
-    `Donated by ${exhibit.donorName}. ${postcardCard.collectedPrefix} ${exhibit.collectedOn}.`,
+    `Gift of ${exhibit.donorName}. ${postcardCard.collectedPrefix} ${exhibit.collectedOn}.`,
     `${postcardCard.lockupName} - ${postcardCard.lockupSub} - ${postcardCard.url}`,
   ].join("\n");
   downloadBlob(

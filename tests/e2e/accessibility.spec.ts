@@ -43,7 +43,7 @@ test("the donation desk stays clean in all three states", async ({ page }) => {
 
   await page.getByRole("button", { name: "Donate the exhibit" }).click();
   await expect(page.locator(".reserved-frame svg")).toHaveAttribute(
-    "data-inked",
+    "data-revealed",
     "true",
   );
   await scan();

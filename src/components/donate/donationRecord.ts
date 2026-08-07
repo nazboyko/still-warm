@@ -25,7 +25,7 @@ export function formatCollectedDate(date: Date): string {
 }
 
 export function makeVisitorNumber(random: () => number): string {
-  return String(100 + Math.floor(random() * 900));
+  return `V-${String(1 + Math.floor(random() * 9999)).padStart(4, "0")}`;
 }
 
 export function makeDonatedExhibit(

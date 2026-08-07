@@ -59,8 +59,8 @@ test("donation inks the frame and announces the exhibit", () => {
   fireEvent.submit(screen.getByRole("form"));
 
   const placard = screen.getByRole("article");
-  expect(placard).toHaveAccessibleName(/CAT\. VISITOR-\d{3} - QUIET EVENINGS/);
-  expect(placard).toHaveTextContent("Donated by a visitor.");
+  expect(placard).toHaveAccessibleName(/CAT\. V-\d{4} - QUIET EVENINGS/);
+  expect(placard).toHaveTextContent("Gift of a visitor.");
   expect(container.querySelector(".reserved-frame svg")).toHaveAttribute(
     "data-revealed",
     "true",

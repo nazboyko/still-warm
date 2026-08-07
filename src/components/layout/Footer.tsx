@@ -1,11 +1,13 @@
 import { Container } from "./Container.tsx";
 import "./Footer.css";
 
-export function Footer() {
+export function Footer({ hasDonated }: { hasDonated?: boolean }) {
   return (
     <footer className="site-footer">
       <Container>
-        <p className="site-footer-line">The exhibits are still warm.</p>
+        <p className="site-footer-line">
+          {hasDonated ? "Yours is still warm." : "The exhibits are still warm."}
+        </p>
         <p className="site-footer-meta">
           Built by Nazar Boyko for the{" "}
           <a href="https://dev.to/challenges">DEV Frontend Challenge</a>.

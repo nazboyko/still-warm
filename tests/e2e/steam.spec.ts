@@ -31,7 +31,7 @@ test("steam is static under reduced motion, with presence", async ({
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   await expect(page.locator(".steam-wisp").first()).toBeHidden();
-  const staticWisp = page.locator(".steam-static");
+  const staticWisp = page.locator(".steam-static").first();
   await expect(staticWisp).toBeVisible();
   expect(
     await staticWisp.evaluate(

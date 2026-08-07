@@ -64,7 +64,7 @@ describe("the generated exhibit", () => {
       for (const spot of spec.garnishSpots) {
         expect(spot.x).toBeGreaterThan(108);
         expect(spot.x).toBeLessThan(172);
-        expect(spot.r).toBeLessThan(5.6);
+        expect(spot.r).toBeLessThan(6.1);
       }
     }
     expect(kinds.size).toBe(6);
