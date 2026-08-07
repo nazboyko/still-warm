@@ -26,20 +26,11 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
-      - name: Install browsers (pull request)
-        if: github.event_name == 'pull_request'
-        run: npx playwright install --with-deps chromium
-
-      - name: Install browsers (main)
-        if: github.event_name == 'push'
+      - name: Install browsers
         run: npx playwright install --with-deps chromium webkit
 
-      - name: E2E smoke and a11y (pull request)
-        if: github.event_name == 'pull_request'
-        run: npx playwright test --project=chromium-desktop
-
-      - name: E2E full matrix (main)
-        if: github.event_name == 'push'
+      # Full matrix on PRs too: engine-specific failures must surface before merge.
+      - name: E2E full matrix
         run: npx playwright test --project=chromium-desktop --project=webkit-desktop --project=mobile-chrome --project=mobile-safari
 
       - name: Upload traces on failure
