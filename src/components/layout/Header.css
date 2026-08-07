@@ -67,6 +67,8 @@
 
 .lockup {
   display: grid;
+  align-content: center;
+  min-height: var(--touch-target);
   gap: var(--space-1);
   justify-items: center;
   text-decoration: none;

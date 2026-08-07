@@ -18,3 +18,12 @@ test("no horizontal overflow at 320px", async ({ page }) => {
   await page.goto("/");
   expect(await horizontalOverflow(page)).toBeLessThanOrEqual(0);
 });
+
+test("200% text zoom still fits the phone", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.evaluate(() => {
+    document.documentElement.style.fontSize = "200%";
+  });
+  await expect.poll(() => horizontalOverflow(page)).toBeLessThanOrEqual(0);
+});

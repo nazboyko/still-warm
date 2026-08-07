@@ -16,27 +16,22 @@ export function Exhibition({
 }) {
   const [openRoomId, setOpenRoomId] = useState<ExhibitId | null>(null);
   const printing = usePrintExpanded();
-  const scrollCompensation = useRef(0);
+  const anchor = useRef<{ id: ExhibitId; top: number } | null>(null);
   const pendingWalk = useRef<ExhibitId | null>(null);
 
+  function roomToggle(id: ExhibitId) {
+    return document.querySelector(`#${id} .placard-story > .placard-toggle`);
+  }
+
   function toggleRoom(id: ExhibitId) {
-    const next = openRoomId === id ? null : id;
-    // Engines with scroll anchoring keep the clicked room still on their own.
-    const browserAnchors = CSS.supports("overflow-anchor", "auto");
-    if (openRoomId && next && !browserAnchors) {
-      const closingStory = document.getElementById(`${openRoomId}-story`);
-      const closingRoom = document.getElementById(openRoomId);
-      const openingRoom = document.getElementById(next);
-      const closesAbove =
-        closingRoom &&
-        openingRoom &&
-        closingRoom.getBoundingClientRect().top <
-          openingRoom.getBoundingClientRect().top;
-      if (closingStory && closesAbove) {
-        scrollCompensation.current = closingStory.offsetHeight;
-      }
-    }
-    setOpenRoomId(next);
+    // Keep the clicked label under the visitor's eye. Engines disagree about
+    // scroll anchoring - every one of them claims overflow-anchor support and
+    // Firefox still does not anchor this swap - so measure and restore instead.
+    const trigger = roomToggle(id);
+    anchor.current = trigger
+      ? { id, top: trigger.getBoundingClientRect().top }
+      : null;
+    setOpenRoomId(openRoomId === id ? null : id);
   }
 
   function landOnRoom(id: ExhibitId) {
@@ -68,6 +63,7 @@ export function Exhibition({
   }
 
   function walkToRoom(id: ExhibitId) {
+    anchor.current = null;
     // Walking to the already-open room (the guide allows it) still lands there.
     if (id === openRoomId) {
       landOnRoom(id);
@@ -82,12 +78,16 @@ export function Exhibition({
     registerWalk?.(walkToRoom);
   });
 
-  // Keep the clicked room visually still when a taller room collapses above it;
-  // after a walk, land the opened label comfortably in view and focus its trigger.
+  // Hold the clicked label still when a taller room collapses above it; after
+  // a walk, land the opened label in view and focus its trigger instead.
   useLayoutEffect(() => {
-    if (scrollCompensation.current) {
-      window.scrollBy(0, -scrollCompensation.current);
-      scrollCompensation.current = 0;
+    if (anchor.current) {
+      const trigger = roomToggle(anchor.current.id);
+      if (trigger) {
+        const drift = trigger.getBoundingClientRect().top - anchor.current.top;
+        if (Math.abs(drift) > 1) window.scrollBy(0, drift);
+      }
+      anchor.current = null;
     }
     if (pendingWalk.current) {
       landOnRoom(pendingWalk.current);

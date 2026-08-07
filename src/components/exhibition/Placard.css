@@ -1,5 +1,6 @@
 .placard {
   max-width: 34rem;
+  min-width: 0;
   /* The walk lands the label top in view with breathing room. */
   /* The walk lands the label top in view with breathing room; the header
      clearance itself comes from html scroll-padding-top. */
@@ -22,6 +23,9 @@
 }
 
 .placard-dish {
+  /* "anywhere", not "break-word": only anywhere shrinks the min-content width,
+     which is what stops a long dish name widening the page at 200% zoom. */
+  overflow-wrap: anywhere;
   margin-top: var(--space-2);
   font-family: var(--font-display);
   font-weight: 400;

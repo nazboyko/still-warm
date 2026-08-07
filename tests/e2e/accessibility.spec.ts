@@ -34,6 +34,15 @@ test("the donation desk stays clean in all three states", async ({ page }) => {
 
   await page.getByRole("button", { name: "Donate the exhibit" }).click();
   await expect(page.getByRole("alert")).toBeVisible();
+  // The click scrolls, the header compacts, and its subtitle fades: scan the
+  // settled page, not a frame where that line is halfway to transparent.
+  await expect
+    .poll(() =>
+      page
+        .locator(".lockup-sub")
+        .evaluate((element) => getComputedStyle(element).opacity),
+    )
+    .toMatch(/^(0|1)$/);
   await scan();
 
   await page.getByRole("textbox", { name: "Dish", exact: true }).fill("Kasha");
