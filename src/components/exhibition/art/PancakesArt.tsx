@@ -15,26 +15,40 @@ const stack = [
   { x: 161, y: 117, s: 0.93, r: -1.5, shape: 2 },
 ];
 
-/* Bubbles in the crumb, showing along the side of each disc. */
+/* Bubbles in the crumb, opened along the side of each disc. */
 const poreSets = [
   [
-    { x: -38, y: 3, r: 2.6 },
-    { x: -12, y: 6, r: 1.7 },
-    { x: 16, y: 4, r: 2.2 },
-    { x: 42, y: 6, r: 1.5 },
+    {
+      d: "M -42 1 Q -35 -2 -30 2 Q -34 7 -40 5 Z",
+      lip: "M -42 1 Q -35 -2 -30 2",
+    },
+    { d: "M -6 3 Q 2 0 6 4 Q 1 8 -5 7 Z", lip: "M -6 3 Q 2 0 6 4" },
+    { d: "M 30 2 Q 38 -1 42 3 Q 37 7 31 6 Z", lip: "M 30 2 Q 38 -1 42 3" },
   ],
   [
-    { x: -46, y: 5, r: 1.8 },
-    { x: -20, y: 3, r: 2.8 },
-    { x: 6, y: 6, r: 1.6 },
-    { x: 34, y: 3, r: 2.3 },
+    {
+      d: "M -34 3 Q -27 -1 -22 3 Q -27 8 -33 6 Z",
+      lip: "M -34 3 Q -27 -1 -22 3",
+    },
+    { d: "M 2 1 Q 11 -2 15 2 Q 10 7 3 6 Z", lip: "M 2 1 Q 11 -2 15 2" },
+    { d: "M 38 4 Q 45 1 48 5 Q 43 9 38 8 Z", lip: "M 38 4 Q 45 1 48 5" },
   ],
   [
-    { x: -30, y: 6, r: 2.1 },
-    { x: -2, y: 3, r: 2.5 },
-    { x: 26, y: 6, r: 1.6 },
-    { x: 48, y: 4, r: 1.9 },
+    {
+      d: "M -48 2 Q -41 -1 -37 3 Q -42 8 -47 6 Z",
+      lip: "M -48 2 Q -41 -1 -37 3",
+    },
+    { d: "M -14 4 Q -6 0 -1 4 Q -6 9 -13 8 Z", lip: "M -14 4 Q -6 0 -1 4" },
+    { d: "M 20 2 Q 29 -2 34 2 Q 28 7 21 6 Z", lip: "M 20 2 Q 29 -2 34 2" },
   ],
+];
+
+const berries = [
+  { x: 133, y: 103, r: 8 },
+  { x: 147, y: 106, r: 5.6 },
+  { x: 123, y: 112, r: 7 },
+  { x: 119, y: 125, r: 6.6 },
+  { x: 128, y: 137, r: 5 },
 ];
 
 function Pancake({ shape }: { shape: number }) {
@@ -48,20 +62,17 @@ function Pancake({ shape }: { shape: number }) {
       </g>
       {poreSets[shape]!.map((pore, index) => (
         <g key={index}>
-          <ellipse
-            cx={pore.x}
-            cy={pore.y}
-            rx={pore.r}
-            ry={pore.r * 0.72}
+          <path
+            d={pore.d}
             style={{ fill: "var(--toast-deep)" }}
-            fillOpacity="0.32"
+            fillOpacity="0.38"
           />
           <path
-            d={`M ${pore.x - pore.r * 0.7} ${pore.y - pore.r * 0.4} Q ${pore.x} ${pore.y - pore.r} ${pore.x + pore.r * 0.7} ${pore.y - pore.r * 0.4}`}
+            d={pore.lip}
             fill="none"
-            style={{ stroke: "var(--gold-light)" }}
-            strokeOpacity="0.5"
-            strokeWidth="0.9"
+            style={{ stroke: "var(--plaster)" }}
+            strokeOpacity="0.6"
+            strokeWidth="1.2"
             strokeLinecap="round"
           />
         </g>
@@ -95,9 +106,9 @@ export function PancakesArt({ lit }: { lit: boolean }) {
       data-lit={lit}
     >
       <defs>
-        <radialGradient id="pancakes-glow" cx="50%" cy="64%" r="58%">
-          <stop offset="0%" stopColor="#e8a94e" stopOpacity="0.55" />
-          <stop offset="60%" stopColor="#e8a94e" stopOpacity="0.2" />
+        <radialGradient id="pancakes-glow" cx="50%" cy="64%" r="60%">
+          <stop offset="0%" stopColor="#f2d9a8" stopOpacity="0.62" />
+          <stop offset="45%" stopColor="#e8a94e" stopOpacity="0.34" />
           <stop offset="100%" stopColor="#e8a94e" stopOpacity="0" />
         </radialGradient>
         <linearGradient id="pancakes-cone" x1="0" y1="0" x2="0" y2="1">
@@ -106,15 +117,16 @@ export function PancakesArt({ lit }: { lit: boolean }) {
           <stop offset="100%" stopColor="#e8a94e" stopOpacity="0.06" />
         </linearGradient>
         <linearGradient id="pan-cake" x1="0" y1="0" x2="0.08" y2="1">
-          <stop offset="0%" style={{ stopColor: "var(--gold-light)" }} />
-          <stop offset="30%" style={{ stopColor: "var(--gold-light)" }} />
-          <stop offset="70%" style={{ stopColor: "var(--tungsten)" }} />
+          <stop offset="0%" style={{ stopColor: "var(--plaster)" }} />
+          <stop offset="22%" style={{ stopColor: "var(--gold-light)" }} />
+          <stop offset="62%" style={{ stopColor: "var(--gold-light)" }} />
+          <stop offset="90%" style={{ stopColor: "var(--tungsten)" }} />
           <stop offset="100%" style={{ stopColor: "var(--toast)" }} />
         </linearGradient>
         <linearGradient id="pan-top" x1="0" y1="0" x2="0.1" y2="1">
           <stop offset="0%" style={{ stopColor: "var(--plaster)" }} />
-          <stop offset="45%" style={{ stopColor: "var(--gold-light)" }} />
-          <stop offset="100%" style={{ stopColor: "var(--tungsten)" }} />
+          <stop offset="38%" style={{ stopColor: "var(--gold-light)" }} />
+          <stop offset="100%" style={{ stopColor: "var(--gold-light)" }} />
         </linearGradient>
         <linearGradient id="pan-butter" x1="0" y1="0" x2="0.2" y2="1">
           <stop offset="0%" style={{ stopColor: "var(--plaster)" }} />
@@ -236,90 +248,100 @@ export function PancakesArt({ lit }: { lit: boolean }) {
       </g>
 
       {/* berry compote spilling over the near edge, one of them cut */}
-      <g style={{ fill: "var(--beet)" }}>
-        <ellipse cx="133" cy="103" rx="11" ry="7.4" />
-        <ellipse cx="146" cy="106" rx="7" ry="5" />
-        <ellipse cx="124" cy="111" rx="8.6" ry="6.6" />
-        <ellipse cx="120" cy="124" rx="7.8" ry="6.8" />
-        <ellipse cx="128" cy="137" rx="5.4" ry="4.8" />
-      </g>
-      <ellipse
-        cx="137"
-        cy="118"
-        rx="7.4"
-        ry="6.2"
-        style={{ fill: "var(--syrup)" }}
-      />
-      <ellipse
-        cx="137"
-        cy="118"
-        rx="5.6"
-        ry="4.6"
-        style={{ fill: "var(--beet)" }}
-      />
+      {berries.map((berry, index) => (
+        <g key={index}>
+          <ellipse
+            cx={berry.x + 1}
+            cy={berry.y + berry.r * 0.85}
+            rx={berry.r * 0.95}
+            ry={berry.r * 0.42}
+            style={{ fill: "var(--syrup)" }}
+            fillOpacity="0.55"
+          />
+          <circle
+            cx={berry.x}
+            cy={berry.y}
+            r={berry.r}
+            style={{ fill: "var(--beet)" }}
+          />
+          <path
+            d={`M ${berry.x - berry.r * 0.62} ${berry.y + berry.r * 0.35} Q ${berry.x} ${berry.y + berry.r} ${berry.x + berry.r * 0.62} ${berry.y + berry.r * 0.35}`}
+            fill="none"
+            style={{ stroke: "var(--syrup)" }}
+            strokeOpacity="0.6"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+          />
+          <ellipse
+            cx={berry.x + berry.r * 0.1}
+            cy={berry.y - berry.r * 0.78}
+            rx={berry.r * 0.28}
+            ry={berry.r * 0.18}
+            style={{ fill: "var(--syrup)" }}
+          />
+          <circle
+            cx={berry.x - berry.r * 0.36}
+            cy={berry.y - berry.r * 0.4}
+            r={berry.r * 0.2}
+            style={{ fill: "var(--plaster)" }}
+            fillOpacity="0.85"
+          />
+        </g>
+      ))}
+      <circle cx="137" cy="118" r="7" style={{ fill: "var(--syrup)" }} />
+      <circle cx="137" cy="118" r="5.4" style={{ fill: "var(--beet)" }} />
       <path
         d="M 133 116 Q 137 114 141 117"
         fill="none"
         style={{ stroke: "var(--plaster)" }}
-        strokeOpacity="0.5"
+        strokeOpacity="0.55"
         strokeWidth="1.6"
         strokeLinecap="round"
       />
-      <g
-        fill="none"
-        style={{ stroke: "var(--syrup)" }}
-        strokeOpacity="0.6"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      >
-        <path d="M 125 103 Q 133 109 141 104" />
-        <path d="M 116 120 Q 121 126 127 121" />
-        <path d="M 123 135 Q 128 140 133 135" />
-      </g>
-      <g
-        fill="none"
-        style={{ stroke: "var(--plaster)" }}
-        strokeOpacity="0.45"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      >
-        <path d="M 129 99 Q 133 97 137 99" />
-        <path d="M 117 108 Q 121 106 125 108" />
-        <path d="M 116 121 Q 119 119 122 121" />
-      </g>
 
-      {/* butter, running off in rivulets */}
-      <ellipse
-        cx="172"
-        cy="106"
-        rx="21"
-        ry="6.5"
+      {/* butter: a thick pat going soft, its melt pooling around it */}
+      <path
+        d="M 152 106 Q 158 100 168 100 Q 180 98 190 102 Q 197 106 190 110 Q 178 114 166 113 Q 154 112 152 106 Z"
         style={{ fill: "var(--gold-light)" }}
-        fillOpacity="0.6"
+        fillOpacity="0.7"
       />
       <g
         fill="none"
         style={{ stroke: "var(--gold-light)" }}
-        strokeOpacity="0.5"
+        strokeOpacity="0.55"
         strokeLinecap="round"
       >
-        <path d="M 167 106 Q 165 112 161 117" strokeWidth="2" />
-        <path d="M 179 107 Q 183 112 187 115" strokeWidth="1.6" />
+        <path d="M 163 110 Q 160 116 156 120" strokeWidth="2.2" />
+        <path d="M 184 109 Q 188 114 192 117" strokeWidth="1.8" />
       </g>
+      {/* the pat itself: top face, then its thickness */}
+      <ellipse
+        cx="176"
+        cy="107"
+        rx="14"
+        ry="4"
+        style={{ fill: "var(--toast)" }}
+        fillOpacity="0.5"
+      />
       <path
-        d="M 160 100 Q 172 96 184 100 L 184 105 Q 172 110 160 105 Z"
+        d="M 162 99 L 186 99 L 186 105 Q 174 109 162 105 Z"
         style={{ fill: "var(--gold-light)" }}
       />
       <path
-        d="M 160 100 Q 172 95 184 100 Q 172 105 160 100 Z"
+        d="M 162 105 Q 174 109 186 105 L 186 107 Q 174 111 162 107 Z"
+        style={{ fill: "var(--toast)" }}
+        fillOpacity="0.55"
+      />
+      <path
+        d="M 162 99 Q 168 93 176 93 Q 185 93 186 99 Q 174 104 162 99 Z"
         fill="url(#pan-butter)"
       />
       <path
-        d="M 164 100 Q 172 97 180 100"
+        d="M 166 97 Q 174 94 182 97"
         fill="none"
         style={{ stroke: "var(--plaster)" }}
-        strokeOpacity="0.9"
-        strokeWidth="2"
+        strokeOpacity="0.95"
+        strokeWidth="2.2"
         strokeLinecap="round"
       />
 
