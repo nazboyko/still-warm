@@ -46,6 +46,15 @@ test("the donation desk stays clean in all three states", async ({ page }) => {
     "data-revealed",
     "true",
   );
+  // Scan the settled exhibit, not the middle of the uncover: mid-lift the
+  // cover overlaps the frame and axe cannot resolve what is behind it.
+  await expect
+    .poll(() =>
+      page
+        .locator(".scene-cloche")
+        .evaluate((element) => getComputedStyle(element).opacity),
+    )
+    .toBe("0");
   await scan();
 });
 

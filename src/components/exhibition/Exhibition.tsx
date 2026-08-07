@@ -41,15 +41,29 @@ export function Exhibition({
 
   function landOnRoom(id: ExhibitId) {
     const placard = document.querySelector(`#${id} .placard`);
-    const trigger =
-      placard?.querySelector<HTMLButtonElement>(".placard-toggle");
-    const instantScroll = window.matchMedia(
+    if (!placard) return;
+    const trigger = placard.querySelector<HTMLButtonElement>(".placard-toggle");
+    const instant = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    placard?.scrollIntoView({
-      behavior: instantScroll ? "auto" : "smooth",
-      block: "start",
-    });
+    const clearance =
+      parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) ||
+      0;
+
+    // Engines disagree about smooth scrollIntoView and late fonts can move the
+    // label after the scroll starts, so keep nudging until it is really there.
+    let tries = 0;
+    const settle = () => {
+      const drift = placard.getBoundingClientRect().top - clearance;
+      if (Math.abs(drift) <= 4 || tries >= 4) return;
+      tries += 1;
+      window.scrollBy({
+        top: drift,
+        behavior: tries === 1 && !instant ? "smooth" : "auto",
+      });
+      window.setTimeout(settle, instant ? 0 : 240);
+    };
+    settle();
     trigger?.focus({ preventScroll: true });
   }
 
