@@ -1,9 +1,15 @@
+import type { ExhibitId } from "../../content/exhibits.ts";
 import { Container } from "../layout/Container.tsx";
 import "../ui/Button.css";
 import { DisplayCase } from "./DisplayCase.tsx";
 import "./Hero.css";
+import { RoomGuide } from "./RoomGuide.tsx";
 
-export function Hero() {
+export function Hero({
+  onGuideChoose,
+}: {
+  onGuideChoose: (id: ExhibitId) => void;
+}) {
   return (
     <section className="hero" aria-labelledby="hero-title">
       <Container>
@@ -19,6 +25,7 @@ export function Hero() {
             <a className="button hero-cta" href="#exhibition">
               Enter the exhibition
             </a>
+            <RoomGuide onChoose={onGuideChoose} />
           </div>
           <DisplayCase />
         </div>

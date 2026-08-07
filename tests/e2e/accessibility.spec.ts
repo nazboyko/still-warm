@@ -24,6 +24,31 @@ test("homepage has no unresolved axe incompletes", async ({ page }) => {
   expect(reportable(results.incomplete)).toEqual([]);
 });
 
+test("the donation desk stays clean in all three states", async ({ page }) => {
+  await page.goto("/");
+  const scan = async () => {
+    const results = await new AxeBuilder({ page }).analyze();
+    expect(reportable(results.violations)).toEqual([]);
+    expect(reportable(results.incomplete)).toEqual([]);
+  };
+
+  await page.getByRole("button", { name: "Donate the exhibit" }).click();
+  await expect(page.getByRole("alert")).toBeVisible();
+  await scan();
+
+  await page.getByRole("textbox", { name: "Dish", exact: true }).fill("Kasha");
+  await page.getByRole("textbox", { name: "Feeling" }).fill("Monday");
+  await page.getByRole("textbox", { name: "Memory" }).fill("A quiet bowl.");
+  await scan();
+
+  await page.getByRole("button", { name: "Donate the exhibit" }).click();
+  await expect(page.locator(".reserved-frame svg")).toHaveAttribute(
+    "data-inked",
+    "true",
+  );
+  await scan();
+});
+
 test("each expanded room stays clean", async ({ page }) => {
   await page.goto("/");
   const triggers = page.getByRole("button", { name: "Read the label" });

@@ -1,35 +1,57 @@
+import type {
+  DonatedExhibit,
+  ExhibitSubmission,
+} from "../../content/donate.ts";
 import { reservedExhibit } from "../../content/exhibits.ts";
 import "./ReservedExhibit.css";
+import { ReservedSketch } from "./ReservedSketch.tsx";
 
-export function ReservedExhibit() {
+interface ReservedExhibitProps {
+  draft: ExhibitSubmission;
+  donated: DonatedExhibit | null;
+}
+
+export function ReservedExhibit({ draft, donated }: ReservedExhibitProps) {
+  const shown = donated ?? draft;
+  const catalogLine = donated
+    ? `CAT. VISITOR-${donated.number} - ${donated.feeling.toUpperCase()}`
+    : shown.feeling.trim()
+      ? `CAT. ${reservedExhibit.number} - ${shown.feeling.toUpperCase()}`
+      : `CAT. ${reservedExhibit.number} - ${reservedExhibit.title.toUpperCase()}`;
+  const hasDraftBody = Boolean(
+    shown.dish.trim() || shown.memory.trim() || shown.donorName.trim(),
+  );
+
   return (
-    <article className="reserved" aria-labelledby="reserved-title">
+    <article
+      className="reserved"
+      data-donated={donated ? "true" : undefined}
+      aria-labelledby="reserved-title"
+    >
       <div className="reserved-frame">
-        <svg viewBox="0 0 280 190" aria-hidden="true">
-          <g
-            fill="none"
-            stroke="#efe6d8"
-            strokeOpacity="0.4"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeDasharray="1 6"
-          >
-            <ellipse cx="140" cy="142" rx="96" ry="15" />
-            <path d="M76 138 A64 66 0 0 1 204 138" />
-            <circle cx="140" cy="66" r="4" />
-          </g>
-          <g stroke="#efe6d8" strokeOpacity="0.25" strokeWidth="1">
-            <line x1="140" y1="48" x2="140" y2="56" />
-            <line x1="30" y1="142" x2="42" y2="142" />
-            <line x1="238" y1="142" x2="250" y2="142" />
-          </g>
-        </svg>
+        <ReservedSketch inked={Boolean(donated)} />
       </div>
       <div className="placard reserved-placard" data-surface="plaster">
         <h3 id="reserved-title" className="placard-cat">
-          CAT. {reservedExhibit.number} - {reservedExhibit.title.toUpperCase()}
+          {catalogLine}
         </h3>
-        <p className="reserved-text">{reservedExhibit.placard}</p>
+        {donated || hasDraftBody ? (
+          <>
+            {shown.dish.trim() ? (
+              <p className="reserved-dish">{shown.dish}</p>
+            ) : null}
+            {shown.memory.trim() ? (
+              <p className="reserved-text">{shown.memory}</p>
+            ) : null}
+            {donated ? (
+              <p className="reserved-donor">Donated by {donated.donorName}.</p>
+            ) : shown.donorName.trim() ? (
+              <p className="reserved-donor">Donated by {shown.donorName}.</p>
+            ) : null}
+          </>
+        ) : (
+          <p className="reserved-text">{reservedExhibit.placard}</p>
+        )}
       </div>
     </article>
   );

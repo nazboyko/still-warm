@@ -13,6 +13,29 @@ test("unfold becomes a crossfade under reduced motion", async ({ page }) => {
   expect(["none", "matrix(1, 0, 0, 1, 0, 0)"]).toContain(transform);
 });
 
+test("the ink transformation is instant under reduced motion", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await page.getByRole("textbox", { name: "Dish", exact: true }).fill("Kasha");
+  await page.getByRole("textbox", { name: "Feeling" }).fill("Monday");
+  await page.getByRole("textbox", { name: "Memory" }).fill("A quiet bowl.");
+  await page.getByRole("button", { name: "Donate the exhibit" }).click();
+
+  const inkedBody = page.locator(".inked-body");
+  await expect(page.locator(".reserved-frame svg")).toHaveAttribute(
+    "data-inked",
+    "true",
+  );
+  const styles = await inkedBody.evaluate((element) => {
+    const computed = getComputedStyle(element);
+    return { opacity: computed.opacity, duration: computed.transitionDuration };
+  });
+  expect(styles.opacity).toBe("1");
+  expect(styles.duration).toBe("0s");
+});
+
 test("reduced motion loses no content", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Read the label" }).first().click();

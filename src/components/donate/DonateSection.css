@@ -13,3 +13,45 @@
   margin-inline: auto;
   max-width: 40ch;
 }
+
+.donate-grid {
+  display: grid;
+  gap: var(--space-12);
+  justify-items: center;
+}
+
+@media (min-width: 64rem) {
+  .donate-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    justify-items: start;
+  }
+
+  .donate-grid .reserved {
+    justify-self: end;
+  }
+}
+
+.donate-desk {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: start;
+  width: min(100%, 26rem);
+}
+
+.donate-status {
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: 0.04em;
+}
+
+.donate-status:not(:empty) {
+  padding-left: var(--space-3);
+  border-left: 3px solid var(--brass);
+}
+
+.donate-after {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: start;
+}

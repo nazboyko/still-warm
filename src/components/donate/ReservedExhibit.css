@@ -18,8 +18,82 @@
 
 .reserved-placard {
   width: min(100%, 26rem);
+  /* Visitor-typed text: an unbroken word must break, never widen the museum. */
+  overflow-wrap: anywhere;
 }
 
 .reserved-text {
   margin-top: var(--space-2);
+}
+
+.reserved-dish {
+  margin-top: var(--space-2);
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 1.05rem + 0.75vw, 1.6rem);
+  line-height: var(--leading-display);
+}
+
+.reserved-donor {
+  margin-top: var(--space-2);
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: 0.04em;
+  color: var(--beet);
+}
+
+/* Ink surfacing: glow, then body, then rim - the second act of the signature. */
+.sketch-dotted {
+  transition: opacity var(--dur-quiet) var(--ease-soft);
+}
+
+.sketch-inked > * {
+  opacity: 0;
+  transition: opacity 280ms var(--ease-soft);
+}
+
+[data-inked="true"] .sketch-dotted {
+  opacity: 0;
+}
+
+[data-inked="true"] .sketch-inked > * {
+  opacity: 1;
+}
+
+[data-inked="true"] .inked-body {
+  transition-delay: 120ms;
+}
+
+[data-inked="true"] .inked-rim {
+  transition-delay: 240ms;
+}
+
+.reserved-frame {
+  position: relative;
+  isolation: isolate;
+}
+
+.reserved-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse at 50% 65%,
+    rgb(232 169 78 / 0.22),
+    transparent 72%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-quiet) var(--ease-soft);
+}
+
+[data-donated="true"] .reserved-frame::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sketch-dotted,
+  .sketch-inked > *,
+  .reserved-frame::after {
+    transition: none;
+  }
 }
