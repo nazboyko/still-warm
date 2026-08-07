@@ -1,5 +1,5 @@
 import { domAnimation, LazyMotion } from "motion/react";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { ExhibitId } from "../../content/exhibits.ts";
 import { exhibits } from "../../content/exhibits.ts";
 import { Container } from "../layout/Container.tsx";
@@ -8,7 +8,11 @@ import "./Exhibition.css";
 import { RampExhibit } from "./RampExhibit.tsx";
 import { Room } from "./Room.tsx";
 
-export function Exhibition() {
+export function Exhibition({
+  registerWalk,
+}: {
+  registerWalk?: (walk: (id: ExhibitId) => void) => void;
+}) {
   const [openRoomId, setOpenRoomId] = useState<ExhibitId | null>(null);
   const scrollCompensation = useRef(0);
   const pendingWalk = useRef<ExhibitId | null>(null);
@@ -33,10 +37,34 @@ export function Exhibition() {
     setOpenRoomId(next);
   }
 
+  function landOnRoom(id: ExhibitId) {
+    const placard = document.querySelector(`#${id} .placard`);
+    const trigger =
+      placard?.querySelector<HTMLButtonElement>(".placard-toggle");
+    const instantScroll = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    placard?.scrollIntoView({
+      behavior: instantScroll ? "auto" : "smooth",
+      block: "start",
+    });
+    trigger?.focus({ preventScroll: true });
+  }
+
   function walkToRoom(id: ExhibitId) {
+    // Walking to the already-open room (the guide allows it) still lands there.
+    if (id === openRoomId) {
+      landOnRoom(id);
+      return;
+    }
     pendingWalk.current = id;
     setOpenRoomId(id);
   }
+
+  // The guide in the hero walks through the same mechanic.
+  useEffect(() => {
+    registerWalk?.(walkToRoom);
+  });
 
   // Keep the clicked room visually still when a taller room collapses above it;
   // after a walk, land the opened label comfortably in view and focus its trigger.
@@ -46,19 +74,7 @@ export function Exhibition() {
       scrollCompensation.current = 0;
     }
     if (pendingWalk.current) {
-      const placard = document.querySelector(
-        `#${pendingWalk.current} .placard`,
-      );
-      const trigger =
-        placard?.querySelector<HTMLButtonElement>(".placard-toggle");
-      const instantScroll = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-      placard?.scrollIntoView({
-        behavior: instantScroll ? "auto" : "smooth",
-        block: "start",
-      });
-      trigger?.focus({ preventScroll: true });
+      landOnRoom(pendingWalk.current);
       pendingWalk.current = null;
     }
   }, [openRoomId]);
