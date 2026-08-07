@@ -7,6 +7,13 @@
   --brass: #9c8154;
   --steam: rgb(239 230 216 / 0.1);
 
+  /* Food vocabulary - the only saturated color on the page. The law: food may
+     use saturation, UI may not; saturated color is semantically edible. */
+  --gold-light: #f2d9a8;
+  --toast: #c08238;
+  --toast-deep: #8a6230;
+  --syrup: #7a4a26;
+
   --font-display: "Young Serif", "Young Serif Fallback", georgia, serif;
   --font-body:
     "Familjen Grotesk", "Familjen Grotesk Fallback", system-ui, sans-serif;
@@ -41,12 +48,13 @@
   --room-homesickness: #181417;
   --room-rainy: #131519;
   --room-celebration: #201810;
-  --room-sunday: #231d14;
+  --room-sunday: #332a1d;
 
   --focus-ring: var(--tungsten);
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
 
+  --header-compact: 4.5rem;
   --touch-target: 44px;
   --radius-placard: 2px;
 }

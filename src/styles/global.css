@@ -4,6 +4,18 @@
   box-sizing: border-box;
 }
 
+/* Nothing the page scrolls to should land under the header: on wide screens
+   that means clearing the sticky bar, on phones just a little breathing room. */
+html {
+  scroll-padding-top: var(--space-4);
+}
+
+@media (min-width: 40rem) {
+  html {
+    scroll-padding-top: calc(var(--header-compact) + var(--space-4));
+  }
+}
+
 body {
   margin: 0;
   background: var(--ink);

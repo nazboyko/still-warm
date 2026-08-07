@@ -34,7 +34,7 @@ test("the sketch is decorative and dotted, not an image that failed", () => {
   const { container } = render(<DonateSection />);
   const sketch = container.querySelector(".reserved-frame svg");
   expect(sketch).toHaveAttribute("aria-hidden", "true");
-  expect(sketch).toHaveAttribute("data-inked", "false");
+  expect(sketch).toHaveAttribute("data-revealed", "false");
 });
 
 test("typing renders the visitor's placard live", () => {
@@ -59,10 +59,10 @@ test("donation inks the frame and announces the exhibit", () => {
   fireEvent.submit(screen.getByRole("form"));
 
   const placard = screen.getByRole("article");
-  expect(placard).toHaveAccessibleName(/CAT\. VISITOR-\d{3} - QUIET EVENINGS/);
-  expect(placard).toHaveTextContent("Donated by a visitor.");
+  expect(placard).toHaveAccessibleName(/CAT\. V-\d{4} - QUIET EVENINGS/);
+  expect(placard).toHaveTextContent("Gift of a visitor.");
   expect(container.querySelector(".reserved-frame svg")).toHaveAttribute(
-    "data-inked",
+    "data-revealed",
     "true",
   );
   expect(screen.getByText("Your exhibit is now on display.")).toHaveAttribute(

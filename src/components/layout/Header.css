@@ -20,6 +20,43 @@
 .site-header {
   padding-block: var(--space-4);
   border-bottom: 1px solid var(--brass);
+  background: var(--ink);
+  transition: padding-block var(--dur-quiet) var(--ease-soft);
+}
+
+/* Sticky only where it is cheap: the phone header stacks to two rows and would
+   hold 137px of a 659px screen, so there it scrolls away like any other. */
+@media (min-width: 40rem) {
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+}
+
+/* Walking away from the top: the header gives its room back to the museum,
+   but never gives up a control. */
+.site-header[data-compact="true"] {
+  padding-block: var(--space-2);
+}
+
+.site-header[data-compact="true"] .lockup-sub {
+  opacity: 0;
+  max-height: 0;
+}
+
+.lockup-sub {
+  max-height: 2rem;
+  transition:
+    opacity var(--dur-quiet) var(--ease-soft),
+    max-height var(--dur-quiet) var(--ease-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .lockup-sub {
+    transition: none;
+  }
 }
 
 .site-header-bar {

@@ -1,6 +1,8 @@
 .placard {
   max-width: 34rem;
   /* The walk lands the label top in view with breathing room. */
+  /* The walk lands the label top in view with breathing room; the header
+     clearance itself comes from html scroll-padding-top. */
   scroll-margin-top: var(--space-6);
   padding: var(--space-6) var(--space-6) var(--space-4);
   background: var(--plaster);

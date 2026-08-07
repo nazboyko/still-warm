@@ -41,30 +41,70 @@
   color: var(--beet);
 }
 
-/* Ink surfacing: glow, then body, then rim - the second act of the signature. */
-.sketch-dotted {
+/* The uncover: the drawing inks into a real cloche, the cloche lifts away,
+   and the visitor's exhibit surfaces underneath, layer by layer. */
+.scene-sketch {
   transition: opacity var(--dur-quiet) var(--ease-soft);
 }
 
-.sketch-inked > * {
-  opacity: 0;
-  transition: opacity 280ms var(--ease-soft);
-}
-
-[data-inked="true"] .sketch-dotted {
+[data-revealed="true"] .scene-sketch {
   opacity: 0;
 }
 
-[data-inked="true"] .sketch-inked > * {
-  opacity: 1;
+[data-revealed="true"] .scene-cloche {
+  animation: cloche-lift 520ms var(--ease-soft) forwards;
 }
 
-[data-inked="true"] .inked-body {
-  transition-delay: 120ms;
+@keyframes cloche-lift {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  42% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
 }
 
-[data-inked="true"] .inked-rim {
-  transition-delay: 240ms;
+[data-revealed="true"] .scene-dish > * {
+  opacity: 0;
+  animation: exhibit-surface 280ms var(--ease-soft) forwards;
+}
+
+[data-revealed="true"] .dish-glow {
+  animation-delay: 200ms;
+}
+
+[data-revealed="true"] .dish-plate {
+  animation-delay: 250ms;
+}
+
+[data-revealed="true"] .dish-food {
+  animation-delay: 310ms;
+}
+
+[data-revealed="true"] .dish-steam {
+  animation-delay: 400ms;
+}
+
+@keyframes exhibit-surface {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .reserved-frame {
@@ -91,9 +131,18 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sketch-dotted,
-  .sketch-inked > *,
+  .scene-sketch,
   .reserved-frame::after {
     transition: none;
+  }
+
+  [data-revealed="true"] .scene-cloche {
+    animation: none;
+    opacity: 0;
+  }
+
+  [data-revealed="true"] .scene-dish > * {
+    animation: none;
+    opacity: 1;
   }
 }

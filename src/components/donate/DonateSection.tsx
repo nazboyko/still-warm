@@ -21,7 +21,11 @@ const emptyDraft: ExhibitSubmission = {
   donorName: "",
 };
 
-export function DonateSection() {
+export function DonateSection({
+  onDonatedChange,
+}: {
+  onDonatedChange?: (donated: boolean) => void;
+}) {
   const [draft, setDraft] = useState(emptyDraft);
   const [donated, setDonated] = useState<DonatedExhibit | null>(null);
   const afterRef = useRef<HTMLDivElement>(null);
@@ -32,11 +36,13 @@ export function DonateSection() {
 
   function donate() {
     setDonated(makeDonatedExhibit(draft, Math.random, new Date()));
+    onDonatedChange?.(true);
   }
 
   function resetDesk() {
     setDraft(emptyDraft);
     setDonated(null);
+    onDonatedChange?.(false);
   }
 
   // Both swaps unmount the focused control; keep keyboard visitors oriented.

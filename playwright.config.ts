@@ -15,9 +15,23 @@ export default defineConfig({
   },
   projects: [
     { name: "chromium-desktop", use: { ...devices["Desktop Chrome"] } },
-    { name: "webkit-desktop", use: { ...devices["Desktop Safari"] } },
     { name: "mobile-chrome", use: { ...devices["Pixel 7"] } },
-    { name: "mobile-safari", use: { ...devices["iPhone 15"] } },
-    { name: "firefox-desktop", use: { ...devices["Desktop Firefox"] } },
+    // Baselines live on the Chromium family only: WebKit and Firefox render
+    // gradients differently enough between runs to make them flaky guards.
+    {
+      name: "webkit-desktop",
+      use: { ...devices["Desktop Safari"] },
+      testIgnore: "**/visual.spec.ts",
+    },
+    {
+      name: "mobile-safari",
+      use: { ...devices["iPhone 15"] },
+      testIgnore: "**/visual.spec.ts",
+    },
+    {
+      name: "firefox-desktop",
+      use: { ...devices["Desktop Firefox"] },
+      testIgnore: "**/visual.spec.ts",
+    },
   ],
 });

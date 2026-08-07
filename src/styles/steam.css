@@ -1,0 +1,55 @@
+/* The museum's one atmosphere loop, shared by the hero case and every room:
+   pre-blurred gradient strokes, so no filters; paused off-screen; the boosted
+   static wisp is the reduced-motion twin. */
+.steam-wisp {
+  transform-box: fill-box;
+  animation: steam-rise 7.2s linear infinite;
+}
+
+.steam-wisp:nth-of-type(2) {
+  animation-delay: 2.4s;
+}
+
+.steam-wisp:nth-of-type(3) {
+  animation-delay: 4.8s;
+}
+
+[data-steam="paused"] .steam-wisp {
+  animation-play-state: paused;
+}
+
+@keyframes steam-rise {
+  0% {
+    transform: translateY(6px);
+    opacity: 0;
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0.25;
+  }
+
+  100% {
+    transform: translateY(-22px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .steam-static {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .steam-wisp {
+    display: none;
+  }
+
+  .steam-static {
+    stroke-opacity: 0.45;
+  }
+}

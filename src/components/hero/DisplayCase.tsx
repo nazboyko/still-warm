@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import { useInView } from "../../hooks/useInView.ts";
+import "../../styles/steam.css";
 import "./DisplayCase.css";
+import { HeroVarenyky } from "./HeroVarenyky.tsx";
 
 export function DisplayCase() {
   const scene = useRef<HTMLDivElement>(null);
@@ -15,7 +17,7 @@ export function DisplayCase() {
         <svg
           viewBox="0 0 260 320"
           role="img"
-          aria-label="A dish in silhouette inside a lit museum display case"
+          aria-label="Golden varenyky under glass in a lit museum display case"
         >
           <defs>
             <linearGradient id="case-wall" x1="0" y1="0" x2="0" y2="1">
@@ -27,6 +29,11 @@ export function DisplayCase() {
               <stop offset="55%" stopColor="#e8a94e" stopOpacity="0.18" />
               <stop offset="100%" stopColor="#e8a94e" stopOpacity="0" />
             </radialGradient>
+            <linearGradient id="case-cone" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#e8a94e" stopOpacity="0.11" />
+              <stop offset="70%" stopColor="#e8a94e" stopOpacity="0.05" />
+              <stop offset="100%" stopColor="#e8a94e" stopOpacity="0.01" />
+            </linearGradient>
             <linearGradient id="steam-soft" x1="0" y1="1" x2="0" y2="0">
               <stop offset="0%" stopColor="#efe6d8" stopOpacity="0" />
               <stop offset="45%" stopColor="#efe6d8" stopOpacity="0.5" />
@@ -49,7 +56,10 @@ export function DisplayCase() {
             strokeWidth="1.5"
           />
           <g className="case-light">
-            <path d="M130 12 L74 218 H186 Z" fill="#e8a94e" opacity="0.06" />
+            <path
+              d="M130 12 C110 90 88 160 74 218 H186 C172 160 150 90 130 12 Z"
+              fill="url(#case-cone)"
+            />
             <ellipse
               cx="130"
               cy="212"
@@ -72,32 +82,23 @@ export function DisplayCase() {
             strokeWidth="1"
           />
 
-          <g fill="#0f0c0a">
-            <path d="M72 224 A26 26 0 0 1 124 224 Q98 232 72 224 Z" />
-            <path d="M106 222 A30 30 0 0 1 166 222 Q136 231 106 222 Z" />
-            <path d="M152 225 A22 22 0 0 1 196 225 Q174 232 152 225 Z" />
-          </g>
-          <g
-            fill="none"
-            stroke="#e8a94e"
-            strokeOpacity="0.45"
-            strokeWidth="1.5"
-          >
-            <path d="M72 224 A26 26 0 0 1 124 224" />
-            <path d="M106 222 A30 30 0 0 1 166 222" />
-            <path d="M152 225 A22 22 0 0 1 196 225" />
-          </g>
+          <HeroVarenyky />
 
           <path
             className="steam-static"
-            d="M132 188c-7-6-2-11 0-15 2.3-4.3 2.7-8.6-1.3-13"
+            d="M132 176c-7-6-2-11 0-15 2.3-4.3 2.7-8.6-1.3-13"
             fill="none"
             stroke="#efe6d8"
             strokeOpacity="0.3"
             strokeWidth="2"
             strokeLinecap="round"
           />
-          <g fill="none" stroke="url(#steam-soft)" strokeLinecap="round">
+          <g
+            fill="none"
+            stroke="url(#steam-soft)"
+            strokeLinecap="round"
+            transform="translate(0 -14)"
+          >
             <path
               className="steam-wisp"
               d="M120 192c-6-7-1-12 1-16 2-4 2.4-8-1-13"

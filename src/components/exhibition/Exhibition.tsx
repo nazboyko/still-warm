@@ -2,6 +2,7 @@ import { domAnimation, LazyMotion } from "motion/react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { ExhibitId } from "../../content/exhibits.ts";
 import { exhibits } from "../../content/exhibits.ts";
+import { usePrintExpanded } from "../../hooks/usePrintExpanded.ts";
 import { Container } from "../layout/Container.tsx";
 import { SectionHeading } from "../layout/SectionHeading.tsx";
 import "./Exhibition.css";
@@ -14,6 +15,7 @@ export function Exhibition({
   registerWalk?: (walk: (id: ExhibitId) => void) => void;
 }) {
   const [openRoomId, setOpenRoomId] = useState<ExhibitId | null>(null);
+  const printing = usePrintExpanded();
   const scrollCompensation = useRef(0);
   const pendingWalk = useRef<ExhibitId | null>(null);
 
@@ -39,15 +41,29 @@ export function Exhibition({
 
   function landOnRoom(id: ExhibitId) {
     const placard = document.querySelector(`#${id} .placard`);
-    const trigger =
-      placard?.querySelector<HTMLButtonElement>(".placard-toggle");
-    const instantScroll = window.matchMedia(
+    if (!placard) return;
+    const trigger = placard.querySelector<HTMLButtonElement>(".placard-toggle");
+    const instant = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    placard?.scrollIntoView({
-      behavior: instantScroll ? "auto" : "smooth",
-      block: "start",
-    });
+    const clearance =
+      parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) ||
+      0;
+
+    // Engines disagree about smooth scrollIntoView and late fonts can move the
+    // label after the scroll starts, so keep nudging until it is really there.
+    let tries = 0;
+    const settle = () => {
+      const drift = placard.getBoundingClientRect().top - clearance;
+      if (Math.abs(drift) <= 4 || tries >= 4) return;
+      tries += 1;
+      window.scrollBy({
+        top: drift,
+        behavior: tries === 1 && !instant ? "smooth" : "auto",
+      });
+      window.setTimeout(settle, instant ? 0 : 240);
+    };
+    settle();
     trigger?.focus({ preventScroll: true });
   }
 
@@ -99,7 +115,7 @@ export function Exhibition({
             key={exhibit.id}
             exhibit={exhibit}
             flip={index % 2 === 1}
-            isOpen={openRoomId === exhibit.id}
+            isOpen={printing || openRoomId === exhibit.id}
             prev={exhibits[index - 1]}
             next={exhibits[index + 1]}
             onToggle={() => toggleRoom(exhibit.id)}

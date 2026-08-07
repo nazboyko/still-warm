@@ -73,7 +73,7 @@ export function layoutPostcard(
   exhibit: DonatedExhibit,
   measure: MeasureText,
 ): PostcardLayout {
-  const catalogLine = `CAT. VISITOR-${exhibit.number} - ${exhibit.feeling.toUpperCase()}`;
+  const catalogLine = `CAT. ${exhibit.number} - ${exhibit.feeling.toUpperCase()}`;
   const dishSize = fitFontSize(
     exhibit.dish,
     postcardFonts.display,
@@ -85,7 +85,7 @@ export function layoutPostcard(
   const memoryLines = wrapText(exhibit.memory, TEXT_WIDTH, (line) =>
     measure(line, postcardFonts.body, 34),
   );
-  const provenanceLine = `Donated by ${exhibit.donorName}. ${postcardCard.collectedPrefix} ${exhibit.collectedOn}.`;
+  const provenanceLine = `Gift of ${exhibit.donorName}. ${postcardCard.collectedPrefix} ${exhibit.collectedOn}.`;
   const lockupLine = `${postcardCard.lockupName} - ${postcardCard.lockupSub} - ${postcardCard.url}`;
 
   const lines: PostcardLine[] = [

@@ -4,6 +4,12 @@ import "./styles/fonts.css";
 import "./styles/tokens.css";
 import "./styles/global.css";
 import App from "./App.tsx";
+import { openStaffEntrance } from "./utils/staffEntrance.ts";
+// Last, so the booklet rules outrank every component sheet.
+import "./styles/print.css";
+
+// The museum's one sanctioned console line; its text lives in content/.
+openStaffEntrance((...args: string[]) => console.log(...args));
 
 const root = createRoot(document.getElementById("root")!);
 const show = (page: ReactNode) => root.render(<StrictMode>{page}</StrictMode>);

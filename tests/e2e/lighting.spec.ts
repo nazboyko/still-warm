@@ -4,7 +4,7 @@ const grounds: Record<string, string> = {
   "cat-001": "rgb(24, 20, 23)",
   "cat-002": "rgb(19, 21, 25)",
   "cat-003": "rgb(32, 24, 16)",
-  "cat-004": "rgb(35, 29, 20)",
+  "cat-004": "rgb(51, 42, 29)",
 };
 
 test("every room is fully lit before its label reaches the thumb zone", async ({

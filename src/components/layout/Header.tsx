@@ -1,9 +1,14 @@
+import { useScrolled } from "../../hooks/useScrolled.ts";
 import { Container } from "./Container.tsx";
 import "./Header.css";
 
 export function Header() {
+  const scrolled = useScrolled();
   return (
-    <header className="site-header">
+    <header
+      className="site-header"
+      data-compact={scrolled ? "true" : undefined}
+    >
       <a className="skip-link" href="#main">
         Skip to content
       </a>

@@ -3,8 +3,9 @@ import type {
   ExhibitSubmission,
 } from "../../content/donate.ts";
 import { reservedExhibit } from "../../content/exhibits.ts";
+import { generateSculpture } from "./exhibitSculpture.ts";
 import "./ReservedExhibit.css";
-import { ReservedSketch } from "./ReservedSketch.tsx";
+import { ReservedScene } from "./ReservedScene.tsx";
 
 interface ReservedExhibitProps {
   draft: ExhibitSubmission;
@@ -14,7 +15,7 @@ interface ReservedExhibitProps {
 export function ReservedExhibit({ draft, donated }: ReservedExhibitProps) {
   const shown = donated ?? draft;
   const catalogLine = donated
-    ? `CAT. VISITOR-${donated.number} - ${donated.feeling.toUpperCase()}`
+    ? `CAT. ${donated.number} - ${donated.feeling.toUpperCase()}`
     : shown.feeling.trim()
       ? `CAT. ${reservedExhibit.number} - ${shown.feeling.toUpperCase()}`
       : `CAT. ${reservedExhibit.number} - ${reservedExhibit.title.toUpperCase()}`;
@@ -29,7 +30,10 @@ export function ReservedExhibit({ draft, donated }: ReservedExhibitProps) {
       aria-labelledby="reserved-title"
     >
       <div className="reserved-frame">
-        <ReservedSketch inked={Boolean(donated)} />
+        <ReservedScene
+          revealed={Boolean(donated)}
+          spec={donated ? generateSculpture(donated) : null}
+        />
       </div>
       <div className="placard reserved-placard" data-surface="plaster">
         <h3 id="reserved-title" className="placard-cat">
@@ -44,9 +48,9 @@ export function ReservedExhibit({ draft, donated }: ReservedExhibitProps) {
               <p className="reserved-text">{shown.memory}</p>
             ) : null}
             {donated ? (
-              <p className="reserved-donor">Donated by {donated.donorName}.</p>
+              <p className="reserved-donor">Gift of {donated.donorName}.</p>
             ) : shown.donorName.trim() ? (
-              <p className="reserved-donor">Donated by {shown.donorName}.</p>
+              <p className="reserved-donor">Gift of {shown.donorName}.</p>
             ) : null}
           </>
         ) : (
