@@ -135,54 +135,40 @@ export function GrilledCheeseArt({ lit }: { lit: boolean }) {
       />
       <ellipse cx="152" cy="185" rx="76" ry="10" fill="url(#gc-dish-shadow)" />
 
-      {/* the lifted half: smaller with distance, tipped by the pull */}
-      <g transform="translate(184 96) rotate(-14) scale(0.82)">
-        <Half />
-      </g>
-
-      {/* the weight of the near half pressing into the plate */}
+      {/* the weight of both halves pressing into the plate */}
       <ellipse
-        cx="150"
-        cy="189"
-        rx="66"
-        ry="5.5"
+        cx="160"
+        cy="188"
+        rx="84"
+        ry="6.5"
         fill="#0f0c0a"
         opacity="0.5"
       />
-      <ellipse cx="150" cy="189.5" rx="50" ry="2.6" fill="#000" opacity="0.8" />
+      <ellipse cx="106" cy="189" rx="42" ry="2.8" fill="#000" opacity="0.8" />
+      <ellipse cx="214" cy="187" rx="42" ry="2.8" fill="#000" opacity="0.8" />
 
-      {/* the near half: the hero, in the spot */}
-      <g transform="translate(150 166) rotate(-4)">
+      {/* both halves standing, leaning together, cut faces to the visitor */}
+      <g transform="translate(112 168) rotate(-10) scale(0.88)">
+        <Half />
+      </g>
+      <g transform="translate(206 158) rotate(10) scale(0.88)">
         <Half />
       </g>
 
-      {/* cheese stretched taut between the two cut faces */}
+      {/* the last strand still bridging the two cut faces */}
       <g fill="url(#gc-cheese)">
-        <path d="M 121 166 C 122 152 128 140 133 128 C 138 116 148 108 154 103 L 158 105 C 152 110 143 118 138 129 C 133 141 128 152 127 166 Z" />
-        <path d="M 142 169 C 140 155 143 142 148 130 C 152 118 159 109 161 102 L 166 103 C 163 110 157 119 153 131 C 148 143 146 155 148 169 Z" />
-        <path d="M 165 167 C 167 153 170 139 170.5 125 C 171 114 170 108 170 102 L 174 102 C 174 108 175 114 174.5 125 C 174 139 171 153 169 167 Z" />
-        <path d="M 186 164 C 189 152 193 141 191 130 C 189 119 183 110 179 104 L 183 102 C 187 109 194 118 196 130 C 198 142 193 152 190 164 Z" />
-        <path d="M 204 158 C 203 164 206 168 205 173 L 208 173 C 209 168 206 164 207 158 Z" />
-        <ellipse cx="206.5" cy="178" rx="2.8" ry="3.6" />
+        <path d="M 152 160 C 156 170 164 174 170 168 L 172 172 C 164 180 154 175 149 162 Z" />
+        <path d="M 158 176 C 157 181 160 184 159 188 L 163 188 C 164 184 161 181 162 176 Z" />
       </g>
+      <ellipse cx="161" cy="189" rx="9" ry="3" fill="url(#gc-cheese)" />
 
       <path
-        d="M 234 74c-6-7-1-12 1-16 2-4 2.4-8-1-13"
+        d="M 172 128c-6-7-1-12 1-16 2-4 2.4-8-1-13"
         fill="none"
         stroke="#efe6d8"
         strokeOpacity="0.2"
         strokeWidth="2"
         strokeLinecap="round"
-      />
-
-      {/* plate contact and a few crumbs */}
-      <ellipse
-        cx="150"
-        cy="187"
-        rx="58"
-        ry="3.4"
-        fill="#0f0c0a"
-        opacity="0.5"
       />
       <g style={{ fill: "var(--toast)" }} fillOpacity="0.75">
         <ellipse
