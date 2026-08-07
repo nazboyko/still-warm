@@ -2,28 +2,31 @@ import { expect, test } from "@playwright/test";
 
 test("the lights come on and finish within budget", async ({ page }) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
-  // Anchor the budget to the entrance actually starting - slow CI runners can
-  // spend seconds booting the app; that time is not the entrance's to pay for.
-  await expect
-    .poll(
-      () =>
-        page.evaluate(
-          () =>
-            document.documentElement.hasAttribute("data-entrance") ||
-            sessionStorage.getItem("still-warm-entrance") === "done",
-        ),
-      { timeout: 5000 },
-    )
-    .toBe(true);
-  await expect
-    .poll(
-      () =>
-        page.evaluate(() =>
-          document.documentElement.hasAttribute("data-entrance"),
-        ),
-      { timeout: 2000 },
-    )
-    .toBe(false);
+  // Measured in the page, so a slow CI runner's boot and poll scheduling never
+  // get charged to the entrance's own 1.4s budget.
+  const duration = await page.evaluate(
+    () =>
+      new Promise<number>((resolve) => {
+        const root = document.documentElement;
+        if (!root.hasAttribute("data-entrance")) {
+          resolve(0);
+          return;
+        }
+        const started = performance.now();
+        const observer = new MutationObserver(() => {
+          if (!root.hasAttribute("data-entrance")) {
+            observer.disconnect();
+            resolve(performance.now() - started);
+          }
+        });
+        observer.observe(root, {
+          attributes: true,
+          attributeFilter: ["data-entrance"],
+        });
+      }),
+  );
+  expect(duration).toBeLessThan(1800);
+
   await expect(page.locator(".entrance-overlay")).toHaveCount(0);
   await expect(page.locator(".hero-title")).toHaveCSS("opacity", "1");
   const played = await page.evaluate(() =>

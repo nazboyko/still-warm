@@ -1,8 +1,9 @@
 .placard {
   max-width: 34rem;
   /* The walk lands the label top in view with breathing room. */
-  /* Clears the sticky header so a walked-to label never lands underneath it. */
-  scroll-margin-top: calc(var(--space-6) + var(--header-compact));
+  /* The walk lands the label top in view with breathing room; the header
+     clearance itself comes from html scroll-padding-top. */
+  scroll-margin-top: var(--space-6);
   padding: var(--space-6) var(--space-6) var(--space-4);
   background: var(--plaster);
   color: var(--ink);
