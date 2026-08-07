@@ -1,19 +1,32 @@
 import type { ExhibitSubmission } from "../../content/donate.ts";
 
-export interface SculptureMound {
+export type FoodKind = "dumpling" | "disc" | "bun" | "stack" | "bowl" | "wedge";
+export type GarnishKind = "berries" | "sprig" | "drizzle" | "seeds";
+export type AccentTone = "beet" | "toast-deep" | "syrup";
+
+export interface PlacedFood {
   x: number;
-  ry: number;
-  rx: number;
+  y: number;
+  scale: number;
+  rotate: number;
 }
 
 export interface SculptureSpec {
-  mounds: SculptureMound[];
-  garnish: { x: number; y: number; r: number }[];
+  kind: FoodKind;
+  pieces: PlacedFood[];
+  garnish: GarnishKind;
+  garnishSpots: { x: number; y: number; r: number }[];
   steam: number;
-  accent: "beet" | "toast-deep" | "syrup";
+  accent: AccentTone;
 }
 
-const accents = ["beet", "toast-deep", "syrup"] as const;
+const kinds: FoodKind[] = ["dumpling", "disc", "bun", "stack", "bowl", "wedge"];
+const garnishes: GarnishKind[] = ["berries", "sprig", "drizzle", "seeds"];
+const accents: AccentTone[] = ["beet", "toast-deep", "syrup"];
+
+/* Plated as one dish would be: a bowl or a stack stands alone, small things
+   come in a few. */
+const singles: FoodKind[] = ["bowl", "stack"];
 
 /* FNV-1a: small, stable, and enough to spread short strings. */
 function hash(text: string): number {
@@ -35,7 +48,7 @@ function seeded(seed: number): () => number {
   };
 }
 
-/* The same memory always builds the same exhibit; no two build the same one. */
+/* The same memory always plates the same exhibit; no two plate the same one. */
 export function generateSculpture(
   submission: ExhibitSubmission,
 ): SculptureSpec {
@@ -49,24 +62,33 @@ export function generateSculpture(
     .join("|");
   const random = seeded(hash(source));
 
-  const moundCount = 2 + Math.floor(random() * 3);
-  const spread = 108 / (moundCount + 1);
-  const mounds = Array.from({ length: moundCount }, (_, index) => ({
-    x: 86 + spread * (index + 1) + (random() * 12 - 6),
-    rx: 26 + random() * 20,
-    ry: 18 + random() * 14,
+  const kind = kinds[Math.floor(random() * kinds.length)]!;
+  const count = singles.includes(kind) ? 1 : 1 + Math.floor(random() * 3);
+  const spread = count === 3 ? 96 : count === 2 ? 62 : 0;
+  const size = count === 3 ? 0.84 : count === 2 ? 0.98 : 1.12;
+  const tilt = kind === "dumpling" || kind === "bun" ? 16 : 9;
+  const pieces = Array.from({ length: count }, (_, index) => ({
+    x: 140 - spread / 2 + (count === 1 ? 0 : spread * (index / (count - 1))),
+    y: random() * 3,
+    scale: size + random() * 0.18,
+    rotate: random() * tilt - tilt / 2,
   }));
 
-  const garnishCount = Math.floor(random() * 4);
-  const garnish = Array.from({ length: garnishCount }, () => ({
-    x: 96 + random() * 88,
-    y: 112 + random() * 14,
-    r: 3 + random() * 3,
-  }));
+  const garnish = garnishes[Math.floor(random() * garnishes.length)]!;
+  const garnishSpots = Array.from(
+    { length: 2 + Math.floor(random() * 3) },
+    () => ({
+      x: 110 + random() * 60,
+      y: 110 + random() * 16,
+      r: 3 + random() * 2.5,
+    }),
+  );
 
   return {
-    mounds,
+    kind,
+    pieces,
     garnish,
+    garnishSpots,
     steam: 2 + Math.floor(random() * 2),
     accent: accents[Math.floor(random() * accents.length)]!,
   };

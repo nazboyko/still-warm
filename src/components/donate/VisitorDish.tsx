@@ -1,60 +1,77 @@
 import type { SculptureSpec } from "./exhibitSculpture.ts";
+import { FoodPiece } from "./foodPrimitives.tsx";
 
 const BASE = 138;
 
-/* The visitor's exhibit, built from their own words - the brightest dish here. */
+function Garnish({ spec }: { spec: SculptureSpec }) {
+  const tone = `var(--${spec.accent})`;
+  if (spec.garnish === "drizzle") {
+    return (
+      <g
+        fill="none"
+        style={{ stroke: tone }}
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      >
+        <path d="M 96 122 Q 122 112 146 122 Q 168 132 188 120" />
+        <path
+          d="M 104 128 Q 128 120 150 128"
+          strokeOpacity="0.6"
+          strokeWidth="1.8"
+        />
+      </g>
+    );
+  }
+  if (spec.garnish === "sprig") {
+    return (
+      <g style={{ stroke: "var(--brass)" }} fill="none" strokeLinecap="round">
+        <path d="M 150 124 Q 158 112 172 106" strokeWidth="1.8" />
+        <path d="M 156 116 Q 160 108 154 104" strokeWidth="1.4" />
+        <path d="M 162 111 Q 168 104 176 104" strokeWidth="1.4" />
+        <path d="M 158 120 Q 166 118 172 112" strokeWidth="1.2" />
+      </g>
+    );
+  }
+  return (
+    <g>
+      {spec.garnishSpots.map((spot, index) => (
+        <g key={index}>
+          <circle
+            cx={spot.x}
+            cy={spot.y}
+            r={spec.garnish === "seeds" ? spot.r * 0.45 : spot.r}
+            style={{
+              fill: spec.garnish === "seeds" ? "var(--toast-deep)" : tone,
+            }}
+          />
+          {spec.garnish === "berries" ? (
+            <circle
+              cx={spot.x - spot.r * 0.34}
+              cy={spot.y - spot.r * 0.4}
+              r={spot.r * 0.24}
+              style={{ fill: "var(--plaster)" }}
+              fillOpacity="0.85"
+            />
+          ) : null}
+        </g>
+      ))}
+    </g>
+  );
+}
+
+/* The visitor's exhibit: plated from real parts, the brightest dish here. */
 export function VisitorDish({ spec }: { spec: SculptureSpec }) {
   return (
     <g className="dish-food">
-      {spec.mounds.map((mound, index) => (
-        <g key={index}>
-          <ellipse
-            cx={mound.x}
-            cy={BASE + 1}
-            rx={mound.rx * 0.95}
-            ry={4}
-            fill="#0f0c0a"
-            opacity="0.55"
-          />
-          <path
-            d={`M ${mound.x - mound.rx} ${BASE} A ${mound.rx} ${mound.ry} 0 0 1 ${mound.x + mound.rx} ${BASE} Q ${mound.x} ${BASE + 5} ${mound.x - mound.rx} ${BASE} Z`}
-            fill="url(#vd-food)"
-          />
-          <path
-            d={`M ${mound.x - mound.rx * 0.72} ${BASE - mound.ry * 0.5} A ${mound.rx * 0.8} ${mound.ry * 0.8} 0 0 1 ${mound.x + mound.rx * 0.1} ${BASE - mound.ry * 0.92}`}
-            fill="none"
-            style={{ stroke: "var(--plaster)" }}
-            strokeOpacity="0.7"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-          <path
-            d={`M ${mound.x - mound.rx * 0.8} ${BASE - 1} Q ${mound.x} ${BASE + 3} ${mound.x + mound.rx * 0.8} ${BASE - 1}`}
-            fill="none"
-            style={{ stroke: "var(--syrup)" }}
-            strokeOpacity="0.45"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-          />
+      {spec.pieces.map((piece, index) => (
+        <g
+          key={index}
+          transform={`translate(${piece.x} ${BASE + piece.y}) rotate(${piece.rotate}) scale(${piece.scale})`}
+        >
+          <FoodPiece kind={spec.kind} accent={spec.accent} />
         </g>
       ))}
-      {spec.garnish.map((piece, index) => (
-        <g key={index}>
-          <circle
-            cx={piece.x}
-            cy={piece.y}
-            r={piece.r}
-            style={{ fill: `var(--${spec.accent})` }}
-          />
-          <circle
-            cx={piece.x - piece.r * 0.34}
-            cy={piece.y - piece.r * 0.4}
-            r={piece.r * 0.22}
-            style={{ fill: "var(--plaster)" }}
-            fillOpacity="0.8"
-          />
-        </g>
-      ))}
+      <Garnish spec={spec} />
     </g>
   );
 }

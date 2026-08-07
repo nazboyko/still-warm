@@ -1,3 +1,4 @@
+import { VarenykDefs } from "../art/Varenyk.tsx";
 import type { SculptureSpec } from "./exhibitSculpture.ts";
 import { VisitorDish } from "./VisitorDish.tsx";
 
@@ -27,6 +28,24 @@ export function ReservedScene({ revealed, spec }: ReservedSceneProps) {
           <stop offset="0%" style={{ stopColor: "var(--brass)" }} />
           <stop offset="100%" stopColor="#241b13" />
         </linearGradient>
+        <radialGradient id="vd-scorch" cx="50%" cy="50%" r="50%">
+          <stop
+            offset="0%"
+            style={{ stopColor: "var(--toast-deep)" }}
+            stopOpacity="0.55"
+          />
+          <stop
+            offset="60%"
+            style={{ stopColor: "var(--toast-deep)" }}
+            stopOpacity="0.24"
+          />
+          <stop
+            offset="100%"
+            style={{ stopColor: "var(--toast-deep)" }}
+            stopOpacity="0"
+          />
+        </radialGradient>
+        <VarenykDefs id="vd" />
       </defs>
 
       <g className="scene-sketch">

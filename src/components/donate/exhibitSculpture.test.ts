@@ -38,24 +38,44 @@ describe("the generated exhibit", () => {
     }
   });
 
-  test("every exhibit stays inside the frame", () => {
-    for (let index = 0; index < 200; index += 1) {
+  test("every exhibit is plated from real parts, inside the frame", () => {
+    const kinds = new Set<string>();
+    for (let index = 0; index < 300; index += 1) {
       const spec = generateSculpture(submission({ memory: `memory ${index}` }));
-      expect(spec.mounds.length).toBeGreaterThanOrEqual(2);
-      expect(spec.mounds.length).toBeLessThanOrEqual(4);
+      kinds.add(spec.kind);
+      expect(["dumpling", "disc", "bun", "stack", "bowl", "wedge"]).toContain(
+        spec.kind,
+      );
+      expect(["berries", "sprig", "drizzle", "seeds"]).toContain(spec.garnish);
+      expect(["beet", "toast-deep", "syrup"]).toContain(spec.accent);
       expect(spec.steam).toBeGreaterThanOrEqual(2);
       expect(spec.steam).toBeLessThanOrEqual(3);
-      expect(spec.garnish.length).toBeLessThanOrEqual(3);
-      for (const mound of spec.mounds) {
-        expect(mound.x - mound.rx).toBeGreaterThan(44);
-        expect(mound.x + mound.rx).toBeLessThan(236);
-        expect(mound.ry).toBeGreaterThan(17);
-        expect(mound.ry).toBeLessThan(33);
+      expect(spec.pieces.length).toBeGreaterThanOrEqual(1);
+      expect(spec.pieces.length).toBeLessThanOrEqual(3);
+      for (const piece of spec.pieces) {
+        expect(piece.x).toBeGreaterThanOrEqual(92);
+        expect(piece.x).toBeLessThanOrEqual(188);
+        expect(piece.scale).toBeGreaterThanOrEqual(0.84);
+        expect(piece.scale).toBeLessThan(1.31);
+        expect(Math.abs(piece.rotate)).toBeLessThanOrEqual(8);
+        expect(piece.y).toBeGreaterThanOrEqual(0);
+        expect(piece.y).toBeLessThan(3);
       }
-      for (const piece of spec.garnish) {
-        expect(piece.x).toBeGreaterThan(90);
-        expect(piece.x).toBeLessThan(190);
-        expect(piece.r).toBeLessThan(6.5);
+      for (const spot of spec.garnishSpots) {
+        expect(spot.x).toBeGreaterThan(108);
+        expect(spot.x).toBeLessThan(172);
+        expect(spot.r).toBeLessThan(5.6);
+      }
+    }
+    expect(kinds.size).toBe(6);
+  });
+
+  test("a bowl or a stack is plated alone", () => {
+    for (let index = 0; index < 300; index += 1) {
+      const spec = generateSculpture(submission({ memory: `plate ${index}` }));
+      if (spec.kind === "bowl" || spec.kind === "stack") {
+        expect(spec.pieces).toHaveLength(1);
+        expect(spec.pieces[0]!.x).toBe(140);
       }
     }
   });
