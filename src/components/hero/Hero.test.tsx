@@ -30,7 +30,7 @@ test("display case is labeled imagery with its catalog line", () => {
   render(<Hero onGuideChoose={noop} />);
   expect(
     screen.getByRole("img", {
-      name: "A dish in silhouette inside a lit museum display case",
+      name: "Golden varenyky under glass in a lit museum display case",
     }),
   ).toBeInTheDocument();
   expect(screen.getByText("CAT. 001 - HOMESICKNESS")).toBeInTheDocument();
