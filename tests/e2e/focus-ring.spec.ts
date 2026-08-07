@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 test("keyboard focus shows the tungsten ring on the dark ground", async ({
   page,

@@ -35,8 +35,16 @@ export function DisplayCase() {
             stroke="#9c8154"
             strokeWidth="1.5"
           />
-          <path d="M130 12 L74 218 H186 Z" fill="#e8a94e" opacity="0.06" />
-          <ellipse cx="130" cy="212" rx="100" ry="74" fill="url(#case-glow)" />
+          <g className="case-light">
+            <path d="M130 12 L74 218 H186 Z" fill="#e8a94e" opacity="0.06" />
+            <ellipse
+              cx="130"
+              cy="212"
+              rx="100"
+              ry="74"
+              fill="url(#case-glow)"
+            />
+          </g>
 
           <rect x="50" y="232" width="160" height="16" fill="#0f0c0a" />
           <ellipse cx="130" cy="232" rx="76" ry="13" fill="#0f0c0a" />
