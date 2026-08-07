@@ -53,13 +53,13 @@ describe("the generated exhibit", () => {
       expect(spec.pieces.length).toBeGreaterThanOrEqual(1);
       expect(spec.pieces.length).toBeLessThanOrEqual(3);
       for (const piece of spec.pieces) {
-        expect(piece.x).toBeGreaterThanOrEqual(92);
-        expect(piece.x).toBeLessThanOrEqual(188);
-        expect(piece.scale).toBeGreaterThanOrEqual(0.84);
-        expect(piece.scale).toBeLessThan(1.31);
+        expect(piece.x).toBeGreaterThanOrEqual(93);
+        expect(piece.x).toBeLessThanOrEqual(187);
+        expect(piece.scale).toBeGreaterThanOrEqual(0.78);
+        expect(piece.scale).toBeLessThan(1.24);
         expect(Math.abs(piece.rotate)).toBeLessThanOrEqual(8);
         expect(piece.y).toBeGreaterThanOrEqual(0);
-        expect(piece.y).toBeLessThan(3);
+        expect(piece.y).toBeLessThan(5);
       }
       for (const spot of spec.garnishSpots) {
         expect(spot.x).toBeGreaterThan(108);

@@ -98,10 +98,10 @@ export function ReservedScene({ revealed, spec }: ReservedSceneProps) {
             strokeWidth="2"
             strokeLinecap="round"
           >
-            <path d="M124 104c-6-7-1-12 1-16 2-4 2.4-8-1-13" />
-            <path d="M152 100c6-7 1-12-1-16-2-4-2.2-8 1-13" />
+            <path d="M122 84c-7-8-1-14 1-19 3-5 3-9-1-15" />
+            <path d="M154 80c7-8 1-14-1-19-3-5-3-9 1-15" />
             {spec.steam > 2 ? (
-              <path d="M138 96c-5-6-1-10 1-13 2-3 2-7-1-11" />
+              <path d="M138 74c-6-7-1-12 1-16 2-4 2-8-1-13" />
             ) : null}
           </g>
         </g>

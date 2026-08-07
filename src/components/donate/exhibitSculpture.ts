@@ -64,12 +64,12 @@ export function generateSculpture(
 
   const kind = kinds[Math.floor(random() * kinds.length)]!;
   const count = singles.includes(kind) ? 1 : 1 + Math.floor(random() * 3);
-  const spread = count === 3 ? 96 : count === 2 ? 62 : 0;
-  const size = count === 3 ? 0.84 : count === 2 ? 0.98 : 1.12;
+  const spread = count === 3 ? 94 : count === 2 ? 78 : 0;
+  const size = count === 3 ? 0.78 : count === 2 ? 0.9 : 1.05;
   const tilt = kind === "dumpling" || kind === "bun" ? 16 : 9;
   const pieces = Array.from({ length: count }, (_, index) => ({
     x: 140 - spread / 2 + (count === 1 ? 0 : spread * (index / (count - 1))),
-    y: random() * 3,
+    y: random() * 5,
     scale: size + random() * 0.18,
     rotate: random() * tilt - tilt / 2,
   }));
@@ -79,8 +79,8 @@ export function generateSculpture(
     { length: 2 + Math.floor(random() * 3) },
     () => ({
       x: 110 + random() * 60,
-      y: 110 + random() * 16,
-      r: 3 + random() * 2.5,
+      y: 98 + random() * 18,
+      r: 3.4 + random() * 2.6,
     }),
   );
 
