@@ -86,4 +86,5 @@ test("reset returns the frame to the reserved state", () => {
   expect(screen.getByText(reservedExhibit.placard)).toBeInTheDocument();
   expect(screen.getByLabelText("Dish")).toHaveValue("");
   expect(screen.getByRole("status")).toBeEmptyDOMElement();
+  expect(screen.getByLabelText("Dish")).toHaveFocus();
 });

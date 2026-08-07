@@ -79,6 +79,7 @@ test("reset returns the reserved frame", async ({ page }) => {
     "false",
   );
   await expect(field(page, "Dish")).toHaveValue("");
+  await expect(field(page, "Dish")).toBeFocused();
 });
 
 test("the default donor is a visitor", async ({ page }) => {

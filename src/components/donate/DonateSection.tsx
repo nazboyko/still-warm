@@ -39,10 +39,16 @@ export function DonateSection() {
     setDonated(null);
   }
 
-  // The form unmounts on donation; keep keyboard visitors oriented.
+  // Both swaps unmount the focused control; keep keyboard visitors oriented.
+  // After reset, landing on the Dish label doubles as the confirmation.
+  const wasDonated = useRef(false);
   useEffect(() => {
     if (donated) {
+      wasDonated.current = true;
       afterRef.current?.querySelector("button")?.focus();
+    } else if (wasDonated.current) {
+      wasDonated.current = false;
+      document.getElementById("donate-dish")?.focus();
     }
   }, [donated]);
 
