@@ -2,6 +2,19 @@ import { expect, test } from "@playwright/test";
 
 test("the lights come on and finish within budget", async ({ page }) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
+  // Anchor the budget to the entrance actually starting - slow CI runners can
+  // spend seconds booting the app; that time is not the entrance's to pay for.
+  await expect
+    .poll(
+      () =>
+        page.evaluate(
+          () =>
+            document.documentElement.hasAttribute("data-entrance") ||
+            sessionStorage.getItem("still-warm-entrance") === "done",
+        ),
+      { timeout: 5000 },
+    )
+    .toBe(true);
   await expect
     .poll(
       () =>
