@@ -27,22 +27,7 @@
   }
 }
 
-[data-entrance] .hero-title {
-  animation: entrance-signage 600ms var(--ease-soft) 600ms both;
-}
-
-@keyframes entrance-signage {
-  from {
-    opacity: 0.35;
-    transform: scale(1.02);
-  }
-
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
+[data-entrance] .hero-title,
 [data-entrance] .hero-eyebrow,
 [data-entrance] .hero-thesis,
 [data-entrance] .hero-cta,
