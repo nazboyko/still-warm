@@ -1,64 +1,62 @@
-/* A cut sandwich: the near half shows its cross-section - crust rim, porous
-   crumb, the melted layer between the slices - and the far half is lifted
-   away at an angle, cheese still stretching and thinning between them. */
+/* A sandwich a second after it was pulled apart: both halves still tilted the
+   same way, the near one larger in the spot, cheese stretched taut between
+   their cut faces. Crust rim, porous crumb, scorch patches, one gathering drip. */
 function Half() {
   return (
     <g>
       {/* grilled top face, receding back */}
-      <path d="M -56 -22 L 56 -22 L 66 -35 L -46 -35 Z" fill="url(#gc-top)" />
-      <g
-        fill="none"
-        style={{ stroke: "var(--toast-deep)" }}
-        strokeOpacity="0.45"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-      >
-        <path d="M -34 -27 L -12 -30" />
-        <path d="M -2 -26 L 22 -30" />
-        <path d="M 30 -27 L 48 -30" />
+      <path d="M -56 -20 L 56 -20 L 65 -33 L -47 -33 Z" fill="url(#gc-top)" />
+      <g style={{ fill: "var(--toast-deep)" }}>
+        <path
+          d="M -32 -28 q 9 -4 17 -1 q 4 3 -3 5 q -11 2 -14 -4 z"
+          fillOpacity="0.5"
+        />
+        <path
+          d="M 2 -30 q 13 -3 21 1 q 3 3 -5 4 q -12 1 -16 -5 z"
+          fillOpacity="0.38"
+        />
+        <path
+          d="M 33 -27 q 8 -3 13 0 q 2 2 -4 3 q -8 1 -9 -3 z"
+          fillOpacity="0.45"
+        />
       </g>
 
-      {/* the cut face */}
-      <rect
-        x="-56"
-        y="-22"
-        width="112"
-        height="44"
-        rx="7"
+      {/* the cut face, edges wavering like a hand-cut slice */}
+      <path
+        d="M -56 -16 Q -54 -20 -47 -20 Q -20 -22 8 -20 Q 34 -19 51 -20 Q 56 -19 56 -15 L 56 15 Q 56 20 50 20 Q 22 22 -6 20 Q -33 19 -50 20 Q -56 19 -56 15 Z"
         fill="url(#gc-crumb)"
       />
-      <g style={{ fill: "var(--toast)" }} fillOpacity="0.32">
-        <ellipse cx="-34" cy="-13" rx="4.4" ry="2.8" />
-        <ellipse cx="-14" cy="-16" rx="3" ry="2" />
-        <ellipse cx="10" cy="-12" rx="3.8" ry="2.4" />
-        <ellipse cx="34" cy="-15" rx="3.2" ry="2.2" />
-        <ellipse cx="-28" cy="14" rx="4" ry="2.6" />
-        <ellipse cx="-4" cy="12" rx="3.2" ry="2.2" />
-        <ellipse cx="24" cy="15" rx="4.2" ry="2.6" />
-        <ellipse cx="44" cy="11" rx="2.8" ry="2" />
+      <g style={{ fill: "var(--toast)" }} fillOpacity="0.3">
+        <ellipse cx="-38" cy="-11" rx="4.6" ry="2.6" />
+        <ellipse cx="-22" cy="-15" rx="2.4" ry="1.8" />
+        <ellipse cx="-8" cy="-10" rx="3.6" ry="2.2" />
+        <ellipse cx="12" cy="-14" rx="2.8" ry="1.6" />
+        <ellipse cx="27" cy="-9" rx="4.2" ry="2.8" />
+        <ellipse cx="42" cy="-13" rx="2.2" ry="1.5" />
+        <ellipse cx="-44" cy="11" rx="3.4" ry="2.2" />
+        <ellipse cx="-26" cy="15" rx="2.6" ry="1.7" />
+        <ellipse cx="-6" cy="12" rx="4.4" ry="2.4" />
+        <ellipse cx="16" cy="16" rx="2.2" ry="1.6" />
+        <ellipse cx="34" cy="11" rx="3.8" ry="2.6" />
       </g>
-      <rect
-        x="-56"
-        y="-22"
-        width="112"
-        height="44"
-        rx="7"
+      <path
+        d="M -56 -16 Q -54 -20 -47 -20 Q -20 -22 8 -20 Q 34 -19 51 -20 Q 56 -19 56 -15 L 56 15 Q 56 20 50 20 Q 22 22 -6 20 Q -33 19 -50 20 Q -56 19 -56 15 Z"
         fill="none"
         style={{ stroke: "var(--toast-deep)" }}
-        strokeWidth="5"
+        strokeWidth="4.6"
       />
 
-      {/* the melted layer, oozing past the crust */}
+      {/* the melted layer: a viscous mass, heavier in the middle */}
       <path
-        d="M -60 -6 Q -30 -9 0 -6 Q 30 -3 60 -7 L 60 5 Q 30 9 0 6 Q -30 3 -60 7 Z"
+        d="M -57 -5 Q -30 -9 -2 -6 Q 28 -3 57 -7 L 57 0 Q 45 8 31 6 Q 17 13 3 8 Q -14 14 -29 7 Q -43 10 -57 4 Z"
         fill="url(#gc-cheese)"
       />
       <path
-        d="M -52 -4 Q -26 -6 2 -3"
+        d="M -42 -3 Q -16 -6 10 -3"
         fill="none"
         style={{ stroke: "var(--gold-light)" }}
-        strokeOpacity="0.6"
-        strokeWidth="1.8"
+        strokeOpacity="0.65"
+        strokeWidth="2"
         strokeLinecap="round"
       />
     </g>
@@ -126,28 +124,29 @@ export function GrilledCheeseArt({ lit }: { lit: boolean }) {
         strokeOpacity="0.3"
         strokeWidth="1.5"
       />
-      <ellipse cx="140" cy="184" rx="72" ry="10" fill="url(#gc-dish-shadow)" />
+      <ellipse cx="152" cy="184" rx="76" ry="10" fill="url(#gc-dish-shadow)" />
 
-      {/* the lifted half */}
-      <g transform="translate(202 86) rotate(-13) scale(0.88)">
+      {/* the lifted half: smaller with distance, same tilt, just above */}
+      <g transform="translate(176 100) rotate(-7) scale(0.84)">
         <Half />
       </g>
 
-      {/* the near half, resting */}
-      <g transform="translate(120 160) rotate(-3)">
+      {/* the near half: the hero, in the spot */}
+      <g transform="translate(150 164) rotate(-4)">
         <Half />
       </g>
 
-      {/* cheese stretching, thick at the bread and thin in between */}
+      {/* cheese stretched taut between the two cut faces */}
       <g fill="url(#gc-cheese)">
-        <path d="M 147 158 C 145 142 152 128 155 116 C 157 108 160 104 163 99 L 168 101 C 165 106 162 111 160 118 C 157 130 152 143 153 158 Z" />
-        <path d="M 159 159 C 157 144 165 130 169 118 C 171 110 175 104 178 98 L 183 100 C 180 106 176 112 174 120 C 170 132 165 145 165 159 Z" />
-        <path d="M 170 157 C 169 145 176 134 180 124 C 183 116 187 109 190 103 L 194 105 C 191 111 187 118 185 125 C 181 136 176 146 176 157 Z" />
-        <path d="M 206 118 q -2.6 7 1.6 10 q 4.4 -3 2 -10 z" />
+        <path d="M 130 165 C 129 152 133 143 133.5 133 C 134 123 135 114 137 106 L 141 106 C 139 114 137.5 123 137 133 C 136.5 143 135 152 135 165 Z" />
+        <path d="M 150 167 C 150 155 156 146 158 135 C 159 124 160 112 162 104 L 166 105 C 164 113 162.5 124 160.5 135 C 159 146 156 155 156 167 Z" />
+        <path d="M 176 164 C 176 152 180 146 181 138 C 182 128 183 118 184 110 L 187 111 C 186 118 185 128 183 138 C 182 146 180 152 180 164 Z" />
+        <path d="M 197 120 C 196 127 199 132 198 139 L 201 139 C 202 132 199 127 200 120 Z" />
+        <ellipse cx="199.5" cy="145" rx="2.6" ry="3.4" />
       </g>
 
       <path
-        d="M 250 62c-6-7-1-12 1-16 2-4 2.4-8-1-13"
+        d="M 234 74c-6-7-1-12 1-16 2-4 2.4-8-1-13"
         fill="none"
         stroke="#efe6d8"
         strokeOpacity="0.2"
@@ -155,15 +154,33 @@ export function GrilledCheeseArt({ lit }: { lit: boolean }) {
         strokeLinecap="round"
       />
 
-      {/* plate contact */}
+      {/* plate contact and a few crumbs */}
       <ellipse
-        cx="120"
-        cy="184"
+        cx="150"
+        cy="187"
         rx="58"
         ry="3.4"
         fill="#0f0c0a"
         opacity="0.5"
       />
+      <g style={{ fill: "var(--toast)" }} fillOpacity="0.75">
+        <ellipse
+          cx="92"
+          cy="187"
+          rx="2.4"
+          ry="1.6"
+          transform="rotate(-12 92 187)"
+        />
+        <ellipse cx="106" cy="192" rx="1.8" ry="1.3" />
+        <ellipse
+          cx="224"
+          cy="186"
+          rx="2.2"
+          ry="1.5"
+          transform="rotate(8 224 186)"
+        />
+        <ellipse cx="238" cy="190" rx="1.6" ry="1.2" />
+      </g>
     </svg>
   );
 }
