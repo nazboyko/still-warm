@@ -48,9 +48,25 @@
   cursor: pointer;
 }
 
+.room-guide-answers button {
+  transition:
+    color var(--dur-quiet) var(--ease-soft),
+    border-color var(--dur-quiet) var(--ease-soft);
+}
+
 .room-guide-answers button:hover {
   border-color: var(--tungsten);
   color: var(--tungsten);
+}
+
+.room-guide-answers button:active {
+  transform: translateY(1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .room-guide-answers button:active {
+    transform: none;
+  }
 }
 
 .room-guide-response {
