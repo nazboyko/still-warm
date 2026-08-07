@@ -4,10 +4,16 @@
   box-sizing: border-box;
 }
 
-/* The sticky header never gets to cover what the page just scrolled to -
-   anchors, focus moves, and scrollIntoView all stop below it. */
+/* Nothing the page scrolls to should land under the header: on wide screens
+   that means clearing the sticky bar, on phones just a little breathing room. */
 html {
-  scroll-padding-top: calc(var(--header-compact) + var(--space-4));
+  scroll-padding-top: var(--space-4);
+}
+
+@media (min-width: 40rem) {
+  html {
+    scroll-padding-top: calc(var(--header-compact) + var(--space-4));
+  }
 }
 
 body {

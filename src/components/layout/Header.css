@@ -18,13 +18,20 @@
 }
 
 .site-header {
-  position: sticky;
-  top: 0;
-  z-index: 5;
   padding-block: var(--space-4);
   border-bottom: 1px solid var(--brass);
   background: var(--ink);
   transition: padding-block var(--dur-quiet) var(--ease-soft);
+}
+
+/* Sticky only where it is cheap: the phone header stacks to two rows and would
+   hold 137px of a 659px screen, so there it scrolls away like any other. */
+@media (min-width: 40rem) {
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
 }
 
 /* Walking away from the top: the header gives its room back to the museum,

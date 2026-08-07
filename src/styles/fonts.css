@@ -34,7 +34,7 @@
 
 @font-face {
   font-family: "Young Serif Fallback";
-  src: local("Georgia");
+  src: local("Georgia"), local("Liberation Serif"), local("DejaVu Serif");
   size-adjust: 115.11%;
   ascent-override: 90.87%;
   descent-override: 31.8%;
@@ -43,7 +43,7 @@
 
 @font-face {
   font-family: "Familjen Grotesk Fallback";
-  src: local("Arial");
+  src: local("Arial"), local("Liberation Sans"), local("DejaVu Sans");
   size-adjust: 94.59%;
   ascent-override: 108.36%;
   descent-override: 23.79%;
@@ -52,7 +52,8 @@
 
 @font-face {
   font-family: "IBM Plex Mono Fallback";
-  src: local("Courier New");
+  src:
+    local("Courier New"), local("Liberation Mono"), local("DejaVu Sans Mono");
   size-adjust: 99.98%;
   ascent-override: 102.52%;
   descent-override: 27.5%;

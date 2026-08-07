@@ -35,6 +35,13 @@ test("the header compacts once the visitor leaves the top", async ({
   for (const name of ["Exhibition", "Plan Your Visit", "Donate an Exhibit"]) {
     await expect(page.getByRole("link", { name, exact: true })).toBeVisible();
   }
+  // Sticky only where it is cheap: on a phone the two-row header would hold a
+  // fifth of the screen, so there it scrolls away with the page.
   const box = (await header.boundingBox())!;
-  expect(box.y).toBe(0);
+  const width = page.viewportSize()!.width;
+  if (width >= 640) {
+    expect(box.y).toBe(0);
+  } else {
+    expect(box.y).toBeLessThan(0);
+  }
 });
