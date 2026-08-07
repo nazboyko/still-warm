@@ -64,7 +64,9 @@ test("the entrance shifts no layout", async ({ page, browserName }) => {
         setTimeout(() => resolve(total), 1800);
       }),
   );
-  expect(shift).toBe(0);
+  // Linux font rasterization leaves a sub-pixel residue (measured 0.00006 in
+  // CI); the entrance is opacity-only. A real shift measures 0.01 or more.
+  expect(shift).toBeLessThan(0.0005);
 });
 
 test("reduced motion opens the museum lit", async ({ page }) => {
