@@ -1,0 +1,102 @@
+/* The exhibition catalog: plaster on white, one entry per page, no ink wasted
+   on the gallery darkness. */
+@media print {
+  :root {
+    --ink: #1a1a1a;
+    --plaster: #ffffff;
+    --brass: #6b6b6b;
+  }
+
+  body {
+    background: #ffffff;
+    color: #1a1a1a;
+  }
+
+  .site-header,
+  .room-guide,
+  .donation-desk,
+  .gift-shop,
+  .skip-link,
+  .placard-toggle,
+  .placard-walk,
+  .entrance-overlay {
+    display: none;
+  }
+
+  .hero {
+    padding-block: 0 var(--space-8);
+    break-after: page;
+  }
+
+  .hero-title {
+    color: #1a1a1a;
+  }
+
+  /* Outranks the per-room grounds and stops the scroll-driven light. */
+  .exhibition .room {
+    background: #ffffff;
+    animation: none;
+    padding-block: var(--space-8);
+    break-inside: avoid;
+    break-after: page;
+  }
+
+  .room-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    justify-items: start;
+  }
+
+  .room-art,
+  .reserved-frame svg {
+    width: 40%;
+  }
+
+  /* Ink silhouettes print; the gallery's glows and cones do not. */
+  .art-cone,
+  .art-glow-lit,
+  .steam-wisp,
+  .dish-glow {
+    display: none;
+  }
+
+  .placard,
+  .reserved-placard,
+  .ramp-placard {
+    box-shadow: none;
+    border: 1px solid #6b6b6b;
+    background: #ffffff;
+    color: #1a1a1a;
+    max-width: none;
+  }
+
+  .placard-cat,
+  .placard-fields dt,
+  .curator-note {
+    color: #4a4a4a;
+  }
+
+  .placard-story-region {
+    display: block;
+  }
+
+  .visit,
+  .donate {
+    break-before: page;
+  }
+
+  .site-footer::after {
+    content: "still-warm.pages.dev";
+    display: block;
+    margin-top: var(--space-2);
+    font-family: var(--font-utility);
+    font-size: var(--text-utility);
+    letter-spacing: var(--tracking-utility);
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    word-break: break-all;
+  }
+}

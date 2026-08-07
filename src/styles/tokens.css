@@ -54,6 +54,7 @@
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
 
+  --header-compact: 4.5rem;
   --touch-target: 44px;
   --radius-placard: 2px;
 }
