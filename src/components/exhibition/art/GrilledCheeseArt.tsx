@@ -116,33 +116,54 @@ export function GrilledCheeseArt({ lit }: { lit: boolean }) {
         fill="url(#grilled-glow)"
       />
 
-      <ellipse cx="160" cy="190" rx="96" ry="15" fill="#0f0c0a" />
+      {/* the plate: rim, then a well the sandwich sits down into */}
+      <ellipse cx="160" cy="191" rx="96" ry="15" fill="#0f0c0a" />
       <path
-        d="M68 188 A96 14 0 0 1 252 188"
+        d="M68 189 A96 14 0 0 1 252 189"
         fill="none"
         stroke="#e8a94e"
         strokeOpacity="0.3"
         strokeWidth="1.5"
       />
-      <ellipse cx="152" cy="184" rx="76" ry="10" fill="url(#gc-dish-shadow)" />
+      <ellipse cx="160" cy="190" rx="82" ry="10.5" fill="#151009" />
+      <path
+        d="M80 188 A82 10 0 0 1 240 188"
+        fill="none"
+        stroke="#e8a94e"
+        strokeOpacity="0.14"
+        strokeWidth="1.2"
+      />
+      <ellipse cx="152" cy="185" rx="76" ry="10" fill="url(#gc-dish-shadow)" />
 
-      {/* the lifted half: smaller with distance, same tilt, just above */}
-      <g transform="translate(176 100) rotate(-7) scale(0.84)">
+      {/* the lifted half: smaller with distance, tipped by the pull */}
+      <g transform="translate(184 96) rotate(-14) scale(0.82)">
         <Half />
       </g>
 
+      {/* the weight of the near half pressing into the plate */}
+      <ellipse
+        cx="150"
+        cy="189"
+        rx="66"
+        ry="5.5"
+        fill="#0f0c0a"
+        opacity="0.5"
+      />
+      <ellipse cx="150" cy="189.5" rx="50" ry="2.6" fill="#000" opacity="0.8" />
+
       {/* the near half: the hero, in the spot */}
-      <g transform="translate(150 164) rotate(-4)">
+      <g transform="translate(150 166) rotate(-4)">
         <Half />
       </g>
 
       {/* cheese stretched taut between the two cut faces */}
       <g fill="url(#gc-cheese)">
-        <path d="M 130 165 C 129 152 133 143 133.5 133 C 134 123 135 114 137 106 L 141 106 C 139 114 137.5 123 137 133 C 136.5 143 135 152 135 165 Z" />
-        <path d="M 150 167 C 150 155 156 146 158 135 C 159 124 160 112 162 104 L 166 105 C 164 113 162.5 124 160.5 135 C 159 146 156 155 156 167 Z" />
-        <path d="M 176 164 C 176 152 180 146 181 138 C 182 128 183 118 184 110 L 187 111 C 186 118 185 128 183 138 C 182 146 180 152 180 164 Z" />
-        <path d="M 197 120 C 196 127 199 132 198 139 L 201 139 C 202 132 199 127 200 120 Z" />
-        <ellipse cx="199.5" cy="145" rx="2.6" ry="3.4" />
+        <path d="M 121 166 C 122 152 128 140 133 128 C 138 116 148 108 154 103 L 158 105 C 152 110 143 118 138 129 C 133 141 128 152 127 166 Z" />
+        <path d="M 142 169 C 140 155 143 142 148 130 C 152 118 159 109 161 102 L 166 103 C 163 110 157 119 153 131 C 148 143 146 155 148 169 Z" />
+        <path d="M 165 167 C 167 153 170 139 170.5 125 C 171 114 170 108 170 102 L 174 102 C 174 108 175 114 174.5 125 C 174 139 171 153 169 167 Z" />
+        <path d="M 186 164 C 189 152 193 141 191 130 C 189 119 183 110 179 104 L 183 102 C 187 109 194 118 196 130 C 198 142 193 152 190 164 Z" />
+        <path d="M 204 158 C 203 164 206 168 205 173 L 208 173 C 209 168 206 164 207 158 Z" />
+        <ellipse cx="206.5" cy="178" rx="2.8" ry="3.6" />
       </g>
 
       <path
