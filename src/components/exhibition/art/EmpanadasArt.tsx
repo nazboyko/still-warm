@@ -81,21 +81,20 @@ function Empanada({ id, broken }: { id: string; broken?: boolean }) {
             strokeWidth="3"
             strokeLinecap="round"
           />
-          <g style={{ fill: "var(--toast-deep)" }} fillOpacity="0.8">
-            <ellipse
-              cx="-18"
-              cy="-5"
-              rx="3.6"
-              ry="2.4"
-              transform="rotate(-16 -18 -5)"
-            />
-            <ellipse
-              cx="-9"
-              cy="-2"
-              rx="2.8"
-              ry="1.9"
-              transform="rotate(14 -9 -2)"
-            />
+          {/* chopped filling, not a smooth preserve: pieces of several tones */}
+          <g style={{ fill: "var(--toast-deep)" }}>
+            <path d="M -22 -7 q 5 -3 8 0 q -1 4 -5 4 q -4 0 -3 -4 z" />
+            <path d="M -11 -9 q 4 -2 6 1 q -1 3 -4 3 q -3 -1 -2 -4 z" />
+            <path d="M -16 0 q 5 -2 7 1 q -2 3 -5 3 q -3 -1 -2 -4 z" />
+          </g>
+          <g style={{ fill: "var(--syrup)" }} fillOpacity="0.85">
+            <path d="M -7 -4 q 4 -2 5 1 q -1 3 -4 2 q -2 -1 -1 -3 z" />
+            <path d="M -24 -1 q 3 -2 5 0 q -1 3 -3 3 q -2 -1 -2 -3 z" />
+          </g>
+          <g style={{ fill: "var(--tungsten)" }} fillOpacity="0.55">
+            <circle cx="-13" cy="-4" r="1.5" />
+            <circle cx="-20" cy="-10" r="1.2" />
+            <circle cx="-6" cy="-8" r="1.1" />
           </g>
           <path
             className="serve-glint"
@@ -281,24 +280,6 @@ export function EmpanadasArt({
         <Empanada id="emp" broken />
       </g>
 
-      {/* pastry flakes where it broke */}
-      <g style={{ fill: "var(--toast)" }} fillOpacity="0.8">
-        <ellipse
-          cx="168"
-          cy="191"
-          rx="2.6"
-          ry="1.6"
-          transform="rotate(-14 168 191)"
-        />
-        <ellipse cx="180" cy="195" rx="1.8" ry="1.2" />
-        <ellipse
-          cx="246"
-          cy="189"
-          rx="2.2"
-          ry="1.4"
-          transform="rotate(10 246 189)"
-        />
-      </g>
       <path
         className="steam-static"
         d="M160 140c-6-7-1-12 1-16 2-4 2.4-8-1-13"

@@ -86,9 +86,9 @@
 
 /* Appetite motion: opening a label plays one serving detail, once, then the
    dish is still again. Museums do not animate their exhibits. */
+/* Only the parts that exist purely for the serve start hidden. The cheese
+   strand and the filling glint are permanent art and must never disappear. */
 .serve-sheen,
-.serve-stretch,
-.serve-glint,
 .serve-drop {
   opacity: 0;
 }
@@ -102,7 +102,6 @@
 }
 
 [data-lit="true"] .serve-stretch {
-  opacity: 1;
   transform-box: fill-box;
   transform-origin: 50% 0%;
   animation: serve-stretch 480ms var(--ease-soft) forwards;
@@ -194,14 +193,10 @@
   [data-lit="true"] .serve-glint,
   [data-lit="true"] .serve-drop {
     animation: none;
-    opacity: 1;
     transform: none;
   }
 
-  [data-lit="true"] .serve-sheen {
-    opacity: 0;
-  }
-
+  [data-lit="true"] .serve-sheen,
   [data-lit="true"] .serve-drop {
     opacity: 0;
   }

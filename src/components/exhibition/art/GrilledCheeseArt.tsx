@@ -15,10 +15,6 @@ function Half() {
           d="M 2 -30 q 13 -3 21 1 q 3 3 -5 4 q -12 1 -16 -5 z"
           fillOpacity="0.38"
         />
-        <path
-          d="M 33 -27 q 8 -3 13 0 q 2 2 -4 3 q -8 1 -9 -3 z"
-          fillOpacity="0.45"
-        />
       </g>
 
       {/* the cut face, edges wavering like a hand-cut slice */}
@@ -99,8 +95,9 @@ export function GrilledCheeseArt({
           <stop offset="100%" style={{ stopColor: "var(--toast)" }} />
         </linearGradient>
         <linearGradient id="gc-crumb" x1="0" y1="0" x2="0.1" y2="1">
-          <stop offset="0%" style={{ stopColor: "var(--plaster)" }} />
-          <stop offset="100%" style={{ stopColor: "var(--gold-light)" }} />
+          <stop offset="0%" style={{ stopColor: "var(--gold-light)" }} />
+          <stop offset="55%" style={{ stopColor: "var(--gold-light)" }} />
+          <stop offset="100%" style={{ stopColor: "var(--tungsten)" }} />
         </linearGradient>
         <linearGradient id="gc-cheese" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" style={{ stopColor: "var(--tungsten)" }} />
@@ -160,17 +157,17 @@ export function GrilledCheeseArt({
       <ellipse cx="214" cy="187" rx="42" ry="2.8" fill="#000" opacity="0.8" />
 
       {/* both halves standing, leaning together, cut faces to the visitor */}
-      <g transform="translate(112 168) rotate(-10) scale(0.88)">
+      <g transform="translate(110 168) rotate(-10) scale(0.95)">
         <Half />
       </g>
-      <g transform="translate(206 158) rotate(10) scale(0.88)">
+      <g transform="translate(208 158) rotate(10) scale(0.83)">
         <Half />
       </g>
 
       {/* the last strand still bridging the two cut faces */}
       <g className="serve-stretch" fill="url(#gc-cheese)">
-        <path d="M 152 160 C 156 170 164 174 170 168 L 172 172 C 164 180 154 175 149 162 Z" />
-        <path d="M 158 176 C 157 181 160 184 159 188 L 163 188 C 164 184 161 181 162 176 Z" />
+        <path d="M 147 155 C 152 173 165 182 175 171 L 181 180 C 166 192 149 181 141 159 Z" />
+        <path d="M 158 180 C 157 185 161 188 160 192 L 165 192 C 166 188 162 185 163 180 Z" />
       </g>
       <ellipse cx="161" cy="189" rx="9" ry="3" fill="url(#gc-cheese)" />
 

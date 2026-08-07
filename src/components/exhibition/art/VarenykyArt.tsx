@@ -6,8 +6,6 @@ const onions = [
   { x: 166, y: 165, r: 10, s: 1.55, tone: "toast-deep" },
   { x: 189, y: 169, r: 168, s: 1.45, tone: "syrup" },
   { x: 209, y: 176, r: 28, s: 1.3, tone: "toast-deep" },
-  { x: 174, y: 181, r: -14, s: 1.2, tone: "syrup" },
-  { x: 128, y: 185, r: 192, s: 1.1, tone: "toast" },
 ];
 
 export function VarenykyArt({

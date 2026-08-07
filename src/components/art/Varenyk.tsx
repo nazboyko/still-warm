@@ -28,6 +28,23 @@ export function VarenykDefs({ id }: { id: string }) {
         <stop offset="0%" style={{ stopColor: "var(--gold-light)" }} />
         <stop offset="100%" style={{ stopColor: "var(--tungsten)" }} />
       </linearGradient>
+      <radialGradient id={`${id}-bake`} cx="50%" cy="50%" r="50%">
+        <stop
+          offset="0%"
+          style={{ stopColor: "var(--toast)" }}
+          stopOpacity="0.45"
+        />
+        <stop
+          offset="60%"
+          style={{ stopColor: "var(--toast)" }}
+          stopOpacity="0.2"
+        />
+        <stop
+          offset="100%"
+          style={{ stopColor: "var(--toast)" }}
+          stopOpacity="0"
+        />
+      </radialGradient>
     </>
   );
 }
@@ -36,6 +53,11 @@ export function Varenyk({ id, glossD }: { id: string; glossD: string }) {
   return (
     <>
       <path d={BODY} fill={`url(#${id}-dough)`} />
+      {/* what the water and the pan left on the dough */}
+      <g fill={`url(#${id}-bake)`}>
+        <ellipse cx="-14" cy="-2" rx="14" ry="6" />
+        <ellipse cx="12" cy="2" rx="10" ry="4.6" />
+      </g>
       <path
         d={SEAM}
         fill="none"
