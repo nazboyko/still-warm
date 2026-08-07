@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useInView } from "../../hooks/useInView.ts";
 import "./DisplayCase.css";
+import { HeroVarenyky } from "./HeroVarenyky.tsx";
 
 export function DisplayCase() {
   const scene = useRef<HTMLDivElement>(null);
@@ -32,27 +33,6 @@ export function DisplayCase() {
               <stop offset="70%" stopColor="#e8a94e" stopOpacity="0.05" />
               <stop offset="100%" stopColor="#e8a94e" stopOpacity="0.01" />
             </linearGradient>
-            <linearGradient id="case-dough" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" style={{ stopColor: "var(--gold-light)" }} />
-              <stop offset="55%" style={{ stopColor: "var(--tungsten)" }} />
-              <stop offset="100%" style={{ stopColor: "var(--toast)" }} />
-            </linearGradient>
-            <radialGradient id="case-dough-light" cx="50%" cy="40%" r="60%">
-              <stop
-                offset="0%"
-                style={{ stopColor: "var(--gold-light)" }}
-                stopOpacity="0.9"
-              />
-              <stop
-                offset="100%"
-                style={{ stopColor: "var(--gold-light)" }}
-                stopOpacity="0"
-              />
-            </radialGradient>
-            <radialGradient id="case-dish-shadow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#0f0c0a" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#0f0c0a" stopOpacity="0" />
-            </radialGradient>
             <linearGradient id="steam-soft" x1="0" y1="1" x2="0" y2="0">
               <stop offset="0%" stopColor="#efe6d8" stopOpacity="0" />
               <stop offset="45%" stopColor="#efe6d8" stopOpacity="0.5" />
@@ -101,56 +81,23 @@ export function DisplayCase() {
             strokeWidth="1"
           />
 
-          <ellipse
-            cx="130"
-            cy="227"
-            rx="66"
-            ry="9"
-            fill="url(#case-dish-shadow)"
-          />
-          <g fill="url(#case-dough)">
-            <path d="M72 224 A26 26 0 0 1 124 224 Q98 232 72 224 Z" />
-            <path d="M106 222 A30 30 0 0 1 166 222 Q136 231 106 222 Z" />
-            <path d="M152 225 A22 22 0 0 1 196 225 Q174 232 152 225 Z" />
-          </g>
-          <g fill="url(#case-dough-light)">
-            <ellipse cx="101" cy="208" rx="15" ry="8" />
-            <ellipse cx="134" cy="201" rx="18" ry="9" />
-            <ellipse cx="171" cy="212" rx="12" ry="7" />
-          </g>
-          <g
-            fill="none"
-            style={{ stroke: "var(--toast-deep)" }}
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeOpacity="0.85"
-          >
-            <path d="M77 217 a8 8 0 0 1 8 -9 a8 8 0 0 1 11 -4 a8 8 0 0 1 11 3 a8 8 0 0 1 8 9" />
-            <path d="M110 215 a9 9 0 0 1 7 -11 a9 9 0 0 1 12 -6 a9 9 0 0 1 12 2 a9 9 0 0 1 10 7 a9 9 0 0 1 6 9" />
-            <path d="M157 217 a7 7 0 0 1 7 -8 a7 7 0 0 1 10 -3 a7 7 0 0 1 10 3 a7 7 0 0 1 7 8" />
-          </g>
-          <g
-            fill="none"
-            style={{ stroke: "var(--gold-light)" }}
-            strokeOpacity="0.8"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          >
-            <path d="M88 206 A26 26 0 0 1 106 200" />
-            <path d="M122 198 A30 30 0 0 1 142 194" />
-            <path d="M162 210 A22 22 0 0 1 176 206" />
-          </g>
+          <HeroVarenyky />
 
           <path
             className="steam-static"
-            d="M132 188c-7-6-2-11 0-15 2.3-4.3 2.7-8.6-1.3-13"
+            d="M132 176c-7-6-2-11 0-15 2.3-4.3 2.7-8.6-1.3-13"
             fill="none"
             stroke="#efe6d8"
             strokeOpacity="0.3"
             strokeWidth="2"
             strokeLinecap="round"
           />
-          <g fill="none" stroke="url(#steam-soft)" strokeLinecap="round">
+          <g
+            fill="none"
+            stroke="url(#steam-soft)"
+            strokeLinecap="round"
+            transform="translate(0 -14)"
+          >
             <path
               className="steam-wisp"
               d="M120 192c-6-7-1-12 1-16 2-4 2.4-8-1-13"
