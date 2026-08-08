@@ -27,6 +27,17 @@ test("homepage has no unresolved axe incompletes", async ({ page }) => {
 test("the donation desk stays clean in all three states", async ({ page }) => {
   await page.goto("/");
   const scan = async () => {
+    // The placard settles its lines as fields fill; axe cannot judge contrast
+    // on a line that is still fading, so let every animation finish first.
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          document
+            .getAnimations()
+            .every((animation) => animation.playState !== "running"),
+        ),
+      )
+      .toBe(true);
     const results = await new AxeBuilder({ page }).analyze();
     expect(reportable(results.violations)).toEqual([]);
     expect(reportable(results.incomplete)).toEqual([]);
