@@ -85,7 +85,12 @@ export function Exhibition({
       const trigger = roomToggle(anchor.current.id);
       if (trigger) {
         const drift = trigger.getBoundingClientRect().top - anchor.current.top;
-        if (Math.abs(drift) > 1) window.scrollBy(0, drift);
+        // Instant, never smooth: this correction exists to make the swap
+        // invisible, and the page's smooth scrolling would animate it into
+        // exactly the drift it is meant to cancel.
+        if (Math.abs(drift) > 1) {
+          window.scrollBy({ top: drift, behavior: "instant" });
+        }
       }
       anchor.current = null;
     }
