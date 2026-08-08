@@ -46,7 +46,7 @@ test("the full donation loop, keyboard only", async ({ page }) => {
   const downloadPromise = page.waitForEvent("download");
   await page.keyboard.press("Enter");
   const download = await downloadPromise;
-  expect(download.suggestedFilename()).toBe("still-warm-postcard.png");
+  expect(download.suggestedFilename()).toMatch(/^still-warm-V-\d{4}\.png$/);
   // The card now carries the exhibit photograph: a real file, not an empty blob.
   const file = await download.path();
   const { size } = await import("node:fs").then((fs) => fs.statSync(file));

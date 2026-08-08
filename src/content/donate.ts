@@ -68,7 +68,6 @@ export const postcardCard = {
   collectedPrefix: "COLLECTED",
   lockupName: "STILL WARM",
   lockupSub: "THE MUSEUM OF COMFORT",
-  // Swap for the live URL at Step 10 deploy.
   url: "still-warm.boyko-nazar.workers.dev",
-  fileName: "still-warm-postcard.png",
+  fileName: (catalogNumber: string) => `still-warm-${catalogNumber}.png`,
 };

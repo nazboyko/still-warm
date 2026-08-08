@@ -6,7 +6,6 @@
 
   width: min(100%, 30rem);
   min-width: 0;
-  /* The walk lands the label top in view with breathing room. */
   /* The walk lands the label top in view with breathing room; the header
      clearance itself comes from html scroll-padding-top. */
   scroll-margin-top: var(--space-6);
@@ -103,7 +102,10 @@
   margin-top: var(--space-4);
 }
 
+/* The trigger, not just the card, needs the clearance: it is what receives
+   focus when a panel closes, and the collapse can slide it under the header. */
 .placard-toggle {
+  scroll-margin-top: calc(var(--header-compact) + var(--space-4));
   display: flex;
   align-items: center;
   width: 100%;

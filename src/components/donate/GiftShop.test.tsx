@@ -84,7 +84,7 @@ test("a working canvas downloads the png postcard with the exhibit", async () =>
       "Your postcard is ready - downloading.",
     ),
   );
-  expect(clicks).toEqual(["still-warm-postcard.png"]);
+  expect(clicks).toEqual(["still-warm-V-0846.png"]);
   expect(fakeContext.fillText).toHaveBeenCalled();
   expect(fakeContext.drawImage).toHaveBeenCalledOnce();
   expect(fakeContext.strokeRect).toHaveBeenCalledOnce();
@@ -112,7 +112,7 @@ test("a failed artwork load still ships the postcard, without it", async () => {
       "Your postcard is ready - downloading.",
     ),
   );
-  expect(clicks).toEqual(["still-warm-postcard.png"]);
+  expect(clicks).toEqual(["still-warm-V-0846.png"]);
   expect(fakeContext.drawImage).not.toHaveBeenCalled();
   expect(fakeContext.fillText).toHaveBeenCalled();
 });
@@ -130,5 +130,5 @@ test("without canvas the postcard leaves as plain text", async () => {
       "Your postcard is ready - downloading.",
     ),
   );
-  expect(clicks).toEqual(["still-warm-postcard.txt"]);
+  expect(clicks).toEqual(["still-warm-V-0846.txt"]);
 });

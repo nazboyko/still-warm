@@ -101,10 +101,12 @@ test("opening a lower room while one is open does not jump", async ({
   await page.waitForTimeout(100);
   const before = (await thirdTrigger.boundingBox())!.y;
   await thirdTrigger.click();
-  await page.waitForTimeout(100);
-  const after = (await thirdTrigger.boundingBox())!.y;
-  // Sub-pixel anchoring rounding is fine; a real jump is the region height (~390px).
-  expect(Math.abs(after - before)).toBeLessThanOrEqual(8);
+  // Engines finish the collapse above at different speeds, so assert where the
+  // label comes to rest - it must return to where the visitor clicked it.
+  await expect(async () => {
+    const after = (await thirdTrigger.boundingBox())!.y;
+    expect(Math.abs(after - before)).toBeLessThanOrEqual(8);
+  }).toPass({ timeout: 3000 });
 });
 
 test("opening a label plays one serving detail, then the dish is still", async ({
@@ -148,4 +150,36 @@ test("dish steam runs in view and pauses off screen", async ({ page }) => {
   await expect(art).toHaveAttribute("data-steam", "live");
   await page.evaluate(() => window.scrollTo(0, 0));
   await expect(art).toHaveAttribute("data-steam", "paused");
+});
+
+test("the restored trigger is never left under the header", async ({
+  page,
+  browserName,
+}) => {
+  await page.goto("/");
+  // WCAG 2.2 SC 2.4.11: Escape returns focus to the trigger, and the panel
+  // collapsing behind it must not slide that trigger under the sticky header.
+  for (const room of ["cat-001", "cat-002", "cat-003", "cat-004"]) {
+    const trigger = page
+      .locator(`#${room}`)
+      .getByRole("button", { name: "Read the label" });
+    // Drive it as a keyboard visitor would: a WebKit click leaves focus on
+    // body, and WebKit tabs past controls without the Option modifier.
+    await trigger.focus();
+    await page.keyboard.press("Enter");
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
+    await page.keyboard.press(browserName === "webkit" ? "Alt+Tab" : "Tab");
+    await page.keyboard.press("Escape");
+    await expect(trigger).toBeFocused();
+    await expect(async () => {
+      const clear = await page.evaluate(() => {
+        const el = document.activeElement!.getBoundingClientRect();
+        const bar = document
+          .querySelector(".site-header-bar")!
+          .getBoundingClientRect();
+        return el.top - bar.bottom;
+      });
+      expect(clear).toBeGreaterThanOrEqual(0);
+    }).toPass();
+  }
 });

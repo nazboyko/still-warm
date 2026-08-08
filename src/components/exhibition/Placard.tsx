@@ -30,6 +30,20 @@ export function Placard({
   // Only a direct close (this trigger, Escape) folds out; a spotlight swap unmounts at once.
   const [exiting, setExiting] = useState(false);
 
+  // The panel collapses after focus returns, and the shorter document can slide
+  // the trigger under the sticky header, so check once the layout has settled.
+  function keepTriggerInView() {
+    requestAnimationFrame(() => {
+      const trigger = triggerRef.current;
+      const header = document.querySelector(".site-header-bar");
+      if (!trigger || !header) return;
+      const headerBottom = header.getBoundingClientRect().bottom;
+      if (trigger.getBoundingClientRect().top < headerBottom) {
+        trigger.scrollIntoView({ block: "nearest", behavior: "instant" });
+      }
+    });
+  }
+
   function handleToggle() {
     if (isOpen && !reducedMotion) setExiting(true);
     onToggle();
@@ -45,8 +59,9 @@ export function Placard({
       const active = document.activeElement;
       const inPlacard = Boolean(placardRef.current?.contains(active));
       if (!inPlacard && active !== document.body && active !== null) return;
-      triggerRef.current?.focus({ preventScroll: !inPlacard });
+      triggerRef.current?.focus({ preventScroll: true });
       handleToggle();
+      keepTriggerInView();
     }
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
@@ -90,7 +105,10 @@ export function Placard({
           aria-describedby={`${exhibit.id}-dish`}
           aria-expanded={isOpen}
           aria-controls={isOpen ? storyId : undefined}
-          onClick={handleToggle}
+          onClick={() => {
+            handleToggle();
+            if (isOpen) keepTriggerInView();
+          }}
         >
           <span aria-hidden="true" className="placard-fold-mark" />
           Read the label

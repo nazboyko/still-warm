@@ -82,16 +82,23 @@ export function Exhibition({
   // a walk, land the opened label in view and focus its trigger instead.
   useLayoutEffect(() => {
     if (anchor.current) {
-      const trigger = roomToggle(anchor.current.id);
-      if (trigger) {
-        const drift = trigger.getBoundingClientRect().top - anchor.current.top;
-        // Instant, never smooth: this correction exists to make the swap
-        // invisible, and the page's smooth scrolling would animate it into
-        // exactly the drift it is meant to cancel.
-        if (Math.abs(drift) > 1) {
-          window.scrollBy({ top: drift, behavior: "instant" });
+      const held = anchor.current;
+      // Correct now, then again as the layout settles: the closing room can go
+      // on shrinking after this effect runs, and a single correction leaves the
+      // clicked label displaced by whatever collapsed afterwards.
+      const hold = (remaining: number) => {
+        const trigger = roomToggle(held.id);
+        if (trigger) {
+          const drift = trigger.getBoundingClientRect().top - held.top;
+          // Instant, never smooth: the page's smooth scrolling would animate
+          // this into exactly the drift it exists to cancel.
+          if (Math.abs(drift) > 1) {
+            window.scrollBy({ top: drift, behavior: "instant" });
+          }
         }
-      }
+        if (remaining > 0) requestAnimationFrame(() => hold(remaining - 1));
+      };
+      hold(6);
       anchor.current = null;
     }
     if (pendingWalk.current) {

@@ -3,12 +3,6 @@ import "./Button.css";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
-export function Button({ type = "button", className, ...rest }: ButtonProps) {
-  return (
-    <button
-      type={type}
-      className={className ? `button ${className}` : "button"}
-      {...rest}
-    />
-  );
+export function Button({ type = "button", ...rest }: ButtonProps) {
+  return <button type={type} className="button" {...rest} />;
 }
