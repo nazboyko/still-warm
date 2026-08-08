@@ -46,7 +46,9 @@ describe("the generated exhibit", () => {
       expect(["dumpling", "disc", "bun", "stack", "bowl", "wedge"]).toContain(
         spec.kind,
       );
-      expect(["berries", "sprig", "drizzle", "seeds"]).toContain(spec.garnish);
+      expect(["berries", "dusting", "drizzle", "seeds"]).toContain(
+        spec.garnish,
+      );
       expect(["beet", "toast-deep", "syrup"]).toContain(spec.accent);
       expect(spec.steam).toBeGreaterThanOrEqual(2);
       expect(spec.steam).toBeLessThanOrEqual(3);

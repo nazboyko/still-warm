@@ -60,10 +60,14 @@ function Disc() {
         d="M -46 -11 Q -44 -22 -23 -26 Q 0 -29 23 -26 Q 44 -22 46 -11 Q 44 -2 23 1 Q 0 3 -23 1 Q -44 -2 -46 -11 Z"
         fill="url(#vd-food)"
       />
+      {/* the map the pan left: uneven islands, denser toward the rim */}
       <g fill="url(#vd-scorch)">
-        <ellipse cx="-20" cy="-16" rx="16" ry="5.4" />
-        <ellipse cx="10" cy="-19" rx="12" ry="4.2" />
-        <ellipse cx="30" cy="-13" rx="9" ry="3.4" />
+        <ellipse cx="-30" cy="-14" rx="13" ry="5" />
+        <ellipse cx="-12" cy="-19" rx="9" ry="3.4" />
+        <ellipse cx="6" cy="-15" rx="11" ry="4.4" />
+        <ellipse cx="24" cy="-20" rx="8" ry="3" />
+        <ellipse cx="36" cy="-14" rx="9" ry="3.6" />
+        <ellipse cx="-2" cy="-22" rx="6" ry="2.4" />
       </g>
       <path
         d="M -34 -19 Q -10 -26 16 -23"
@@ -99,41 +103,43 @@ function Bun() {
         d="M -32 0 Q -35 -18 -18 -29 Q 0 -36 18 -29 Q 35 -18 32 0 Q 16 4 0 4 Q -16 4 -32 0 Z"
         fill="url(#vd-food)"
       />
-      <ellipse cx="-9" cy="-21" rx="11" ry="4.6" fill="url(#vd-scorch)" />
-      {/* the split seam, with its lit lip */}
+      <ellipse cx="-6" cy="-22" rx="15" ry="6" fill="url(#vd-scorch)" />
+      {/* the split: a dark crease with the dough lifting lit on its far side */}
       <path
-        d="M -20 -9 Q 0 -3 20 -10"
+        d="M -14 -28 Q -2 -20 4 -8 Q 7 -2 8 2"
         fill="none"
-        style={{ stroke: "var(--toast-deep)" }}
-        strokeOpacity="0.6"
-        strokeWidth="2.4"
+        style={{ stroke: "var(--syrup)" }}
+        strokeOpacity="0.7"
+        strokeWidth="3.4"
         strokeLinecap="round"
       />
       <path
-        d="M -19 -12 Q 0 -6 19 -13"
+        d="M -10 -29 Q 2 -21 8 -9 Q 10 -4 11 0"
+        fill="none"
+        style={{ stroke: "var(--plaster)" }}
+        strokeOpacity="0.75"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+      />
+      {/* a broad rounded crown light, the way a risen loaf catches it */}
+      <path
+        d="M -22 -20 Q -8 -31 12 -28"
         fill="none"
         style={{ stroke: "var(--plaster)" }}
         strokeOpacity="0.6"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-      <path
-        d="M -20 -18 Q -6 -27 10 -26"
-        fill="none"
-        style={{ stroke: "var(--plaster)" }}
-        strokeOpacity="0.72"
-        strokeWidth="2.4"
+        strokeWidth="5"
         strokeLinecap="round"
       />
       {/* flour */}
-      <g style={{ fill: "var(--plaster)" }} fillOpacity="0.4">
-        <circle cx="-14" cy="-24" r="1.4" />
-        <circle cx="4" cy="-29" r="1.1" />
-        <circle cx="17" cy="-21" r="1.3" />
-        <circle cx="-24" cy="-14" r="1" />
-        <circle cx="10" cy="-17" r="1.2" />
+      <g style={{ fill: "var(--plaster)" }} fillOpacity="0.62">
+        <ellipse cx="-15" cy="-25" rx="2.4" ry="1.5" />
+        <ellipse cx="3" cy="-30" rx="1.9" ry="1.2" />
+        <ellipse cx="18" cy="-22" rx="2.2" ry="1.4" />
+        <ellipse cx="-25" cy="-13" rx="1.7" ry="1.1" />
+        <ellipse cx="11" cy="-18" rx="2" ry="1.3" />
+        <ellipse cx="-6" cy="-14" rx="1.5" ry="1" />
       </g>
-      <Spark x={-16} y={-25} r={2.2} />
+      <Spark x={-17} y={-26} r={2.2} />
     </g>
   );
 }
@@ -210,11 +216,30 @@ function Bowl({ accent }: { accent: AccentTone }) {
         style={{ fill: "var(--plaster)" }}
         fillOpacity="0.45"
       />
+      {/* chunks with their own light; the near one sits proud of the liquid */}
       <g style={{ fill: `var(--${accent})` }}>
-        <circle cx="16" cy="-24" r="5" />
-        <circle cx="30" cy="-27" r="3.4" />
+        <path d="M 8 -28 q 7 -5 13 -1 q 4 4 -1 7 q -8 3 -12 -2 z" />
+        <path d="M 26 -30 q 6 -3 9 1 q 2 3 -3 4 q -6 1 -7 -3 z" />
+        <path d="M -6 -21 q 6 -4 11 0 q 3 3 -2 5 q -7 2 -9 -2 z" />
       </g>
-      <Spark x={22} y={-27} r={1.8} />
+      <g
+        fill="none"
+        style={{ stroke: "var(--plaster)" }}
+        strokeOpacity="0.55"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      >
+        <path d="M 11 -27 q 5 -3 9 -1" />
+        <path d="M 28 -29 q 4 -2 6 0" />
+      </g>
+      <path
+        d="M -9 -19 q 8 3 17 0"
+        fill="none"
+        style={{ stroke: "var(--plaster)" }}
+        strokeOpacity="0.3"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
       <path
         d="M -62 -28 A 62 12 0 0 0 62 -28"
         fill="none"
@@ -236,18 +261,43 @@ function Wedge({ accent }: { accent: AccentTone }) {
         d="M -42 0 L 42 0 L 42 -18 Q 0 -25 -42 -18 Z"
         style={{ fill: "var(--plaster)" }}
       />
-      <g style={{ fill: "var(--toast)" }} fillOpacity="0.3">
-        <ellipse cx="-30" cy="-6" rx="5" ry="2.8" />
-        <ellipse cx="-12" cy="-11" rx="3.6" ry="2.2" />
-        <ellipse cx="8" cy="-5" rx="4.4" ry="2.6" />
-        <ellipse cx="26" cy="-12" rx="3.4" ry="2" />
-        <ellipse cx="34" cy="-4" rx="3" ry="1.8" />
-        <ellipse cx="-2" cy="-15" rx="3.2" ry="1.9" />
+      {/* crumb: torn pockets of uneven size, each with a lit upper rim */}
+      <g>
+        {[
+          "M -34 -5 q 5 -4 9 0 q -3 5 -9 0 z",
+          "M -20 -12 q 4 -3 7 0 q -2 4 -7 0 z",
+          "M -8 -4 q 6 -4 10 0 q -4 5 -10 0 z",
+          "M 6 -13 q 4 -3 7 0 q -2 4 -7 0 z",
+          "M 18 -6 q 5 -4 9 0 q -3 5 -9 0 z",
+          "M 30 -12 q 4 -3 6 0 q -2 4 -6 0 z",
+          "M 34 -4 q 3 -2 5 0 q -2 3 -5 0 z",
+          "M -26 -15 q 3 -2 5 0 q -2 3 -5 0 z",
+        ].map((pore, index) => (
+          <g key={index}>
+            <path d={pore} style={{ fill: "var(--toast)" }} fillOpacity="0.4" />
+            <path
+              d={pore}
+              fill="none"
+              style={{ stroke: "var(--plaster)" }}
+              strokeOpacity="0.5"
+              strokeWidth="0.8"
+            />
+          </g>
+        ))}
       </g>
       {/* the filling seam, uneven as a real layer */}
+      {/* filling settles unevenly and bulges where it was cut */}
       <path
-        d="M -42 -12 Q -20 -17 0 -15 Q 22 -13 42 -17 L 42 -12 Q 22 -8 0 -10 Q -20 -12 -42 -8 Z"
+        d="M -42 -13 Q -30 -19 -18 -15 Q -6 -11 4 -16 Q 18 -21 30 -16 Q 37 -13 42 -17 L 42 -9 Q 32 -5 22 -8 Q 10 -12 0 -7 Q -12 -2 -24 -7 Q -34 -11 -42 -6 Z"
         style={{ fill: `var(--${accent})` }}
+      />
+      <path
+        d="M -34 -12 Q -22 -16 -12 -13"
+        fill="none"
+        style={{ stroke: "var(--plaster)" }}
+        strokeOpacity="0.35"
+        strokeWidth="1.4"
+        strokeLinecap="round"
       />
       <path
         d="M -42 -18 Q 0 -25 42 -18 L 42 -29 Q 0 -39 -42 -29 Z"
