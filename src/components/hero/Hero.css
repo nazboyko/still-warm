@@ -1,23 +1,33 @@
 .hero {
-  padding-block: var(--space-section);
+  /* Tighter than a section elsewhere: the first screen should be filled by the
+     exhibit, not by air around it. */
+  padding-block: clamp(1.5rem, 5vh, 3.5rem);
   /* The case glow spill is decorative; never let it widen the page. */
   overflow: hidden;
 }
 
 .hero-grid {
   display: grid;
-  gap: var(--space-12);
+  gap: var(--space-6);
   align-items: center;
   justify-items: center;
+}
+
+/* The dish is the hero. On a phone it arrives first; the DOM keeps the h1
+   ahead of it so the page still reads and tabs in a sensible order. */
+.hero-grid .display-case {
+  order: -1;
 }
 
 @media (min-width: 64rem) {
   .hero-grid {
     grid-template-columns: 1fr auto;
+    gap: var(--space-12);
     justify-items: start;
   }
 
   .hero-grid .display-case {
+    order: 0;
     justify-self: end;
   }
 }
@@ -44,19 +54,19 @@
 }
 
 .hero-title {
-  margin-top: var(--space-4);
+  margin-top: var(--space-2);
   font-size: var(--text-display);
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
 
 .hero-thesis {
-  margin-top: var(--space-6);
+  margin-top: var(--space-3);
   max-width: 30ch;
   text-wrap: balance;
   font-size: calc(var(--text-body) * 1.15);
 }
 
 .hero-cta {
-  margin-top: var(--space-8);
+  margin-top: var(--space-6);
 }
