@@ -10,13 +10,15 @@ export interface PostcardLine {
   x: number;
   y: number;
   color: string;
-  align: "left" | "right";
+  align: "left" | "right" | "center";
 }
 
 export interface PostcardLayout {
   width: number;
   height: number;
   background: string;
+  /* The catalogue photograph: the exhibit under its light, framed in brass. */
+  artwork: { x: number; y: number; width: number; height: number };
   placard: { x: number; y: number; width: number; height: number };
   topRule: { color: string; height: number };
   lines: PostcardLine[];
@@ -29,9 +31,12 @@ export const postcardFonts = {
 };
 
 const CARD = { width: 1200, height: 630 };
-const PLACARD = { x: 90, y: 90, width: 1020, height: 450 };
-const TEXT_X = 150;
-const TEXT_WIDTH = 900;
+/* Lockup above, the exhibit photograph in the middle, the placard beneath. The
+   artwork keeps the tableau's own 280:190 aspect. */
+const ARTWORK = { x: 411, y: 76, width: 378, height: 256 };
+const PLACARD = { x: 90, y: 360, width: 1020, height: 228 };
+const TEXT_X = 138;
+const TEXT_WIDTH = 924;
 
 export function wrapText(
   text: string,
@@ -77,24 +82,32 @@ export function layoutPostcard(
   const dishSize = fitFontSize(
     exhibit.dish,
     postcardFonts.display,
-    64,
-    40,
+    42,
+    30,
     TEXT_WIDTH,
     measure,
   );
   const memoryLines = wrapText(exhibit.memory, TEXT_WIDTH, (line) =>
-    measure(line, postcardFonts.body, 34),
+    measure(line, postcardFonts.body, 27),
   );
   const provenanceLine = `Gift of ${exhibit.donorName}. ${postcardCard.collectedPrefix} ${exhibit.collectedOn}.`;
-  const lockupLine = `${postcardCard.lockupName} - ${postcardCard.lockupSub} - ${postcardCard.url}`;
 
   const lines: PostcardLine[] = [
     {
+      text: `${postcardCard.lockupName} - ${postcardCard.lockupSub}`,
+      font: postcardFonts.utility,
+      size: 24,
+      x: CARD.width / 2,
+      y: 48,
+      color: "#9c8154",
+      align: "center",
+    },
+    {
       text: catalogLine,
       font: postcardFonts.utility,
-      size: 30,
+      size: 25,
       x: TEXT_X,
-      y: 190,
+      y: 404,
       color: "#7a2e35",
       align: "left",
     },
@@ -103,34 +116,34 @@ export function layoutPostcard(
       font: postcardFonts.display,
       size: dishSize,
       x: TEXT_X,
-      y: 272,
+      y: 452,
       color: "#191411",
       align: "left",
     },
     ...memoryLines.slice(0, 3).map((text, index) => ({
       text,
       font: postcardFonts.body,
-      size: 34,
+      size: 27,
       x: TEXT_X,
-      y: 340 + index * 48,
+      y: 488 + index * 34,
       color: "#191411",
       align: "left" as const,
     })),
     {
       text: provenanceLine,
       font: postcardFonts.utility,
-      size: 24,
+      size: 20,
       x: TEXT_X,
-      y: 498,
+      y: memoryLines.length > 2 ? 578 : 566,
       color: "#7a2e35",
       align: "left",
     },
     {
-      text: lockupLine,
+      text: postcardCard.url,
       font: postcardFonts.utility,
-      size: 22,
+      size: 20,
       x: CARD.width - PLACARD.x,
-      y: 588,
+      y: 616,
       color: "#9c8154",
       align: "right",
     },
@@ -140,6 +153,7 @@ export function layoutPostcard(
     width: CARD.width,
     height: CARD.height,
     background: "#191411",
+    artwork: ARTWORK,
     placard: PLACARD,
     topRule: { color: "#9c8154", height: 4 },
     lines,
