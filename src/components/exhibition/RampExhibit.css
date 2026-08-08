@@ -6,6 +6,21 @@
   margin-inline: auto;
 }
 
+/* The Ramp has no dish, so rather than centre a small card in a wide empty
+   section it takes the placard column the rooms use - Room 001's card starts
+   on the same line, and the empty half reads as wall, not as a gap. */
+@media (min-width: 64rem) {
+  .ramp-placard-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ramp-placard {
+    grid-column: 2;
+    margin-inline: 0;
+  }
+}
+
 .ramp-subtitle {
   margin-top: var(--space-1);
   font-family: var(--font-utility);

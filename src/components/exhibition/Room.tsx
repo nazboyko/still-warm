@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Exhibit, ExhibitId } from "../../content/exhibits.ts";
 import { useInView } from "../../hooks/useInView.ts";
 import "../../styles/steam.css";
@@ -28,11 +28,18 @@ export function Room({
 }: RoomProps) {
   const room = useRef<HTMLElement>(null);
   const inView = useInView(room);
+  // One-way: once a room has been seen it stays arrived, so nothing can put a
+  // placard back to invisible.
+  const [arrived, setArrived] = useState(false);
+  useEffect(() => {
+    if (inView) setArrived(true);
+  }, [inView]);
   return (
     <article
       ref={room}
       id={exhibit.id}
       className={`room room-${exhibit.number}${flip ? " room-flip" : ""}`}
+      data-arrived={arrived ? "true" : "false"}
       aria-labelledby={`${exhibit.id}-dish`}
     >
       <Container>

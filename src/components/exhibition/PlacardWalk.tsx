@@ -15,19 +15,39 @@ export function PlacardWalk({ from, prev, next, onWalk }: PlacardWalkProps) {
       {prev ? (
         <button
           type="button"
-          className="placard-toggle"
+          className="placard-walk-step"
+          /* The row shows the destination; the name still says the direction,
+             and the visible text stays inside it (WCAG label in name). */
+          aria-label={`Previous: CAT. ${prev.number} - ${prev.emotion.toUpperCase()}`}
           onClick={() => onWalk(prev.id)}
         >
-          Previous: CAT. {prev.number} - {prev.emotion.toUpperCase()}
+          <span aria-hidden="true" className="placard-walk-arrow">
+            &lt;-
+          </span>
+          <span className="placard-walk-label">
+            <span className="placard-walk-cat">CAT. {prev.number}</span>
+            <span className="placard-walk-room">
+              {prev.emotion.toUpperCase()}
+            </span>
+          </span>
         </button>
       ) : null}
       {next ? (
         <button
           type="button"
-          className="placard-toggle placard-walk-next"
+          className="placard-walk-step placard-walk-next"
+          aria-label={`Next: CAT. ${next.number} - ${next.emotion.toUpperCase()}`}
           onClick={() => onWalk(next.id)}
         >
-          Next: CAT. {next.number} - {next.emotion.toUpperCase()}
+          <span className="placard-walk-label">
+            <span className="placard-walk-cat">CAT. {next.number}</span>
+            <span className="placard-walk-room">
+              {next.emotion.toUpperCase()}
+            </span>
+          </span>
+          <span aria-hidden="true" className="placard-walk-arrow">
+            -&gt;
+          </span>
         </button>
       ) : null}
     </nav>

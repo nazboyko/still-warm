@@ -7,7 +7,7 @@
   /* Definite, because a centred grid item is sized by its content: without this
      the whole block narrows the moment the reserved copy gives way to a short
      dish name, and the frame's height follows its width down. */
-  width: min(100%, 34rem);
+  width: min(100%, 30rem);
   gap: var(--space-4);
   justify-items: center;
 }

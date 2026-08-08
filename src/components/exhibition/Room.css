@@ -203,14 +203,25 @@
 }
 
 @media (min-width: 64rem) {
+  /* Side by side, not overlapping: a dish laid over the card makes the text's
+     backdrop unresolvable to axe, which our gate treats as a failure. One
+     consistent gap instead. */
   .room-grid {
     grid-template-columns: 1fr 1fr;
     gap: var(--space-12);
+    align-items: center;
     justify-items: start;
   }
 
+  /* The text column fills its half, so a card's width never depends on how
+     long the curator note beside it happens to be. */
+  .room-text {
+    justify-self: stretch;
+  }
+
+  /* The dish fills its half so its edge can lap onto the label behind it. */
   .room-art {
-    width: min(100%, 28rem);
+    width: 100%;
   }
 
   .room-flip .room-art {
