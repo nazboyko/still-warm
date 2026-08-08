@@ -99,7 +99,7 @@
 
 .lockup-sub {
   font-family: var(--font-utility);
-  font-size: 0.7rem;
+  font-size: var(--text-utility);
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
   color: var(--brass);

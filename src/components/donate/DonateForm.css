@@ -5,6 +5,14 @@
   width: min(100%, 26rem);
 }
 
+.desk-eyebrow {
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
 .desk-title {
   font-family: var(--font-display);
   font-weight: 400;
