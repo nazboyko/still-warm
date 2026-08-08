@@ -28,13 +28,17 @@ test("the donation desk stays clean in all three states", async ({ page }) => {
   await page.goto("/");
   const scan = async () => {
     // The placard settles its lines as fields fill; axe cannot judge contrast
-    // on a line that is still fading, so let every animation finish first.
+    // on a line that is still fading, so let every FINITE animation finish.
+    // Steam loops forever by design - waiting for it to stop never ends, and
+    // whether a room's steam is in view here depends on font metrics per OS.
     await expect
       .poll(() =>
         page.evaluate(() =>
-          document
-            .getAnimations()
-            .every((animation) => animation.playState !== "running"),
+          document.getAnimations().every((animation) => {
+            if (animation.playState !== "running") return true;
+            const timing = animation.effect?.getTiming();
+            return timing?.iterations === Infinity;
+          }),
         ),
       )
       .toBe(true);
