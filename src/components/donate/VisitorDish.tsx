@@ -49,11 +49,12 @@ function Garnish({ spec }: { spec: SculptureSpec }) {
       <g style={{ fill: "var(--plaster)" }}>
         {spec.garnishSpots.flatMap((spot, index) =>
           [0, 1, 2, 3].map((step) => (
-            <circle
+            <ellipse
               key={`${index}-${step}`}
               cx={spot.x + (step - 1.5) * 7 + (index % 2 ? 3 : -3)}
               cy={spot.y + (step % 2 ? 5 : -4) + index * 3}
-              r={0.9 + (step % 3) * 0.5}
+              rx={0.9 + (step % 3) * 0.55}
+              ry={0.7 + ((step + index) % 3) * 0.45}
               fillOpacity={0.5 + (step % 2) * 0.25}
             />
           )),
@@ -66,10 +67,18 @@ function Garnish({ spec }: { spec: SculptureSpec }) {
     <g>
       {spec.garnishSpots.map((spot, index) => (
         <g key={index}>
-          <circle
+          <ellipse
             cx={spot.x}
             cy={spot.y}
-            r={spec.garnish === "seeds" ? spot.r * 0.45 : spot.r}
+            rx={
+              (spec.garnish === "seeds" ? spot.r * 0.5 : spot.r) *
+              (index % 2 ? 1.08 : 0.94)
+            }
+            ry={
+              (spec.garnish === "seeds" ? spot.r * 0.4 : spot.r) *
+              (index % 3 ? 0.9 : 1.05)
+            }
+            transform={`rotate(${(index % 3) * 14 - 12} ${spot.x} ${spot.y})`}
             style={{
               fill: spec.garnish === "seeds" ? "var(--toast-deep)" : tone,
             }}
