@@ -76,11 +76,11 @@ function Garnish({ spec }: { spec: SculptureSpec }) {
           />
           {spec.garnish === "berries" ? (
             <circle
-              cx={spot.x - spot.r * 0.34}
-              cy={spot.y - spot.r * 0.4}
-              r={spot.r * 0.24}
+              cx={spot.x + spot.r * (index % 2 ? 0.3 : -0.34)}
+              cy={spot.y - spot.r * (0.28 + (index % 3) * 0.14)}
+              r={spot.r * (0.16 + (index % 3) * 0.07)}
               style={{ fill: "var(--plaster)" }}
-              fillOpacity="0.85"
+              fillOpacity={index % 2 ? 0.7 : 0.9}
             />
           ) : null}
         </g>
