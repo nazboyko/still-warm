@@ -59,7 +59,12 @@ export function DonateSection({
   }, [donated]);
 
   return (
-    <section id="donate" className="donate" aria-labelledby="donate-title">
+    <section
+      id="donate"
+      className="donate"
+      data-donated={donated ? "true" : undefined}
+      aria-labelledby="donate-title"
+    >
       <Container>
         <SectionHeading
           id="donate-title"

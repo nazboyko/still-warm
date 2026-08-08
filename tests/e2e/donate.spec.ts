@@ -40,7 +40,7 @@ test("the full donation loop, keyboard only", async ({ page }) => {
   await expect(page.getByText("Your exhibit is now on display.")).toBeVisible();
 
   const postcardButton = page.getByRole("button", {
-    name: "Take a postcard from the gift shop",
+    name: /Take CAT\. V-\d{4} home/,
   });
   await expect(postcardButton).toBeFocused();
   const downloadPromise = page.waitForEvent("download");

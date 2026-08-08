@@ -118,6 +118,7 @@ export function DonateForm({ draft, onChange, onDonate }: DonateFormProps) {
       noValidate
       onSubmit={handleSubmit}
     >
+      <p className="desk-eyebrow">The register</p>
       <h3 id="donation-desk-title" className="desk-title">
         {donateForm.heading}
       </h3>

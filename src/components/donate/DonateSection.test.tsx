@@ -70,7 +70,7 @@ test("donation inks the frame and announces the exhibit", () => {
     "status",
   );
   expect(
-    screen.getByRole("button", { name: "Take a postcard from the gift shop" }),
+    screen.getByRole("button", { name: /Take CAT\. V-\d{4} home/ }),
   ).toHaveFocus();
 });
 

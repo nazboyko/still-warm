@@ -40,9 +40,15 @@
   padding-block: var(--space-2);
 }
 
-.site-header[data-compact="true"] .lockup-sub {
-  opacity: 0;
-  max-height: 0;
+/* At the top of the page the hero eyebrow already reads "The Museum of
+   Comfort"; the header holds its own line back rather than say it twice in
+   one screen, and takes it up again once the hero has scrolled away. Hidden
+   by opacity, so the lockup's accessible name never changes. */
+@media (min-width: 40rem) {
+  .site-header:not([data-compact="true"]) .lockup-sub {
+    opacity: 0;
+    max-height: 0;
+  }
 }
 
 .lockup-sub {
@@ -99,7 +105,7 @@
 
 .lockup-sub {
   font-family: var(--font-utility);
-  font-size: 0.7rem;
+  font-size: var(--text-utility);
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
   color: var(--brass);

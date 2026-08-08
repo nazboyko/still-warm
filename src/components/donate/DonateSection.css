@@ -65,3 +65,33 @@
   gap: var(--space-4);
   justify-items: start;
 }
+
+/* Donated, on a wide screen: the frame and the visitor's placard sit side by
+   side the way every room does, with the desk's actions under the label.
+   Mobile keeps stacking - there the payoff already reads in one column. */
+@media (min-width: 64rem) {
+  .donate[data-donated="true"] .donate-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    row-gap: var(--space-6);
+  }
+
+  .donate[data-donated="true"] .reserved {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-12);
+    /* The label hangs from the top of the frame, so its actions sit close
+       under it rather than across a gap. */
+    align-items: start;
+    justify-items: start;
+  }
+
+  /* Under the frame, not the label: the frame is the tall element, so its
+     actions follow it directly instead of across the label's shortfall. */
+  .donate[data-donated="true"] .donate-desk {
+    grid-column: 1;
+    grid-row: 2;
+  }
+}
