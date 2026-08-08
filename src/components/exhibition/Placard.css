@@ -31,7 +31,7 @@
   margin-top: var(--space-2);
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(1.4rem, 1.2rem + 1vw, 1.9rem);
+  font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2.25rem);
   line-height: var(--leading-display);
 }
 
