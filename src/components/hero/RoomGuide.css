@@ -32,6 +32,8 @@
 @media (min-width: 64rem) {
   .room-guide-answers {
     justify-content: flex-start;
+    /* Two and two: a fourth answer alone on its own line reads as a leftover. */
+    max-width: 22rem;
   }
 }
 

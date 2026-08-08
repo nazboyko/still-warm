@@ -8,7 +8,7 @@ const donated: DonatedExhibit = {
   feeling: "Quiet evenings",
   memory: "Stirred with a wooden spoon, never a recipe in sight.",
   donorName: "Marta",
-  number: "846",
+  number: "V-0846",
   collectedOn: "06 AUG 2026",
 };
 
@@ -77,7 +77,7 @@ test("a working canvas downloads the png postcard with the exhibit", async () =>
 
   render(<GiftShop donated={donated} />);
   fireEvent.click(
-    screen.getByRole("button", { name: "Take a postcard from the gift shop" }),
+    screen.getByRole("button", { name: /Take CAT\. V-\d{4} home/ }),
   );
   await waitFor(() =>
     expect(screen.getByRole("status")).toHaveTextContent(
@@ -105,7 +105,7 @@ test("a failed artwork load still ships the postcard, without it", async () => {
 
   render(<GiftShop donated={donated} />);
   fireEvent.click(
-    screen.getByRole("button", { name: "Take a postcard from the gift shop" }),
+    screen.getByRole("button", { name: /Take CAT\. V-\d{4} home/ }),
   );
   await waitFor(() =>
     expect(screen.getByRole("status")).toHaveTextContent(
@@ -123,7 +123,7 @@ test("without canvas the postcard leaves as plain text", async () => {
 
   render(<GiftShop donated={donated} />);
   fireEvent.click(
-    screen.getByRole("button", { name: "Take a postcard from the gift shop" }),
+    screen.getByRole("button", { name: /Take CAT\. V-\d{4} home/ }),
   );
   await waitFor(() =>
     expect(screen.getByRole("status")).toHaveTextContent(

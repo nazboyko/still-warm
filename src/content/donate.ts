@@ -61,7 +61,7 @@ export const donateStatus = {
 };
 
 export const giftShop = {
-  button: "Take a postcard from the gift shop",
+  button: (catalogNumber: string) => `Take CAT. ${catalogNumber} home`,
 };
 
 export const postcardCard = {
