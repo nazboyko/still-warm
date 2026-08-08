@@ -33,16 +33,39 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-test("a working canvas downloads the png postcard", async () => {
+class InstantImage {
+  onload: (() => void) | null = null;
+  onerror: (() => void) | null = null;
+  set src(_value: string) {
+    queueMicrotask(() => this.onload?.());
+  }
+}
+
+class BrokenImage {
+  onload: (() => void) | null = null;
+  onerror: (() => void) | null = null;
+  set src(_value: string) {
+    queueMicrotask(() => this.onerror?.());
+  }
+}
+
+const makeContext = () => ({
+  font: "",
+  fillStyle: "",
+  strokeStyle: "",
+  lineWidth: 0,
+  textAlign: "left",
+  fillRect: vi.fn(),
+  strokeRect: vi.fn(),
+  drawImage: vi.fn(),
+  fillText: vi.fn(),
+  measureText: vi.fn(() => ({ width: 100 })),
+});
+
+test("a working canvas downloads the png postcard with the exhibit", async () => {
   stubDownloadCapture();
-  const fakeContext = {
-    font: "",
-    fillStyle: "",
-    textAlign: "left",
-    fillRect: vi.fn(),
-    fillText: vi.fn(),
-    measureText: vi.fn(() => ({ width: 100 })),
-  };
+  vi.stubGlobal("Image", InstantImage);
+  const fakeContext = makeContext();
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(
     fakeContext as unknown as CanvasRenderingContext2D,
   );
@@ -62,6 +85,35 @@ test("a working canvas downloads the png postcard", async () => {
     ),
   );
   expect(clicks).toEqual(["still-warm-postcard.png"]);
+  expect(fakeContext.fillText).toHaveBeenCalled();
+  expect(fakeContext.drawImage).toHaveBeenCalledOnce();
+  expect(fakeContext.strokeRect).toHaveBeenCalledOnce();
+});
+
+test("a failed artwork load still ships the postcard, without it", async () => {
+  stubDownloadCapture();
+  vi.stubGlobal("Image", BrokenImage);
+  const fakeContext = makeContext();
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(
+    fakeContext as unknown as CanvasRenderingContext2D,
+  );
+  vi.spyOn(HTMLCanvasElement.prototype, "toBlob").mockImplementation(function (
+    callback: BlobCallback,
+  ) {
+    callback(new Blob(["png"], { type: "image/png" }));
+  });
+
+  render(<GiftShop donated={donated} />);
+  fireEvent.click(
+    screen.getByRole("button", { name: "Take a postcard from the gift shop" }),
+  );
+  await waitFor(() =>
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Your postcard is ready - downloading.",
+    ),
+  );
+  expect(clicks).toEqual(["still-warm-postcard.png"]);
+  expect(fakeContext.drawImage).not.toHaveBeenCalled();
   expect(fakeContext.fillText).toHaveBeenCalled();
 });
 

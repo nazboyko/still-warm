@@ -71,12 +71,17 @@ describe("layoutPostcard", () => {
     const layout = layoutPostcard(donated, measure);
     expect(layout.width).toBe(1200);
     expect(layout.height).toBe(630);
-    expect(layout.placard).toEqual({ x: 90, y: 90, width: 1020, height: 450 });
+    expect(layout.placard).toEqual({
+      x: 90,
+      y: 360,
+      width: 1020,
+      height: 228,
+    });
   });
 
   test("catalog line carries number and feeling in catalog voice", () => {
     const layout = layoutPostcard(donated, measure);
-    expect(layout.lines[0]!.text).toBe("CAT. V-0846 - QUIET EVENINGS");
+    expect(layout.lines[1]!.text).toBe("CAT. V-0846 - QUIET EVENINGS");
   });
 
   test("provenance line reads donor and collection date", () => {
@@ -93,7 +98,7 @@ describe("layoutPostcard", () => {
     expect(memoryLines.length).toBeLessThanOrEqual(3);
     for (const line of memoryLines) {
       expect(measure(line.text, line.font, line.size)).toBeLessThanOrEqual(900);
-      expect(line.y).toBeLessThan(498);
+      expect(line.y).toBeLessThan(560);
     }
   });
 
@@ -105,5 +110,40 @@ describe("layoutPostcard", () => {
         layout.placard.y + layout.placard.height,
       );
     }
+  });
+});
+
+describe("the catalogue composition", () => {
+  test("the artwork area stays clear of the lockup and the placard", () => {
+    for (const exhibit of [donated, maxed]) {
+      const layout = layoutPostcard(exhibit, measure);
+      const art = layout.artwork;
+      expect(art.y).toBeGreaterThan(56);
+      expect(art.y + art.height).toBeLessThan(layout.placard.y);
+      expect(art.x).toBeGreaterThan(0);
+      expect(art.x + art.width).toBeLessThan(layout.width);
+      // the tableau's own 280:190 aspect, kept so nothing squashes
+      expect(art.width / art.height).toBeCloseTo(280 / 190, 1);
+    }
+  });
+
+  test("maxed fields keep every placard line inside the placard", () => {
+    const layout = layoutPostcard(maxed, measure);
+    const placardLines = layout.lines.filter(
+      (line) => line.color === "#191411" || line.color === "#7a2e35",
+    );
+    for (const line of placardLines) {
+      expect(line.y).toBeGreaterThan(layout.placard.y);
+      expect(line.y).toBeLessThan(layout.placard.y + layout.placard.height);
+    }
+  });
+
+  test("the card ends with the domain and starts with the lockup", () => {
+    const layout = layoutPostcard(donated, measure);
+    expect(layout.lines[0]?.text).toContain("STILL WARM");
+    expect(layout.lines.at(-1)?.text).toBe(
+      "still-warm.boyko-nazar.workers.dev",
+    );
+    expect(layout.lines.at(-1)!.y).toBeLessThan(layout.height);
   });
 });

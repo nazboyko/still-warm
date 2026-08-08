@@ -49,7 +49,16 @@ export function VarenykDefs({ id }: { id: string }) {
   );
 }
 
-export function Varenyk({ id, glossD }: { id: string; glossD: string }) {
+export function Varenyk({
+  id,
+  glossD,
+  fine = false,
+}: {
+  id: string;
+  glossD: string;
+  /* Softer, size-varied pinch shadows for large renders of the same dumpling. */
+  fine?: boolean;
+}) {
   return (
     <>
       <path d={BODY} fill={`url(#${id}-dough)`} />
@@ -80,12 +89,12 @@ export function Varenyk({ id, glossD }: { id: string; glossD: string }) {
           />
           <line
             x1="4.4"
-            y1="1.6"
+            y1={fine ? 1.2 * lobe.s : 1.6}
             x2="4.4"
-            y2="-2.4"
+            y2={fine ? -2 * lobe.s : -2.4}
             style={{ stroke: "var(--toast-deep)" }}
-            strokeOpacity="0.55"
-            strokeWidth="0.9"
+            strokeOpacity={fine ? (index % 2 ? 0.34 : 0.45) : 0.55}
+            strokeWidth={fine ? 0.7 : 0.9}
             strokeLinecap="round"
           />
         </g>

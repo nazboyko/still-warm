@@ -60,9 +60,12 @@
   display: inline-flex;
   align-items: center;
   min-height: var(--touch-target);
-  padding: 0;
-  border: 0;
-  background: none;
+  /* A brass tab: the quiet mono labels around it are text, this is a thing you
+     press, and it says so without needing a hover. */
+  padding-inline: var(--space-3);
+  border: 1px solid var(--brass);
+  border-radius: var(--radius-placard);
+  background: rgb(156 129 84 / 0.12);
   cursor: pointer;
   font-family: var(--font-utility);
   font-size: var(--text-utility);
@@ -81,7 +84,8 @@
 }
 
 .placard-toggle:hover {
-  text-decoration: underline;
+  border-color: var(--beet);
+  background: rgb(156 129 84 / 0.22);
 }
 
 .placard-story-region p {

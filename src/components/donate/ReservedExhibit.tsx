@@ -14,10 +14,13 @@ interface ReservedExhibitProps {
 
 export function ReservedExhibit({ draft, donated }: ReservedExhibitProps) {
   const shown = donated ?? draft;
+  // Mid-word the catalog line would read "CAT. 007 - D"; the label waits for a
+  // word before it claims one, and the donated line always shows what was given.
+  const previewFeeling = shown.feeling.trim();
   const catalogLine = donated
     ? `CAT. ${donated.number} - ${donated.feeling.toUpperCase()}`
-    : shown.feeling.trim()
-      ? `CAT. ${reservedExhibit.number} - ${shown.feeling.toUpperCase()}`
+    : previewFeeling.length >= 3
+      ? `CAT. ${reservedExhibit.number} - ${previewFeeling.toUpperCase()}`
       : `CAT. ${reservedExhibit.number} - ${reservedExhibit.title.toUpperCase()}`;
   const hasDraftBody = Boolean(
     shown.dish.trim() || shown.memory.trim() || shown.donorName.trim(),

@@ -10,6 +10,13 @@ html {
   scroll-padding-top: var(--space-4);
 }
 
+/* In-page links travel rather than teleport - except where motion is unwelcome. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 @media (min-width: 40rem) {
   html {
     scroll-padding-top: calc(var(--header-compact) + var(--space-4));

@@ -1,6 +1,15 @@
 .display-case {
   margin: 0;
-  width: min(100%, 320px);
+  /* The case is the exhibit, not a thumbnail: on a phone it takes the width it
+     can get, on desktop it owns its half until the viewport height stops it.
+     The 0.8125 is the case's own 260:320 aspect. */
+  width: min(100%, 62vh * 0.8125);
+}
+
+@media (min-width: 64rem) {
+  .display-case {
+    width: min(46vw, 78vh * 0.8125);
+  }
 }
 
 .display-case-scene {
@@ -13,11 +22,12 @@
 .display-case-scene::before {
   content: "";
   position: absolute;
-  inset: -12% -35% 0;
+  inset: -16% -60% 0;
   background: radial-gradient(
-    55% 50% at 40% 62%,
-    rgb(232 169 78 / 0.12),
-    transparent 70%
+    66% 58% at 42% 58%,
+    rgb(232 169 78 / 0.2),
+    rgb(232 169 78 / 0.07) 48%,
+    transparent 74%
   );
   pointer-events: none;
 }
@@ -30,7 +40,7 @@
 
 .display-case-label {
   position: relative;
-  margin-top: var(--space-3);
+  margin-top: var(--space-1);
   font-family: var(--font-utility);
   font-size: var(--text-utility);
   letter-spacing: var(--tracking-utility);

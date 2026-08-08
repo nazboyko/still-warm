@@ -1,11 +1,24 @@
 .reserved {
   display: grid;
+  /* A definite column: left to size itself the column follows the placard's
+     max-content, which drags the frame's width - and through its aspect, its
+     height - every time the visitor types. */
+  grid-template-columns: minmax(0, 1fr);
+  /* Definite, because a centred grid item is sized by its content: without this
+     the whole block narrows the moment the reserved copy gives way to a short
+     dish name, and the frame's height follows its width down. */
+  width: min(100%, 34rem);
   gap: var(--space-4);
   justify-items: center;
 }
 
 .reserved-frame {
-  width: min(100%, 26rem);
+  width: 100%;
+  /* The frame keeps its shape whatever the visitor types: its size is the
+     exhibit's, never the placard's, so typing cannot shift the layout. */
+  aspect-ratio: 280 / 190;
+  display: grid;
+  align-content: center;
   padding: var(--space-4);
   border: 3px solid var(--brass);
   /* The reserved spot stays dimmer than any lit exhibit. */
@@ -17,7 +30,10 @@
 }
 
 .reserved-placard {
-  width: min(100%, 26rem);
+  width: 100%;
+  /* The label reserves the room a full entry needs, so the visitor's words grow
+     into space that was already theirs instead of pushing the page down. */
+  min-height: 15rem;
   /* Visitor-typed text: an unbroken word must break, never widen the museum. */
   overflow-wrap: anywhere;
 }
@@ -144,5 +160,30 @@
   [data-revealed="true"] .scene-dish > * {
     animation: none;
     opacity: 1;
+  }
+}
+
+/* The visitor's words settle onto the label rather than appearing mid-keystroke. */
+.reserved-dish,
+.reserved-text,
+.reserved-donor {
+  animation: placard-settle var(--dur-quiet) var(--ease-soft);
+}
+
+@keyframes placard-settle {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reserved-dish,
+  .reserved-text,
+  .reserved-donor {
+    animation: none;
   }
 }

@@ -52,6 +52,21 @@
     max-height var(--dur-quiet) var(--ease-soft);
 }
 
+/* The phone's first screen already says "The Museum of Comfort" in the hero;
+   the header keeps the line for screen readers and gives the pixels back. */
+@media (max-width: 39.999rem) {
+  .lockup-sub {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .site-header,
   .lockup-sub {

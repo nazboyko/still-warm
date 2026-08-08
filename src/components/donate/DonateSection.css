@@ -16,19 +16,29 @@
 
 .donate-grid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-12);
   justify-items: center;
 }
 
+/* Grid items default to a min-content floor, so a long memory was widening the
+   column, shrinking the frame's width and - through its aspect - its height.
+   That is the jump the visitor saw on the first keystroke. */
+.donate-grid > * {
+  min-width: 0;
+}
+
 @media (min-width: 64rem) {
   .donate-grid {
-    grid-template-columns: 1fr 1fr;
+    /* The exhibit-in-waiting leads; the desk is where you sign the register. */
+    grid-template-columns: 1.15fr 0.85fr;
     align-items: start;
     justify-items: start;
   }
 
   .donate-grid .reserved {
-    justify-self: end;
+    order: -1;
+    justify-self: start;
   }
 }
 

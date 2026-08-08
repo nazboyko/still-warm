@@ -1,7 +1,7 @@
 import type { ExhibitSubmission } from "../../content/donate.ts";
 
 export type FoodKind = "dumpling" | "disc" | "bun" | "stack" | "bowl" | "wedge";
-export type GarnishKind = "berries" | "sprig" | "drizzle" | "seeds";
+export type GarnishKind = "berries" | "dusting" | "drizzle" | "seeds";
 export type AccentTone = "beet" | "toast-deep" | "syrup";
 
 export interface PlacedFood {
@@ -21,7 +21,7 @@ export interface SculptureSpec {
 }
 
 const kinds: FoodKind[] = ["dumpling", "disc", "bun", "stack", "bowl", "wedge"];
-const garnishes: GarnishKind[] = ["berries", "sprig", "drizzle", "seeds"];
+const garnishes: GarnishKind[] = ["berries", "dusting", "drizzle", "seeds"];
 const accents: AccentTone[] = ["beet", "toast-deep", "syrup"];
 
 /* Plated as one dish would be: a bowl or a stack stands alone, small things

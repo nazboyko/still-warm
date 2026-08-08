@@ -8,63 +8,88 @@ function Garnish({ spec }: { spec: SculptureSpec }) {
   if (spec.garnish === "drizzle") {
     return (
       <g>
-        {/* sauce: an uneven ribbon, gathered in a pool where it started */}
-        <ellipse
-          cx="97"
-          cy="128"
-          rx="8"
-          ry="3.6"
+        {/* where the spoon started and the sauce gathered */}
+        <path
+          d="M 88 128 q 9 -6 17 -2 q 5 4 -1 8 q -11 4 -16 -2 z"
           style={{ fill: tone }}
-          fillOpacity="0.72"
+          fillOpacity="0.75"
         />
-        <g style={{ fill: tone }} fillOpacity="0.68">
-          <path d="M 97 126 C 107 119.5 118 117.5 129 121 L 129.6 123.6 C 119 121 108 123 98.6 129.6 Z" />
-          <path d="M 136 122.5 C 144 125 152 125.8 159 123.4 L 159.6 125.4 C 152 128 143 127.4 135.4 124.4 Z" />
-          <path d="M 166 122.6 C 174 120.6 181 117 187 113 L 188.4 115.8 C 182.6 120 175.6 123.4 167 125.6 Z" />
+        <g style={{ fill: tone }} fillOpacity="0.7">
+          {/* one gesture: thick, thinning, thickening again as it slows */}
+          <path d="M 102 125 C 112 117 123 116 133 121 C 139 124 145 125.5 151 125 L 151.4 127 C 145 127.8 138 126.4 131 123 C 122 119 113 120 104 129 Z" />
+          <path d="M 151 125 C 158 124.4 165 122 172 118.5 C 178 115.5 184 112.5 189 110 L 191 114.5 C 185 117.5 179 120.8 173 124 C 166 127.4 158 128.6 151.4 127 Z" />
         </g>
         <g
           fill="none"
           style={{ stroke: "var(--plaster)" }}
-          strokeOpacity="0.45"
-          strokeWidth="1.2"
           strokeLinecap="round"
         >
-          <path d="M 103 124 C 112 119 120 118 127 121" />
-          <path d="M 171 121 C 177 118 182 115 186 113" />
-          <path d="M 92 127 Q 97 130 102 127" />
+          <path
+            d="M 109 122 C 118 117 126 117 132 120"
+            strokeOpacity="0.6"
+            strokeWidth="1.6"
+          />
+          <path
+            d="M 174 122 C 180 119 184 116 188 114"
+            strokeOpacity="0.55"
+            strokeWidth="1.3"
+          />
+          <path
+            d="M 92 126 q 6 -3 11 0"
+            strokeOpacity="0.5"
+            strokeWidth="1.4"
+          />
         </g>
       </g>
     );
   }
-  if (spec.garnish === "sprig") {
+
+  if (spec.garnish === "dusting") {
     return (
-      <g style={{ stroke: "var(--brass)" }} fill="none" strokeLinecap="round">
-        <path d="M 150 124 Q 158 112 172 106" strokeWidth="1.8" />
-        <path d="M 156 116 Q 160 108 154 104" strokeWidth="1.4" />
-        <path d="M 162 111 Q 168 104 176 104" strokeWidth="1.4" />
-        <path d="M 158 120 Q 166 118 172 112" strokeWidth="1.2" />
+      <g style={{ fill: "var(--plaster)" }}>
+        {spec.garnishSpots.flatMap((spot, index) =>
+          [0, 1, 2, 3].map((step) => (
+            <ellipse
+              key={`${index}-${step}`}
+              cx={spot.x + (step - 1.5) * 7 + (index % 2 ? 3 : -3)}
+              cy={spot.y + (step % 2 ? 5 : -4) + index * 3}
+              rx={0.9 + (step % 3) * 0.55}
+              ry={0.7 + ((step + index) % 3) * 0.45}
+              fillOpacity={0.5 + (step % 2) * 0.25}
+            />
+          )),
+        )}
       </g>
     );
   }
+
   return (
     <g>
       {spec.garnishSpots.map((spot, index) => (
         <g key={index}>
-          <circle
+          <ellipse
             cx={spot.x}
             cy={spot.y}
-            r={spec.garnish === "seeds" ? spot.r * 0.45 : spot.r}
+            rx={
+              (spec.garnish === "seeds" ? spot.r * 0.5 : spot.r) *
+              (index % 2 ? 1.08 : 0.94)
+            }
+            ry={
+              (spec.garnish === "seeds" ? spot.r * 0.4 : spot.r) *
+              (index % 3 ? 0.9 : 1.05)
+            }
+            transform={`rotate(${(index % 3) * 14 - 12} ${spot.x} ${spot.y})`}
             style={{
               fill: spec.garnish === "seeds" ? "var(--toast-deep)" : tone,
             }}
           />
           {spec.garnish === "berries" ? (
             <circle
-              cx={spot.x - spot.r * 0.34}
-              cy={spot.y - spot.r * 0.4}
-              r={spot.r * 0.24}
+              cx={spot.x + spot.r * (index % 2 ? 0.3 : -0.34)}
+              cy={spot.y - spot.r * (0.28 + (index % 3) * 0.14)}
+              r={spot.r * (0.16 + (index % 3) * 0.07)}
               style={{ fill: "var(--plaster)" }}
-              fillOpacity="0.85"
+              fillOpacity={index % 2 ? 0.7 : 0.9}
             />
           ) : null}
         </g>
