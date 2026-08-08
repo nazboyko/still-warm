@@ -1,5 +1,6 @@
 import { createElement } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { flushSync } from "react-dom";
+import { createRoot } from "react-dom/client";
 import type { SculptureSpec } from "./exhibitSculpture.ts";
 import { ExhibitTableau } from "./ExhibitTableau.tsx";
 
@@ -31,11 +32,21 @@ function inlineTokens(): string {
 }
 
 export function exhibitSvgDataUrl(spec: SculptureSpec): string {
-  const markup = [
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 190">',
-    `<style>svg { ${inlineTokens()} }</style>`,
-    renderToStaticMarkup(createElement(ExhibitTableau, { spec })),
-    "</svg>",
-  ].join("");
+  // Rendered synchronously into a detached root: the client renderer is
+  // already in the bundle, where the server serializer would cost 59KB gzip.
+  const host = document.createElement("div");
+  const root = createRoot(host);
+  flushSync(() => {
+    root.render(
+      createElement(
+        "svg",
+        { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 280 190" },
+        createElement("style", null, `svg { ${inlineTokens()} }`),
+        createElement(ExhibitTableau, { spec }),
+      ),
+    );
+  });
+  const markup = host.innerHTML;
+  root.unmount();
   return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(markup)))}`;
 }
