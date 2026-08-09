@@ -102,6 +102,9 @@
 .donate-after {
   display: flex;
   flex-wrap: wrap;
+  /* Never stretch: the postcard button ships inside its wrapper with a status
+     line, and stretching would inflate its neighbour to the wrapper's height. */
+  align-items: flex-start;
   gap: var(--space-4);
 }
 

@@ -110,7 +110,10 @@
   }
 }
 
+/* Donated, the words are frozen: nothing will grow into the typing reserve,
+   so the label hugs what was written instead of trailing empty plaster. */
 .reserved-placard[data-donated="true"] {
+  min-height: 0;
   box-shadow:
     0 30px 60px -24px rgb(0 0 0 / 0.62),
     0 0 70px -12px rgb(232 169 78 / 0.3);
