@@ -54,6 +54,7 @@
 
   /* Ink silhouettes print; the gallery's glows and cones do not. */
   .art-cone,
+  .art-fixture,
   .art-glow-lit,
   .steam-wisp,
   .dish-glow {

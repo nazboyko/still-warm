@@ -181,7 +181,7 @@ export function PancakesArt({
         className="art-cone"
         id="pancakes-beam"
         x={160}
-        top={6}
+        top={20}
         bottom={196}
         spread={60}
         opacity={0.1}

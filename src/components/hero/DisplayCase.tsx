@@ -55,7 +55,7 @@ export function DisplayCase() {
             <SpotBeam
               id="case-beam"
               x={130}
-              top={12}
+              top={26}
               bottom={218}
               spread={56}
               opacity={0.12}

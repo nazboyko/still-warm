@@ -4,6 +4,7 @@ interface SpotBeamProps {
   /** Prefix for this beam's own gradient and mask ids. */
   id: string;
   x: number;
+  /** Where the beam leaves the lamp; the fixture hangs just above it. */
   top: number;
   bottom: number;
   /** Half-width of the beam where it lands. */
@@ -29,7 +30,7 @@ export function SpotBeam({
   const haze = spread * 1.8;
   const height = bottom - top;
   return (
-    <g className={className} opacity={opacity}>
+    <>
       <defs>
         <linearGradient
           id={`${id}-fall`}
@@ -79,34 +80,72 @@ export function SpotBeam({
           <stop offset="40%" stopColor={LIGHT} stopOpacity="0.3" />
           <stop offset="100%" stopColor={LIGHT} stopOpacity="0" />
         </radialGradient>
+        <radialGradient id={`${id}-lamp`}>
+          <stop offset="0%" stopColor="#fff4dd" stopOpacity="1" />
+          <stop offset="55%" stopColor={LIGHT} stopOpacity="0.85" />
+          <stop offset="100%" stopColor={LIGHT} stopOpacity="0" />
+        </radialGradient>
       </defs>
-      {/* Faint wide skirt, brighter core: the light thins outward from the
-          middle of the beam rather than filling one flat wedge. */}
-      <g mask={`url(#${id}-soft)`}>
+
+      {/* The lamp the light comes out of. Without it the beam reads as cropped
+          by the top of the frame instead of lit from somewhere. It keeps its
+          own brightness, so dimming the beam never dims the fixture. */}
+      <g className="art-fixture">
         <path
-          d={cone(x, top, bottom, haze)}
-          fill={`url(#${id}-fall)`}
+          d={`M${x - 9} ${top - 15} L${x + 9} ${top - 15} L${x + 6} ${top - 2} L${x - 6} ${top - 2} Z`}
+          fill="#20180f"
+          stroke="#9c8154"
+          strokeWidth="0.7"
+          strokeOpacity="0.7"
+        />
+        <ellipse
+          cx={x}
+          cy={top - 2}
+          rx="6.4"
+          ry="2.6"
+          fill={`url(#${id}-lamp)`}
+        />
+        <ellipse
+          cx={x}
+          cy={top + 2}
+          rx="13"
+          ry="7"
+          fill={`url(#${id}-lamp)`}
           opacity="0.3"
         />
-        <path
-          d={cone(x, top, bottom, spread)}
-          fill={`url(#${id}-fall)`}
-          opacity="0.55"
-        />
-        <path
-          d={cone(x, top, bottom, spread * 0.55)}
-          fill={`url(#${id}-fall)`}
+      </g>
+
+      <g className={className} opacity={opacity}>
+        {/* Faint wide skirt, brighter core: the light thins outward from the
+            middle of the beam rather than filling one flat wedge. */}
+        <g mask={`url(#${id}-soft)`}>
+          <path
+            className="art-haze"
+            d={cone(x, top, bottom, haze)}
+            fill={`url(#${id}-fall)`}
+            opacity="0.3"
+          />
+          <path
+            d={cone(x, top, bottom, spread)}
+            fill={`url(#${id}-fall)`}
+            opacity="0.55"
+          />
+          <path
+            d={cone(x, top, bottom, spread * 0.55)}
+            fill={`url(#${id}-fall)`}
+          />
+        </g>
+        {/* Where the beam lands: warm at the centre, gone by the edge. */}
+        <ellipse
+          className="art-pool"
+          cx={x}
+          cy={bottom}
+          rx={spread * 1.9}
+          ry={spread * 0.34}
+          fill={`url(#${id}-pool)`}
         />
       </g>
-      {/* Where the beam lands: warm at the centre, gone by the edge. */}
-      <ellipse
-        cx={x}
-        cy={bottom}
-        rx={spread * 1.9}
-        ry={spread * 0.34}
-        fill={`url(#${id}-pool)`}
-      />
-    </g>
+    </>
   );
 }
 

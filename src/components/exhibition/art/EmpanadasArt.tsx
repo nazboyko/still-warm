@@ -228,7 +228,7 @@ export function EmpanadasArt({
         className="art-cone"
         id="empanadas-beam"
         x={160}
-        top={6}
+        top={20}
         bottom={196}
         spread={60}
         opacity={0.08}

@@ -52,7 +52,7 @@ export function VarenykyArt({
         className="art-cone"
         id="varenyky-beam"
         x={160}
-        top={6}
+        top={20}
         bottom={196}
         spread={60}
         opacity={0.08}
