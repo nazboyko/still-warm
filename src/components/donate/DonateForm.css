@@ -112,3 +112,9 @@
     transition: none;
   }
 }
+
+/* The submit spans the desk, label centred: one full-width action to close
+   the form, the same width as the fields it completes. */
+.donate-form .button {
+  width: 100%;
+}
