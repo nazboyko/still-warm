@@ -52,6 +52,28 @@
   min-width: 0;
 }
 
+.donate-head {
+  display: grid;
+  gap: var(--space-1);
+  /* One height whether empty or announcing, so the exhibit never moves. */
+  min-height: 3.75rem;
+  margin-bottom: var(--space-6);
+}
+
+.donate-head-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.donate-head-line::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--tungsten);
+}
+
 .donate-column-head {
   display: grid;
   gap: var(--space-1);
@@ -81,11 +103,11 @@
   border-left: 3px solid var(--brass);
 }
 
-/* Directly beneath the placard they act on. */
+/* Directly beneath the placard they act on, one under the other. */
 .donate-after {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: var(--space-4);
+  justify-items: start;
 }
 
 /* The actions belong to the room, not to the placard: dark fill, brass
