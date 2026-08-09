@@ -46,7 +46,7 @@ test("reserved exhibit is present before the donate form exists", async ({
   page,
 }) => {
   await page.goto("/");
-  await expect(page.locator(".reserved")).toContainText(
+  await expect(page.locator(".reserved-placard")).toContainText(
     "This space is held for a memory that has not arrived yet.",
   );
 });

@@ -1,8 +1,10 @@
+/* The form fills its column, so every field is the same width and the submit
+   lines up with them rather than sitting centred under them. */
 .donate-form {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-6);
   justify-items: start;
-  width: min(100%, 26rem);
+  width: 100%;
 }
 
 .desk-eyebrow {

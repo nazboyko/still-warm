@@ -16,7 +16,7 @@ import { DonateForm } from "./DonateForm.tsx";
 import "./DonateSection.css";
 import { GiftShop } from "./GiftShop.tsx";
 import { makeDonatedExhibit } from "./donationRecord.ts";
-import { ReservedExhibit } from "./ReservedExhibit.tsx";
+import { ExhibitFrame, ExhibitPlacard } from "./ReservedExhibit.tsx";
 
 const emptyDraft: ExhibitSubmission = {
   dish: "",
@@ -80,42 +80,49 @@ export function DonateSection({
           <div className="donate-grid">
             {/* The register comes first, in the DOM and on the page: you write
                 the label, then you watch it appear. */}
-            <div className="donate-desk">
+            {/* The exhibit hangs on the left in both states. What the visitor
+                watched while typing and what they are given at the end are the
+                same frame in the same place; only its contents change. */}
+            <div className="donate-exhibit">
+              <ExhibitFrame donated={donated} />
+            </div>
+            <div className="donate-column">
               {donated ? (
-                <div ref={afterRef} className="donate-after">
-                  <GiftShop donated={donated} />
-                  <Button onClick={resetDesk}>{donateForm.reset}</Button>
-                </div>
+                <>
+                  <div className="donate-column-head">
+                    <h3 className="preview-heading">
+                      {donatePreview.donated.heading}
+                    </h3>
+                    <p className="preview-note">{donatePreview.donated.note}</p>
+                  </div>
+                  <ExhibitPlacard draft={draft} donated={donated} />
+                  <div ref={afterRef} className="donate-after">
+                    <GiftShop donated={donated} />
+                    <Button onClick={resetDesk}>{donateForm.reset}</Button>
+                  </div>
+                </>
               ) : (
-                <DonateForm
-                  draft={draft}
-                  onChange={updateDraft}
-                  onDonate={donate}
-                />
+                <>
+                  <DonateForm
+                    draft={draft}
+                    onChange={updateDraft}
+                    onDonate={donate}
+                  />
+                  {/* The label forms under the fields as they are filled: the
+                      preview is the point of the section, so it stays. */}
+                  <div className="donate-column-head">
+                    <h3 className="preview-heading">
+                      {donatePreview.waiting.heading}
+                    </h3>
+                    <p className="preview-note">{donatePreview.waiting.note}</p>
+                  </div>
+                  <ExhibitPlacard draft={draft} donated={donated} />
+                </>
               )}
               {/* Always mounted, so the live region is there to announce into. */}
               <p role="status" className="donate-status">
                 {donated ? donateStatus.donated : ""}
               </p>
-            </div>
-            {/* The exhibit never moves. What the visitor watched while typing
-                and what they are given at the end are the same frame in the
-                same place; only what is inside it changes. The heading above
-                it keeps its box for the same reason. */}
-            <div className="donate-preview">
-              <div className="donate-preview-head">
-                <h3 className="preview-heading">
-                  {donated
-                    ? donatePreview.donated.heading
-                    : donatePreview.waiting.heading}
-                </h3>
-                <p className="preview-note">
-                  {donated
-                    ? donatePreview.donated.note
-                    : donatePreview.waiting.note}
-                </p>
-              </div>
-              <ReservedExhibit draft={draft} donated={donated} />
             </div>
           </div>
         </div>

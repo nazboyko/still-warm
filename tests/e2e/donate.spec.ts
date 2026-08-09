@@ -18,7 +18,7 @@ async function fillDesk(page: Page, donor = "") {
 test("typing renders the placard before any submit", async ({ page }) => {
   await page.goto("/");
   await field(page, "What dish feels like home?").fill("Rice pudding");
-  const reserved = page.locator(".reserved");
+  const reserved = page.locator(".reserved-placard");
   await expect(reserved).toContainText("Rice pudding");
   await expect(reserved).toContainText("CAT. 007 - RESERVED");
   await field(page, "What feeling does it hold?").fill("Quiet evenings");
@@ -30,7 +30,7 @@ test("the full donation loop, keyboard only", async ({ page }) => {
   await fillDesk(page, "Marta");
   await field(page, "Who is donating it? (optional)").press("Enter");
 
-  const reserved = page.locator(".reserved");
+  const reserved = page.locator(".reserved-placard");
   await expect(reserved).toContainText(/CAT\. V-\d{4} - QUIET EVENINGS/);
   await expect(reserved).toContainText("Gift of Marta.");
   await expect(page.locator(".reserved-frame svg")).toHaveAttribute(
@@ -77,7 +77,9 @@ test("reset returns the reserved frame", async ({ page }) => {
   await page.getByRole("button", { name: "Donate the exhibit" }).click();
   await page.getByRole("button", { name: "Reset the form" }).click();
 
-  await expect(page.locator(".reserved")).toContainText("CAT. 007 - RESERVED");
+  await expect(page.locator(".reserved-placard")).toContainText(
+    "CAT. 007 - RESERVED",
+  );
   await expect(page.locator(".reserved-frame svg")).toHaveAttribute(
     "data-revealed",
     "false",
@@ -90,7 +92,9 @@ test("the default donor is a visitor", async ({ page }) => {
   await page.goto("/");
   await fillDesk(page);
   await page.getByRole("button", { name: "Donate the exhibit" }).click();
-  await expect(page.locator(".reserved")).toContainText("Gift of a visitor.");
+  await expect(page.locator(".reserved-placard")).toContainText(
+    "Gift of a visitor.",
+  );
 });
 
 test("maxed-out fields keep the page inside the viewport", async ({ page }) => {

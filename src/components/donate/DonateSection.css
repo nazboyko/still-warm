@@ -23,42 +23,40 @@
   padding: clamp(var(--space-6), 4vw, var(--space-12));
 }
 
+/* Exhibit on the left, everything written about it on the right, in both
+   states. One panel, one border: the frame, the label and the actions are one
+   object rather than groups floating apart. */
 .donate-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-12);
-}
-
-/* Grid items default to a min-content floor, so a long memory was widening the
-   column, shrinking the frame's width and - through its aspect - its height.
-   That is the jump the visitor saw on the first keystroke. */
-.donate-grid > * {
-  min-width: 0;
+  gap: var(--space-8);
+  align-items: start;
 }
 
 @media (min-width: 64rem) {
   .donate-grid {
-    /* Write on the left, watch on the right. */
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: start;
+    /* The written column carries more, so it gets more room. */
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: var(--space-12);
   }
 }
 
-.donate-desk {
-  display: grid;
-  gap: var(--space-4);
-  justify-items: start;
-  width: min(100%, 26rem);
+.donate-exhibit {
+  width: 100%;
 }
 
-.donate-preview {
+.donate-column {
   display: grid;
-  gap: var(--space-4);
-  justify-items: start;
+  gap: var(--space-6);
+  justify-items: stretch;
+  min-width: 0;
 }
 
-/* The preview says what it is. Without this it was simply a card that appeared
-   next to a form, and nobody could tell it was theirs. */
+.donate-column-head {
+  display: grid;
+  gap: var(--space-1);
+}
+
 .preview-heading {
   font-family: var(--font-utility);
   font-size: var(--text-utility);
@@ -68,7 +66,6 @@
 }
 
 .preview-note {
-  margin-top: calc(var(--space-2) * -1);
   font-size: var(--text-utility);
   color: var(--plaster);
 }
@@ -84,28 +81,11 @@
   border-left: 3px solid var(--brass);
 }
 
+/* Directly beneath the placard they act on. */
 .donate-after {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-4);
-  justify-items: start;
-}
-
-/* The heading above the exhibit keeps a fixed box, so swapping "Live preview"
-   for "Your exhibit is on display" cannot nudge the frame up or down. Nothing
-   about the exhibit column changes between the two states: the object the
-   visitor watched while typing is the object they are given. */
-.donate-preview-head {
-  min-height: 4.25rem;
-}
-
-/* Donated, the register is gone and its column would otherwise be a void with
-   two buttons at the top of it. The actions settle against the middle of the
-   exhibit instead, which is what they act on. */
-@media (min-width: 64rem) {
-  .donate[data-donated="true"] .donate-desk {
-    align-self: stretch;
-    align-content: center;
-  }
 }
 
 /* The actions belong to the room, not to the placard: dark fill, brass
