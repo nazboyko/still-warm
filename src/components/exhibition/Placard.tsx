@@ -27,6 +27,7 @@ export function Placard({
   const reducedMotion = useReducedMotion();
   const placardRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const guardRef = useRef<number | null>(null);
   // Only a direct close (this trigger, Escape) folds out; a spotlight swap unmounts at once.
   const [exiting, setExiting] = useState(false);
 
@@ -35,18 +36,30 @@ export function Placard({
   // runs for a quarter second, and Firefox's scroll anchoring re-adjusts after
   // any single frame we could pick - so stand guard across the whole collapse.
   function keepTriggerInView() {
-    const watch = (remaining: number) => {
+    // One guard at a time. Left to overlap, consecutive closes each keep their
+    // own watch running and correct against each other - the same accumulating
+    // correction that has bitten this page three times.
+    if (guardRef.current !== null) cancelAnimationFrame(guardRef.current);
+    const watch = (clear: number, cap: number) => {
       const trigger = triggerRef.current;
       const header = document.querySelector(".site-header-bar");
+      let settled = clear;
       if (trigger && header) {
         const headerBottom = header.getBoundingClientRect().bottom;
         if (trigger.getBoundingClientRect().top < headerBottom) {
           trigger.scrollIntoView({ block: "nearest", behavior: "instant" });
+          settled = 0;
+        } else {
+          settled += 1;
         }
       }
-      if (remaining > 0) requestAnimationFrame(() => watch(remaining - 1));
+      // Stand down once the trigger has been clear across the whole collapse.
+      guardRef.current =
+        settled < 20 && cap > 0
+          ? requestAnimationFrame(() => watch(settled, cap - 1))
+          : null;
     };
-    requestAnimationFrame(() => watch(30));
+    guardRef.current = requestAnimationFrame(() => watch(0, 40));
   }
 
   function handleToggle() {

@@ -90,22 +90,30 @@ export function Exhibition({
   useLayoutEffect(() => {
     if (anchor.current) {
       const held = anchor.current;
-      // Correct now, then again as the layout settles: the closing room can go
-      // on shrinking after this effect runs, and a single correction leaves the
-      // clicked label displaced by whatever collapsed afterwards.
-      const hold = (remaining: number) => {
+      // Correct until the layout has actually come to rest, not for a fixed
+      // count of frames: on a slow machine the closing room is still shrinking
+      // when any fixed budget runs out, and whatever collapses after the last
+      // correction is drift the visitor keeps. Rest means six quiet frames in
+      // a row; the cap only exists so nothing runs forever.
+      const hold = (quiet: number, cap: number) => {
         const trigger = roomToggle(held.id);
+        let settled = quiet;
         if (trigger) {
           const drift = trigger.getBoundingClientRect().top - held.top;
           // Instant, never smooth: the page's smooth scrolling would animate
           // this into exactly the drift it exists to cancel.
           if (Math.abs(drift) > 1) {
             window.scrollBy({ top: drift, behavior: "instant" });
+            settled = 0;
+          } else {
+            settled += 1;
           }
         }
-        if (remaining > 0) requestAnimationFrame(() => hold(remaining - 1));
+        if (settled < 6 && cap > 0) {
+          requestAnimationFrame(() => hold(settled, cap - 1));
+        }
       };
-      hold(6);
+      hold(0, 90);
       anchor.current = null;
     }
     if (pendingWalk.current) {
