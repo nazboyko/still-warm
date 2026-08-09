@@ -31,17 +31,22 @@ export function Placard({
   const [exiting, setExiting] = useState(false);
 
   // The panel collapses after focus returns, and the shorter document can slide
-  // the trigger under the sticky header, so check once the layout has settled.
+  // the trigger under the sticky header. One check is not enough: the collapse
+  // runs for a quarter second, and Firefox's scroll anchoring re-adjusts after
+  // any single frame we could pick - so stand guard across the whole collapse.
   function keepTriggerInView() {
-    requestAnimationFrame(() => {
+    const watch = (remaining: number) => {
       const trigger = triggerRef.current;
       const header = document.querySelector(".site-header-bar");
-      if (!trigger || !header) return;
-      const headerBottom = header.getBoundingClientRect().bottom;
-      if (trigger.getBoundingClientRect().top < headerBottom) {
-        trigger.scrollIntoView({ block: "nearest", behavior: "instant" });
+      if (trigger && header) {
+        const headerBottom = header.getBoundingClientRect().bottom;
+        if (trigger.getBoundingClientRect().top < headerBottom) {
+          trigger.scrollIntoView({ block: "nearest", behavior: "instant" });
+        }
       }
-    });
+      if (remaining > 0) requestAnimationFrame(() => watch(remaining - 1));
+    };
+    requestAnimationFrame(() => watch(30));
   }
 
   function handleToggle() {
