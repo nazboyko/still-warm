@@ -80,39 +80,42 @@ export function DonateSection({
           <div className="donate-grid">
             {/* The register comes first, in the DOM and on the page: you write
                 the label, then you watch it appear. */}
-            {donated ? null : (
-              <div className="donate-desk">
-                <DonateForm
-                  draft={draft}
-                  onChange={updateDraft}
-                  onDonate={donate}
-                />
-              </div>
-            )}
-            <div className="donate-preview">
-              <h3 className="preview-heading">
-                {donated
-                  ? donatePreview.donated.heading
-                  : donatePreview.waiting.heading}
-              </h3>
-              <p className="preview-note">
-                {donated
-                  ? donatePreview.donated.note
-                  : donatePreview.waiting.note}
-              </p>
-              <ReservedExhibit draft={draft} donated={donated} />
-              {/* The actions belong to the label they act on, not to the dark
-                  below the frame. */}
+            <div className="donate-desk">
               {donated ? (
                 <div ref={afterRef} className="donate-after">
                   <GiftShop donated={donated} />
                   <Button onClick={resetDesk}>{donateForm.reset}</Button>
                 </div>
-              ) : null}
+              ) : (
+                <DonateForm
+                  draft={draft}
+                  onChange={updateDraft}
+                  onDonate={donate}
+                />
+              )}
               {/* Always mounted, so the live region is there to announce into. */}
               <p role="status" className="donate-status">
                 {donated ? donateStatus.donated : ""}
               </p>
+            </div>
+            {/* The exhibit never moves. What the visitor watched while typing
+                and what they are given at the end are the same frame in the
+                same place; only what is inside it changes. The heading above
+                it keeps its box for the same reason. */}
+            <div className="donate-preview">
+              <div className="donate-preview-head">
+                <h3 className="preview-heading">
+                  {donated
+                    ? donatePreview.donated.heading
+                    : donatePreview.waiting.heading}
+                </h3>
+                <p className="preview-note">
+                  {donated
+                    ? donatePreview.donated.note
+                    : donatePreview.waiting.note}
+                </p>
+              </div>
+              <ReservedExhibit draft={draft} donated={donated} />
             </div>
           </div>
         </div>

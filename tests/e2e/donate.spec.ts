@@ -129,3 +129,37 @@ test("the footer mirrors the closing line once the visitor joins", async ({
   await page.getByRole("button", { name: "Reset the form" }).click();
   await expect(line).toHaveText("The exhibits are still warm.");
 });
+
+test("the exhibit does not move when it is revealed", async ({ page }) => {
+  // The climax has to happen where the visitor was already looking. If the
+  // frame relocates at the same moment, the uncovering is invisible and the
+  // object they were watching is not the object they are given.
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
+  const frame = page.locator(".reserved-frame");
+  const where = () =>
+    page.evaluate(() => {
+      const box = document
+        .querySelector(".reserved-frame")!
+        .getBoundingClientRect();
+      const panel = document
+        .querySelector(".donate-panel")!
+        .getBoundingClientRect();
+      return {
+        x: Math.round(box.left - panel.left),
+        y: Math.round(box.top - panel.top),
+        w: Math.round(box.width),
+        h: Math.round(box.height),
+      };
+    });
+  await fillDesk(page);
+  await expect(frame).toBeVisible();
+  const before = await where();
+  await page.getByRole("button", { name: "Donate the exhibit" }).click();
+  await expect(page.locator(".reserved-frame svg")).toHaveAttribute(
+    "data-revealed",
+    "true",
+  );
+  await expect.poll(where).toEqual(before);
+});

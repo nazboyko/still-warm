@@ -68,7 +68,7 @@
 }
 
 [data-revealed="true"] .scene-cloche {
-  animation: cloche-lift 520ms var(--ease-soft) forwards;
+  animation: cloche-lift 560ms var(--ease-soft) forwards;
 }
 
 @keyframes cloche-lift {
@@ -94,23 +94,24 @@
 
 [data-revealed="true"] .scene-dish > * {
   opacity: 0;
-  animation: exhibit-surface 280ms var(--ease-soft) forwards;
+  animation: exhibit-surface 300ms var(--ease-soft) forwards;
 }
 
+/* The light warms into the case before anything is in it. */
 [data-revealed="true"] .dish-glow {
-  animation-delay: 200ms;
+  animation-delay: 240ms;
 }
 
 [data-revealed="true"] .dish-plate {
-  animation-delay: 250ms;
+  animation-delay: 340ms;
 }
 
 [data-revealed="true"] .dish-food {
-  animation-delay: 310ms;
+  animation-delay: 420ms;
 }
 
 [data-revealed="true"] .dish-steam {
-  animation-delay: 400ms;
+  animation-delay: 520ms;
 }
 
 @keyframes exhibit-surface {
@@ -121,6 +122,12 @@
   to {
     opacity: 1;
   }
+}
+
+[data-donated="true"] .reserved-placard {
+  box-shadow:
+    0 30px 60px -24px rgb(0 0 0 / 0.62),
+    0 0 70px -12px rgb(232 169 78 / 0.3);
 }
 
 .reserved-frame {

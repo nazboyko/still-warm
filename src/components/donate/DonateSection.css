@@ -90,52 +90,34 @@
   justify-items: start;
 }
 
-/* Donated: the register is gone, so the exhibit takes the panel. The frame and
-   the visitor's placard sit side by side the way every room does, and the
-   actions gather directly under the placard they act on. The frame is the
-   taller element, so the placard column is a column of its own - otherwise the
-   buttons wait for the frame to finish and float in the dark below it.
-   Mobile keeps stacking; there the payoff already reads in one column. */
+/* The heading above the exhibit keeps a fixed box, so swapping "Live preview"
+   for "Your exhibit is on display" cannot nudge the frame up or down. Nothing
+   about the exhibit column changes between the two states: the object the
+   visitor watched while typing is the object they are given. */
+.donate-preview-head {
+  min-height: 4.25rem;
+}
+
+/* Donated, the register is gone and its column would otherwise be a void with
+   two buttons at the top of it. The actions settle against the middle of the
+   exhibit instead, which is what they act on. */
 @media (min-width: 64rem) {
-  .donate[data-donated="true"] .donate-grid {
-    grid-template-columns: minmax(0, 1fr);
+  .donate[data-donated="true"] .donate-desk {
+    align-self: stretch;
+    align-content: center;
   }
+}
 
-  .donate[data-donated="true"] .donate-preview {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    column-gap: var(--space-12);
-    row-gap: var(--space-4);
-    align-items: start;
-  }
+/* The actions belong to the room, not to the placard: dark fill, brass
+   outline, a warm label. That leaves the placard the only lit object in the
+   frame, which is the light law the rooms already follow. */
+.donate-after .button {
+  background: none;
+  color: var(--tungsten);
+  border-color: var(--brass);
+}
 
-  .donate[data-donated="true"] .preview-heading,
-  .donate[data-donated="true"] .preview-note {
-    grid-column: 1 / -1;
-  }
-
-  /* The frame and placard join the panel's grid directly, so the actions can
-     sit in the placard's column instead of below the whole exhibit. */
-  .donate[data-donated="true"] .reserved {
-    display: contents;
-  }
-
-  .donate[data-donated="true"] .reserved-frame {
-    grid-column: 1;
-    grid-row: 3 / span 3;
-  }
-
-  .donate[data-donated="true"] .reserved-placard {
-    grid-column: 2;
-    grid-row: 3;
-  }
-
-  .donate[data-donated="true"] .donate-after {
-    grid-column: 2;
-    grid-row: 4;
-  }
-
-  .donate[data-donated="true"] .donate-status {
-    grid-column: 2;
-    grid-row: 5;
-  }
+.donate-after .button:hover:not(:disabled) {
+  border-color: var(--tungsten);
+  color: var(--gold-light);
 }
