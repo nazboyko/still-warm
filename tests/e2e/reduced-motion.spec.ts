@@ -74,6 +74,23 @@ test("reduced motion loses no content", async ({ page }) => {
   expect(reducedText).toContain("У повітрі пахне");
 });
 
+test("no air moves through the beam under reduced motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
+  await page.getByRole("button", { name: "Read the label" }).first().click();
+  const drift = await page
+    .locator("#cat-001 .art-haze")
+    .evaluate((element) => getComputedStyle(element).animationName);
+  expect(drift).toBe("none");
+  // The spot still warms for the open label, it just arrives there at once.
+  await expect(page.locator("#cat-001 .art-cone")).toHaveCSS("opacity", "0.16");
+  const settle = await page
+    .locator("#cat-001 .art-pool")
+    .evaluate((element) => getComputedStyle(element).transitionDuration);
+  expect(settle).toBe("0s");
+});
+
 test("serving details do not play under reduced motion", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");

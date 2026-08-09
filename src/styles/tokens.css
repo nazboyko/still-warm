@@ -46,6 +46,9 @@
 
   --dur-quiet: 200ms;
   --dur-unfold: 480ms;
+  /* Light lets go faster than it arrives: the spot warms over the unfold and
+     settles back in less, so closing a label never feels like a second event. */
+  --dur-settle: 280ms;
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
   /* Approved entrance dim; also the lever for the gate video's darker take. */
   --entrance-dim: 0.55;

@@ -109,6 +109,79 @@ test("opening a lower room while one is open does not jump", async ({
   }).toPass({ timeout: 3000 });
 });
 
+test("opening a label does not move the dish", async ({ page }) => {
+  await page.goto("/");
+  const room = page.locator("#cat-001");
+  await room.scrollIntoViewIfNeeded();
+  // Measured against the room itself, not the page: the anchor hold scrolls to
+  // keep the clicked label under the eye, and late fonts move every section
+  // above this one. What must hold is that the dish hangs in the same place in
+  // its room whether the panel is folded or open.
+  const offsetInRoom = () =>
+    page.evaluate(() => {
+      const room = document.querySelector("#cat-001")!.getBoundingClientRect();
+      const art = document
+        .querySelector("#cat-001 .room-art")!
+        .getBoundingClientRect();
+      return {
+        top: Math.round(art.top - room.top),
+        left: Math.round(art.left - room.left),
+      };
+    });
+  const before = await offsetInRoom();
+  await room.getByRole("button", { name: "Read the label" }).click();
+  await expect(page.locator("#cat-001-story")).toHaveCSS("opacity", "1");
+  await expect.poll(offsetInRoom).toEqual(before);
+});
+
+test("the spot warms as the label opens and settles back", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
+  const cone = page.locator("#cat-001 .art-cone");
+  const pool = page.locator("#cat-001 .art-pool");
+  const trigger = page
+    .locator("#cat-001")
+    .getByRole("button", { name: "Read the label" });
+  const dim = await cone.evaluate(
+    (element) => getComputedStyle(element).opacity,
+  );
+
+  await trigger.click();
+  await expect(cone).toHaveCSS("opacity", "0.16");
+  // The pool on the plate opens up with the beam.
+  await expect
+    .poll(() => pool.evaluate((element) => getComputedStyle(element).transform))
+    .not.toBe("none");
+
+  await trigger.click();
+  await expect(cone).toHaveCSS("opacity", dim);
+  await expect
+    .poll(() => pool.evaluate((element) => getComputedStyle(element).transform))
+    .toBe("none");
+});
+
+test("an open beam stops drifting once the room leaves the screen", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
+  await page
+    .locator("#cat-001")
+    .getByRole("button", { name: "Read the label" })
+    .click();
+  const haze = page.locator("#cat-001 .art-haze");
+  const playState = () =>
+    haze.evaluate((element) => getComputedStyle(element).animationPlayState);
+  await expect.poll(playState).toBe("running");
+  // Opening the label leaves the anchor hold correcting the scroll for a few
+  // frames, and under load it is still doing that here - so keep the page at
+  // the top rather than scrolling once and racing it.
+  await expect(async () => {
+    await page.evaluate(() => window.scrollTo(0, 0));
+    expect(await playState()).toBe("paused");
+  }).toPass();
+});
+
 test("opening a label plays one serving detail, then the dish is still", async ({
   page,
 }) => {
