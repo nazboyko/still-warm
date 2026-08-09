@@ -28,6 +28,113 @@ const accents: AccentTone[] = ["beet", "toast-deep", "syrup"];
    come in a few. */
 const singles: FoodKind[] = ["bowl", "stack"];
 
+/* What the visitor typed decides the shape when we recognise it. Two passes,
+   because one list sorted by length gets "naan bread" wrong: a named dish
+   always beats a general word for a shape. Inside each pass the longest
+   keyword wins, so "pancakes" is a stack while "pancake" is a disc, and
+   "pierogi" is a dumpling rather than a pie. */
+const namedDishes: Record<FoodKind, string[]> = {
+  bowl: [
+    "ramen",
+    "ramyeon",
+    "pho",
+    "borscht",
+    "borsch",
+    "congee",
+    "chowder",
+    "laksa",
+    "goulash",
+    "miso",
+    "menudo",
+    "борщ",
+    "рамен",
+  ],
+  dumpling: [
+    "dumpling",
+    "varenyky",
+    "varenyk",
+    "pierogi",
+    "gyoza",
+    "momo",
+    "empanada",
+    "ravioli",
+    "pelmeni",
+    "samosa",
+    "wonton",
+    "manti",
+    "khinkali",
+    "вареник",
+    "пельмен",
+  ],
+  disc: [
+    "pancake",
+    "crepe",
+    "dosa",
+    "tortilla",
+    "arepa",
+    "blini",
+    "naan",
+    "roti",
+    "injera",
+    "chapati",
+    "galette",
+    "flatbread",
+    "млинц",
+  ],
+  stack: [
+    "pancakes",
+    "waffle",
+    "grilled cheese",
+    "toastie",
+    "sandwich",
+    "burger",
+    "lasagna",
+    "lasagne",
+    "panini",
+  ],
+  bun: [
+    "bagel",
+    "brioche",
+    "challah",
+    "biscuit",
+    "mantou",
+    "bao",
+    "пиріж",
+    "булочк",
+  ],
+  wedge: ["pizza", "quiche", "cheesecake", "brownie", "torte", "пиріг"],
+};
+
+const formHints: Record<FoodKind, string[]> = {
+  bowl: ["soup", "stew", "curry", "noodle", "broth", "суп"],
+  dumpling: [],
+  disc: [],
+  stack: ["toast", "stack"],
+  bun: ["bread", "bun", "roll"],
+  wedge: ["cake", "pie", "tart", "slice"],
+};
+
+function byLongestFirst(dictionary: Record<FoodKind, string[]>) {
+  return Object.entries(dictionary)
+    .flatMap(([kind, words]) =>
+      words.map((word) => [word, kind as FoodKind] as const),
+    )
+    .sort((a, b) => b[0].length - a[0].length);
+}
+
+const passes = [byLongestFirst(namedDishes), byLongestFirst(formHints)];
+
+/* Pure and case-blind: the same dish name always names the same shape. */
+export function matchFoodKind(dish: string): FoodKind | null {
+  const text = dish.trim().toLowerCase();
+  if (!text) return null;
+  for (const pass of passes) {
+    const hit = pass.find(([word]) => text.includes(word));
+    if (hit) return hit[1];
+  }
+  return null;
+}
+
 /* FNV-1a: small, stable, and enough to spread short strings. */
 function hash(text: string): number {
   let value = 0x811c9dc5;
@@ -62,7 +169,10 @@ export function generateSculpture(
     .join("|");
   const random = seeded(hash(source));
 
-  const kind = kinds[Math.floor(random() * kinds.length)]!;
+  // Roll the shape either way, so a recognised dish changes the form and
+  // nothing else: two people typing "ramen" still get two different bowls.
+  const rolled = kinds[Math.floor(random() * kinds.length)]!;
+  const kind = matchFoodKind(submission.dish) ?? rolled;
   const count = singles.includes(kind) ? 1 : 1 + Math.floor(random() * 3);
   const spread = count === 3 ? 94 : count === 2 ? 78 : 0;
   const size = count === 3 ? 0.78 : count === 2 ? 0.9 : 1.05;
