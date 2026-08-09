@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useInView } from "../../hooks/useInView.ts";
+import { SpotBeam } from "../art/SpotBeam.tsx";
 import "../../styles/steam.css";
 import "./DisplayCase.css";
 import { HeroVarenyky } from "./HeroVarenyky.tsx";
@@ -29,11 +30,6 @@ export function DisplayCase() {
               <stop offset="55%" stopColor="#e8a94e" stopOpacity="0.18" />
               <stop offset="100%" stopColor="#e8a94e" stopOpacity="0" />
             </radialGradient>
-            <linearGradient id="case-cone" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#e8a94e" stopOpacity="0.11" />
-              <stop offset="70%" stopColor="#e8a94e" stopOpacity="0.05" />
-              <stop offset="100%" stopColor="#e8a94e" stopOpacity="0.01" />
-            </linearGradient>
             <linearGradient id="steam-soft" x1="0" y1="1" x2="0" y2="0">
               <stop offset="0%" stopColor="#efe6d8" stopOpacity="0" />
               <stop offset="45%" stopColor="#efe6d8" stopOpacity="0.5" />
@@ -56,9 +52,13 @@ export function DisplayCase() {
             strokeWidth="1.5"
           />
           <g className="case-light">
-            <path
-              d="M130 12 C110 90 88 160 74 218 H186 C172 160 150 90 130 12 Z"
-              fill="url(#case-cone)"
+            <SpotBeam
+              id="case-beam"
+              x={130}
+              top={12}
+              bottom={218}
+              spread={56}
+              opacity={0.12}
             />
             <ellipse
               cx="130"

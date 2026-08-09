@@ -1,6 +1,8 @@
 /* A sandwich a second after it was pulled apart: both halves still tilted the
    same way, the near one larger in the spot, cheese stretched taut between
    their cut faces. Crust rim, porous crumb, scorch patches, one gathering drip. */
+import { SpotBeam } from "../../art/SpotBeam.tsx";
+
 function Half() {
   return (
     <g>
@@ -85,11 +87,6 @@ export function GrilledCheeseArt({
           <stop offset="60%" stopColor="#e8a94e" stopOpacity="0.12" />
           <stop offset="100%" stopColor="#e8a94e" stopOpacity="0" />
         </radialGradient>
-        <linearGradient id="grilled-cone" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#e8a94e" stopOpacity="1" />
-          <stop offset="70%" stopColor="#e8a94e" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#e8a94e" stopOpacity="0.05" />
-        </linearGradient>
         <linearGradient id="gc-top" x1="0" y1="0" x2="0.1" y2="1">
           <stop offset="0%" style={{ stopColor: "var(--tungsten)" }} />
           <stop offset="100%" style={{ stopColor: "var(--toast)" }} />
@@ -109,11 +106,14 @@ export function GrilledCheeseArt({
         </radialGradient>
       </defs>
 
-      <path
+      <SpotBeam
         className="art-cone"
-        d="M160 6 C144 80 122 150 100 196 H220 C198 150 176 80 160 6 Z"
-        fill="url(#grilled-cone)"
-        opacity="0.05"
+        id="grilled-beam"
+        x={160}
+        top={6}
+        bottom={196}
+        spread={60}
+        opacity={0.08}
       />
       <ellipse cx="160" cy="176" rx="118" ry="50" fill="url(#grilled-glow)" />
       <ellipse

@@ -1,5 +1,7 @@
 /* Baked empanadas on a plate: plump pouches with a braided repulgue along the
    sealed seam, blistered crust, and one broken open on its beet filling. */
+import { SpotBeam } from "../../art/SpotBeam.tsx";
+
 const SEAM = "M 2 -20 Q 22 -19 32 -5 Q 38 7 27 16";
 
 /* Each mark is one fold of the repulgue, crossing the rope on the diagonal. */
@@ -181,11 +183,6 @@ export function EmpanadasArt({
           <stop offset="60%" stopColor="#e8a94e" stopOpacity="0.14" />
           <stop offset="100%" stopColor="#e8a94e" stopOpacity="0" />
         </radialGradient>
-        <linearGradient id="empanadas-cone" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#e8a94e" stopOpacity="1" />
-          <stop offset="70%" stopColor="#e8a94e" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#e8a94e" stopOpacity="0.05" />
-        </linearGradient>
         <linearGradient id="emp-crust" x1="0" y1="0" x2="0.15" y2="1">
           <stop offset="0%" style={{ stopColor: "var(--gold-light)" }} />
           <stop offset="42%" style={{ stopColor: "var(--tungsten)" }} />
@@ -227,11 +224,14 @@ export function EmpanadasArt({
         </radialGradient>
       </defs>
 
-      <path
+      <SpotBeam
         className="art-cone"
-        d="M160 6 C144 80 122 150 100 196 H220 C198 150 176 80 160 6 Z"
-        fill="url(#empanadas-cone)"
-        opacity="0.05"
+        id="empanadas-beam"
+        x={160}
+        top={6}
+        bottom={196}
+        spread={60}
+        opacity={0.08}
       />
       <ellipse cx="160" cy="176" rx="118" ry="50" fill="url(#empanadas-glow)" />
       <ellipse

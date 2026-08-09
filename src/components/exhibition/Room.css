@@ -75,7 +75,7 @@
 }
 
 .room-art[data-lit="true"] .art-cone {
-  opacity: 0.12;
+  opacity: 0.16;
 }
 
 /* The light notices a visitor before they open anything. */
