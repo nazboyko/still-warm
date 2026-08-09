@@ -47,9 +47,17 @@
   transition: border-color var(--dur-quiet) var(--ease-soft);
 }
 
+/* The field being written glows like the exhibit under its spot - additive to
+   the global focus ring, never a replacement for it. */
 .desk-field input:focus-visible,
 .desk-field textarea:focus-visible {
-  border-color: var(--plaster);
+  border-color: var(--tungsten);
+  box-shadow: 0 0 24px -6px rgb(232 169 78 / 0.4);
+}
+
+.desk-field input:hover:not(:focus-visible),
+.desk-field textarea:hover:not(:focus-visible) {
+  border-color: rgb(232 169 78 / 0.7);
 }
 
 .desk-field textarea {

@@ -96,8 +96,23 @@ export function DonateSection({
             {/* The exhibit hangs on the left in both states. What the visitor
                 watched while typing and what they are given at the end are the
                 same frame in the same place; only its contents change. */}
+            {/* Write on the right, watch on the left: the label forms beside
+                the fields as they are filled, the way every room pairs its art
+                with its words. At donation the placard crosses to the right to
+                make way for the actions; the frame itself never moves. */}
             <div className="donate-exhibit">
               <ExhibitFrame donated={donated} />
+              {donated ? null : (
+                <>
+                  <div className="donate-column-head">
+                    <h3 className="preview-heading">
+                      {donatePreview.waiting.heading}
+                    </h3>
+                    <p className="preview-note">{donatePreview.waiting.note}</p>
+                  </div>
+                  <ExhibitPlacard draft={draft} donated={donated} />
+                </>
+              )}
             </div>
             <div className="donate-column">
               {donated ? (
@@ -109,22 +124,11 @@ export function DonateSection({
                   </div>
                 </>
               ) : (
-                <>
-                  <DonateForm
-                    draft={draft}
-                    onChange={updateDraft}
-                    onDonate={donate}
-                  />
-                  {/* The label forms under the fields as they are filled: the
-                      preview is the point of the section, so it stays. */}
-                  <div className="donate-column-head">
-                    <h3 className="preview-heading">
-                      {donatePreview.waiting.heading}
-                    </h3>
-                    <p className="preview-note">{donatePreview.waiting.note}</p>
-                  </div>
-                  <ExhibitPlacard draft={draft} donated={donated} />
-                </>
+                <DonateForm
+                  draft={draft}
+                  onChange={updateDraft}
+                  onDonate={donate}
+                />
               )}
               {/* Always mounted, so the live region is there to announce into. */}
               <p role="status" className="donate-status">
