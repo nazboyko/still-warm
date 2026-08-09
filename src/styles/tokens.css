@@ -66,6 +66,9 @@
   --header-compact: 4.5rem;
   --touch-target: 44px;
   --radius-placard: 2px;
+  /* The admission ticket is the one object on the page with real corners:
+     a placard is a card pinned to a wall, a ticket is something you hold. */
+  --radius-ticket: 12px;
 }
 
 /* Issue #4: tungsten fails 3:1 on light surfaces; beet holds 7.5:1 there. */

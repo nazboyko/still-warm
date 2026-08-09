@@ -35,8 +35,8 @@ export function DisplayCase() {
                 smoke coming off the dish. */}
             <linearGradient id="steam-soft" x1="0" y1="1" x2="0" y2="0">
               <stop offset="0%" stopColor="#fff8ea" stopOpacity="0" />
-              <stop offset="45%" stopColor="#fff8ea" stopOpacity="0.82" />
-              <stop offset="100%" stopColor="#fff8ea" stopOpacity="0" />
+              <stop offset="45%" stopColor="#fff8ea" stopOpacity="0.34" />
+              <stop offset="100%" stopColor="#fff8ea" stopOpacity="0.66" />
             </linearGradient>
             <linearGradient id="case-cloche" x1="0" y1="0" x2="0.15" y2="1">
               <stop offset="0%" stopColor="#d2ab6b" />
@@ -45,7 +45,7 @@ export function DisplayCase() {
             </linearGradient>
             <linearGradient id="case-sheen" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stopColor="#efe6d8" stopOpacity="0" />
-              <stop offset="50%" stopColor="#efe6d8" stopOpacity="0.14" />
+              <stop offset="50%" stopColor="#efe6d8" stopOpacity="0.05" />
               <stop offset="100%" stopColor="#efe6d8" stopOpacity="0" />
             </linearGradient>
             <linearGradient id="case-glass" x1="0" y1="0" x2="1" y2="1">
@@ -84,8 +84,11 @@ export function DisplayCase() {
 
           {/* The plinth rises and the dish grows, so the food sits in the
               middle of the pool rather than at the bottom edge of it. */}
-          <g transform="translate(0 -12)">
+          <g transform="translate(130 236) scale(1.16) translate(-130 -236) translate(0 -14)">
             <rect x="50" y="232" width="160" height="16" fill="#0f0c0a" />
+            {/* A lit top edge, so the plinth reads as a block with a front
+                face rather than a flat shape cut out of the dark. */}
+            <rect x="50" y="232" width="160" height="1.2" fill="#8a6f45" />
             <ellipse cx="130" cy="232" rx="76" ry="13" fill="#0f0c0a" />
             <ellipse
               cx="130"
@@ -97,9 +100,7 @@ export function DisplayCase() {
               strokeOpacity="0.3"
               strokeWidth="1"
             />
-            <g transform="translate(130 226) scale(1.04) translate(-130 -226)">
-              <HeroVarenyky />
-            </g>
+            <HeroVarenyky />
           </g>
 
           {/* Between the dish and the lid held above it, which is where the
@@ -112,28 +113,28 @@ export function DisplayCase() {
             strokeOpacity="0.4"
             strokeWidth="2"
             strokeLinecap="round"
-            transform="translate(0 -4)"
+            transform="translate(0 -20)"
           />
           <g
             fill="none"
             stroke="url(#steam-soft)"
             strokeLinecap="round"
-            transform="translate(0 -6)"
+            transform="translate(0 -22)"
           >
             <path
               className="steam-wisp"
               d="M120 192c-6-7-1-12 1-16 2-4 2.4-8-1-13"
-              strokeWidth="5"
+              strokeWidth="3.4"
             />
             <path
               className="steam-wisp"
               d="M133 190c-7-6-2-11 0-15 2.3-4.3 2.7-8.6-1.3-13"
-              strokeWidth="6"
+              strokeWidth="4"
             />
             <path
               className="steam-wisp"
               d="M146 192c5-7 1-12-1-16-2-4-2.2-8 1-13"
-              strokeWidth="5"
+              strokeWidth="3.4"
             />
           </g>
 
