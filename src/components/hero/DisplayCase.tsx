@@ -30,9 +30,22 @@ export function DisplayCase() {
               <stop offset="55%" stopColor="#e8a94e" stopOpacity="0.18" />
               <stop offset="100%" stopColor="#e8a94e" stopOpacity="0" />
             </radialGradient>
+            {/* Warmer and brighter than the beam it rises through: at plaster
+                weight the vapour sat darker than the lit air and read as
+                smoke coming off the dish. */}
             <linearGradient id="steam-soft" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stopColor="#fff8ea" stopOpacity="0" />
+              <stop offset="45%" stopColor="#fff8ea" stopOpacity="0.82" />
+              <stop offset="100%" stopColor="#fff8ea" stopOpacity="0" />
+            </linearGradient>
+            <linearGradient id="case-cloche" x1="0" y1="0" x2="0.15" y2="1">
+              <stop offset="0%" stopColor="#d2ab6b" />
+              <stop offset="55%" stopColor="#8a6f45" />
+              <stop offset="100%" stopColor="#2b2016" />
+            </linearGradient>
+            <linearGradient id="case-sheen" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stopColor="#efe6d8" stopOpacity="0" />
-              <stop offset="45%" stopColor="#efe6d8" stopOpacity="0.5" />
+              <stop offset="50%" stopColor="#efe6d8" stopOpacity="0.14" />
               <stop offset="100%" stopColor="#efe6d8" stopOpacity="0" />
             </linearGradient>
             <linearGradient id="case-glass" x1="0" y1="0" x2="1" y2="1">
@@ -69,35 +82,43 @@ export function DisplayCase() {
             />
           </g>
 
-          <rect x="50" y="232" width="160" height="16" fill="#0f0c0a" />
-          <ellipse cx="130" cy="232" rx="76" ry="13" fill="#0f0c0a" />
-          <ellipse
-            cx="130"
-            cy="228"
-            rx="70"
-            ry="10"
-            fill="#120e0b"
-            stroke="#e8a94e"
-            strokeOpacity="0.3"
-            strokeWidth="1"
-          />
+          {/* The plinth rises and the dish grows, so the food sits in the
+              middle of the pool rather than at the bottom edge of it. */}
+          <g transform="translate(0 -12)">
+            <rect x="50" y="232" width="160" height="16" fill="#0f0c0a" />
+            <ellipse cx="130" cy="232" rx="76" ry="13" fill="#0f0c0a" />
+            <ellipse
+              cx="130"
+              cy="228"
+              rx="70"
+              ry="10"
+              fill="#120e0b"
+              stroke="#e8a94e"
+              strokeOpacity="0.3"
+              strokeWidth="1"
+            />
+            <g transform="translate(130 226) scale(1.04) translate(-130 -226)">
+              <HeroVarenyky />
+            </g>
+          </g>
 
-          <HeroVarenyky />
-
+          {/* Between the dish and the lid held above it, which is where the
+              steam of an uncovered dish actually goes. */}
           <path
             className="steam-static"
             d="M132 176c-7-6-2-11 0-15 2.3-4.3 2.7-8.6-1.3-13"
             fill="none"
-            stroke="#efe6d8"
-            strokeOpacity="0.3"
+            stroke="#fff8ea"
+            strokeOpacity="0.4"
             strokeWidth="2"
             strokeLinecap="round"
+            transform="translate(0 -4)"
           />
           <g
             fill="none"
             stroke="url(#steam-soft)"
             strokeLinecap="round"
-            transform="translate(0 -14)"
+            transform="translate(0 -6)"
           >
             <path
               className="steam-wisp"
@@ -116,7 +137,54 @@ export function DisplayCase() {
             />
           </g>
 
+          {/* The lid, lifted and held. Static on purpose: the hero shows a dish
+              that has been uncovered, and the act of uncovering belongs to the
+              donation finale, where it means something. */}
+          <g className="case-cloche">
+            <path d="M86 136 A44 38 0 0 1 174 136 Z" fill="url(#case-cloche)" />
+            <path
+              d="M86 136 A44 38 0 0 1 174 136"
+              fill="none"
+              stroke="#e8a94e"
+              strokeOpacity="0.55"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+            />
+            <ellipse
+              cx="130"
+              cy="136"
+              rx="44"
+              ry="5.5"
+              fill="url(#case-cloche)"
+              stroke="#e8a94e"
+              strokeOpacity="0.35"
+              strokeWidth="1"
+            />
+            <line
+              x1="130"
+              y1="99"
+              x2="130"
+              y2="93"
+              stroke="#9c8154"
+              strokeWidth="2"
+            />
+            <circle
+              cx="130"
+              cy="90"
+              r="4"
+              fill="url(#case-cloche)"
+              stroke="#e8a94e"
+              strokeOpacity="0.5"
+              strokeWidth="1.4"
+            />
+          </g>
+
           <path d="M10 10 L120 10 L40 290 L10 290 Z" fill="url(#case-glass)" />
+          {/* One diagonal across the upper corner, so the front reads as glass. */}
+          <path
+            d="M164 12 L232 12 L112 152 L78 152 Z"
+            fill="url(#case-sheen)"
+          />
 
           <rect x="2" y="290" width="256" height="20" fill="#120e0b" />
           <line

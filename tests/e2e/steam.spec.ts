@@ -39,3 +39,22 @@ test("steam is static under reduced motion, with presence", async ({
     ),
   ).toBe("0.45");
 });
+
+test("the hero's lid is already lifted and never lifts", async ({ page }) => {
+  await page.goto("/");
+  // The hero shows a dish that has been uncovered; the act of uncovering is
+  // the donation finale's, and it must not be spent twice.
+  const lid = page.locator(".display-case .case-cloche");
+  await expect(lid).toBeVisible();
+  const motion = await lid.evaluate((element) => {
+    const computed = getComputedStyle(element);
+    return {
+      animation: computed.animationName,
+      transition: computed.transitionProperty,
+      opacity: computed.opacity,
+    };
+  });
+  expect(motion.animation).toBe("none");
+  expect(motion.transition).toBe("all");
+  expect(motion.opacity).toBe("1");
+});
