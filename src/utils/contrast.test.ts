@@ -22,6 +22,8 @@ describe("token pairs hold WCAG AA", () => {
     ["ink", "plaster"],
     ["beet", "plaster"],
     ["brass", "ink"],
+    // Exhibit 000 is wall text: its catalog line is set straight on the ground.
+    ["tungsten", "ink"],
     ["plaster", "room-homesickness"],
     ["plaster", "room-rainy"],
     ["plaster", "room-celebration"],
