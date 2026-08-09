@@ -2,23 +2,9 @@
   padding-bottom: var(--space-section);
 }
 
-.ramp-placard {
-  margin-inline: auto;
-}
-
-/* The Ramp has no dish, so rather than centre a small card in a wide empty
-   section it takes the placard column the rooms use - Room 001's card starts
-   on the same line, and the empty half reads as wall, not as a gap. */
-@media (min-width: 64rem) {
-  .ramp-placard-wrap {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .ramp-placard {
-    grid-column: 2;
-    margin-inline: 0;
-  }
+/* Beats the room card's 30rem ceiling regardless of stylesheet order. */
+.placard.ramp-placard {
+  width: 100%;
 }
 
 .ramp-subtitle {
@@ -34,11 +20,16 @@
   margin-block: var(--space-4);
 }
 
+/* Exhibit 000 has no dish and stands before the exhibition rather than inside
+   its cadence, so it is a wall panel: centred on the page, a measure wider than
+   a room's card, and outside the two-column rhythm the rooms keep. */
 /* The arrival flash rides its own element, never a pseudo on an ancestor of
    text: axe cannot resolve a background behind an absolutely positioned
    pseudo, and that once turned a clean page into an incomplete. */
 .ramp-placard-wrap {
   position: relative;
+  width: min(100%, 38rem);
+  margin-inline: auto;
 }
 
 .arrive-marker {
