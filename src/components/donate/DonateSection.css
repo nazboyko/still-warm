@@ -97,11 +97,12 @@
   border-left: 3px solid var(--brass);
 }
 
-/* Directly beneath the placard they act on, one under the other. */
+/* Directly beneath the placard they act on, side by side; a narrow screen
+   may still wrap the pair rather than crush the labels. */
 .donate-after {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-4);
-  justify-items: start;
 }
 
 /* The actions belong to the room, not to the placard: dark fill, brass
