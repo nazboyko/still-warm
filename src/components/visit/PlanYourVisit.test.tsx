@@ -17,17 +17,22 @@ test("visit section lists the four museum facts", () => {
   expect(labels).toEqual(["Admission", "Hours", "Location", "Access"]);
 });
 
-test("the ticket numbers its fields without saying so out loud", () => {
+test("every row is marked, and the marks say nothing out loud", () => {
   const { container } = render(<PlanYourVisit />);
-  const numbers = [...container.querySelectorAll(".visit-field-no")];
-  expect(numbers.map((node) => node.textContent)).toEqual([
-    "01",
-    "02",
-    "03",
-    "04",
-  ]);
-  for (const node of numbers) {
-    expect(node).toHaveAttribute("aria-hidden", "true");
+  const marks = [...container.querySelectorAll(".visit-mark")];
+  expect(marks).toHaveLength(4);
+  for (const mark of marks) {
+    expect(mark).toHaveAttribute("aria-hidden", "true");
+    expect(mark.textContent).toBe("");
+  }
+});
+
+test("the ticket's marks stay in the ticket", () => {
+  const { container } = render(<PlanYourVisit />);
+  // The rest of the site speaks in mono labels and brass rules. If these ever
+  // appear outside the ticket, the vocabulary has leaked.
+  for (const mark of container.querySelectorAll(".visit-mark")) {
+    expect(mark.closest(".visit-ticket")).not.toBeNull();
   }
 });
 

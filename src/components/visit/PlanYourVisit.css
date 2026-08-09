@@ -45,6 +45,9 @@
 
 .visit-ticket {
   --ticket-pad: clamp(var(--space-4), 5vw, var(--space-8));
+  /* Wide enough for the icon plus ADMISSION at the largest utility
+     size, or the longest label breaks mid-word. */
+  --label-col: 8.75rem;
 
   position: relative;
   padding: var(--space-6) var(--ticket-pad);
@@ -82,10 +85,16 @@
 .visit-facts {
   margin: 0;
   display: grid;
-  /* minmax(0, 1fr), not 1fr: a plain fr will not shrink below its longest word,
-     and at 200% text zoom on a phone that pushed the values off the screen. */
-  grid-template-columns: clamp(3.5rem, 18vw, 6.5rem) minmax(0, 1fr);
-  gap: var(--space-3) var(--space-4);
+  /* The label column is as wide as its own widest row and no wider, and both
+     columns can shrink: a fixed track let the longer labels overflow it, and
+     right-aligning them started every row at a different place. minmax(0, ...)
+     on both, or 200% text zoom on a phone pushes the values off the screen. */
+  /* One shared track, not max-content: the stub is its own list, and sizing
+     each to its own widest label started the two value columns in different
+     places across the perforation. */
+  grid-template-columns: minmax(0, var(--label-col)) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: center;
 }
 
 .visit-facts > div {
@@ -94,18 +103,52 @@
 
 .visit-facts dt {
   display: flex;
-  justify-content: flex-end;
-  gap: var(--space-2);
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-family: var(--font-utility);
   font-size: var(--text-utility);
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  text-align: right;
   color: var(--brass);
 }
 
-.visit-field-no {
+.visit-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgb(156 129 84 / 0.55);
+  border-radius: 50%;
   color: var(--tungsten);
+}
+
+.visit-mark svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+/* Sits on the rim, punching through the border the way a fitting would. */
+.visit-fixture {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--brass);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--tungsten);
+}
+
+.visit-fixture svg {
+  width: 1.5rem;
+  height: 1rem;
 }
 
 .visit-facts dd {
@@ -121,23 +164,6 @@
   padding-top: var(--space-4);
   padding-inline: var(--ticket-pad);
   border-top: 1px dashed var(--brass);
-}
-
-/* Below this the gutter costs more than it gives: the values wrap to slivers. */
-@media (max-width: 22rem) {
-  .visit-facts {
-    grid-template-columns: 1fr;
-    gap: var(--space-1);
-  }
-
-  .visit-facts dt {
-    justify-content: flex-start;
-    text-align: left;
-  }
-
-  .visit-facts dd + dt {
-    margin-top: var(--space-3);
-  }
 }
 
 .visit .section-heading {
