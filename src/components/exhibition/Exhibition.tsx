@@ -24,14 +24,21 @@ export function Exhibition({
   }
 
   function toggleRoom(id: ExhibitId) {
-    // Keep the clicked label under the visitor's eye. Engines disagree about
-    // scroll anchoring - every one of them claims overflow-anchor support and
-    // Firefox still does not anchor this swap - so measure and restore instead.
-    const trigger = roomToggle(id);
+    const closing = openRoomId === id;
+    // Only a swap collapses another room, which can drag this one up the page.
+    // Keep the clicked label under the visitor's eye there, because engines
+    // disagree about scroll anchoring - every one claims overflow-anchor
+    // support and Firefox still does not anchor that swap.
+    // Opening or closing a single room changes nothing above its own trigger,
+    // so there is nothing to correct, and correcting anyway meant every press
+    // scrolled the page by whatever a sub-pixel reflow happened to measure -
+    // a few pixels an engine at a time, adding up with every toggle.
+    const swapping = openRoomId !== null && !closing;
+    const trigger = swapping ? roomToggle(id) : null;
     anchor.current = trigger
       ? { id, top: trigger.getBoundingClientRect().top }
       : null;
-    setOpenRoomId(openRoomId === id ? null : id);
+    setOpenRoomId(closing ? null : id);
   }
 
   function landOnRoom(id: ExhibitId) {

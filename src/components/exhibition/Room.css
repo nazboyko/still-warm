@@ -256,12 +256,17 @@
 
 @media (min-width: 64rem) {
   /* Side by side, not overlapping: a dish laid over the card makes the text's
-     backdrop unresolvable to axe, which our gate treats as a failure. One
-     consistent gap instead. */
+     backdrop unresolvable to axe, which our gate treats as a failure.
+     Both columns hang from the same line rather than centring, because centred
+     each one's position depended on the height of the row: unfolding a label
+     moved the dish, shifted the trigger under the reader's cursor, and the
+     scroll correction chasing that trigger leaked a little further on every
+     press. Nothing here is a function of the panel's height, so toggling is
+     idempotent rather than corrected. */
   .room-grid {
     grid-template-columns: 1fr 1fr;
     gap: var(--space-12);
-    align-items: center;
+    align-items: start;
     justify-items: start;
   }
 
@@ -274,11 +279,6 @@
   /* The dish fills its half so its edge can lap onto the label behind it. */
   .room-art {
     width: 100%;
-    /* Anchored to the room, never to the panel. Centred, the artwork would sit
-       in a row the panel's height defines, so unfolding a label slid the dish
-       down the wall with it. Opening a label moves the panel and the light,
-       and nothing else. */
-    align-self: start;
   }
 
   .room-flip .room-art {

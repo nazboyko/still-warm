@@ -109,29 +109,140 @@ test("opening a lower room while one is open does not jump", async ({
   }).toPass({ timeout: 3000 });
 });
 
-test("opening a label does not move the dish", async ({ page }) => {
+/* Toggling has to be idempotent, not merely correct once. Three drift bugs in a
+   week came from a correction applied relative to the current state, so each
+   press added to the last and a single toggle looked clean. Five cycles per
+   room, and both frames that can drift: where the dish sits on screen, which
+   catches scroll leaking out of the correction, and where it sits in its room,
+   which catches the layout following the panel's height. */
+const rooms = ["cat-001", "cat-002", "cat-003", "cat-004"] as const;
+
+/* Every reading here is a scroll position, and the page scrolls smoothly and
+   corrects itself for a few frames afterwards. Measured mid-flight the numbers
+   are meaningless, so wait until nothing has scrolled for a moment. A leak
+   still shows: it changes where the page comes to rest. */
+async function pageAtRest(page: Page) {
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        let timer = 0;
+        const finish = () => {
+          window.removeEventListener("scroll", restart);
+          resolve();
+        };
+        const restart = () => {
+          window.clearTimeout(timer);
+          timer = window.setTimeout(finish, 200);
+        };
+        window.addEventListener("scroll", restart, { passive: true });
+        timer = window.setTimeout(finish, 200);
+      }),
+  );
+}
+
+test("five open and close cycles leave every dish where it started", async ({
+  page,
+}) => {
   await page.goto("/");
-  const room = page.locator("#cat-001");
-  await room.scrollIntoViewIfNeeded();
-  // Measured against the room itself, not the page: the anchor hold scrolls to
-  // keep the clicked label under the eye, and late fonts move every section
-  // above this one. What must hold is that the dish hangs in the same place in
-  // its room whether the panel is folded or open.
-  const offsetInRoom = () =>
-    page.evaluate(() => {
-      const room = document.querySelector("#cat-001")!.getBoundingClientRect();
-      const art = document
-        .querySelector("#cat-001 .room-art")!
-        .getBoundingClientRect();
-      return {
-        top: Math.round(art.top - room.top),
-        left: Math.round(art.left - room.left),
-      };
-    });
-  const before = await offsetInRoom();
-  await room.getByRole("button", { name: "Read the label" }).click();
-  await expect(page.locator("#cat-001-story")).toHaveCSS("opacity", "1");
-  await expect.poll(offsetInRoom).toEqual(before);
+  await page.evaluate(() => document.fonts.ready);
+  // Walking between rooms is the test's own business, and a smooth scroll still
+  // in flight swallows the next one and lands the room somewhere unintended.
+  // The corrections under test scroll instantly whatever this says, so it
+  // changes how the test moves around and not what it measures.
+  await page.addStyleTag({
+    content: "html { scroll-behavior: auto !important; }",
+  });
+
+  for (const id of rooms) {
+    const room = page.locator(`#${id}`);
+    const trigger = room.getByRole("button", { name: "Read the label" });
+    // The room just left behind may still be folding out, which keeps changing
+    // the height of everything above this one. Wait for the page to stop
+    // resizing before deciding where this room sits.
+    await expect
+      .poll(async () => {
+        const first = await page.evaluate(
+          () => document.documentElement.scrollHeight,
+        );
+        await page.waitForTimeout(120);
+        const second = await page.evaluate(
+          () => document.documentElement.scrollHeight,
+        );
+        return first === second;
+      })
+      .toBe(true);
+    // Park the trigger mid-screen, not merely on the viewport edge: from the
+    // edge the first click scrolls to reach it comfortably, and that move is
+    // the test's own, not a drift a visitor would see. Instant, and repeated
+    // until it lands, because the page scrolls smoothly and a smooth scroll
+    // still in flight swallows the next one.
+    await expect(async () => {
+      await page.evaluate((roomId) => {
+        const box = document
+          .querySelector(`#${roomId} .placard-toggle`)!
+          .getBoundingClientRect();
+        window.scrollBy({
+          top: box.top - window.innerHeight / 2,
+          behavior: "instant",
+        });
+      }, id);
+      await expect(trigger).toBeInViewport({ timeout: 1000 });
+    }).toPass();
+    await pageAtRest(page);
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+    const place = () =>
+      page.evaluate((roomId) => {
+        const box = document
+          .querySelector(`#${roomId} .room-art`)!
+          .getBoundingClientRect();
+        const wall = document
+          .querySelector(`#${roomId}`)!
+          .getBoundingClientRect();
+        return {
+          onScreen: { x: box.left, y: box.top },
+          inRoom: { x: box.left - wall.left, y: box.top - wall.top },
+        };
+      }, id);
+
+    // The starting point has to be a resting position too, or a page still
+    // settling under load hands the whole test a baseline nobody ever saw.
+    let start = await place();
+    await expect(async () => {
+      const now = await place();
+      await page.waitForTimeout(150);
+      expect(await place()).toEqual(now);
+      start = now;
+    }).toPass();
+
+    for (let cycle = 1; cycle <= 5; cycle += 1) {
+      // Dispatched rather than clicked: a real click scrolls the button into a
+      // comfortable position first, and that scroll is the test's, not the
+      // product's. Dispatching leaves every scroll here the page's own doing.
+      await trigger.dispatchEvent("click");
+      await expect(trigger).toHaveAttribute("aria-expanded", "true");
+      await trigger.dispatchEvent("click");
+      await expect(trigger).toHaveAttribute("aria-expanded", "false");
+      // aria-expanded flips before the panel has finished folding out, so wait
+      // for the dish to come to rest and only then ask where it came to rest.
+      // Both in one retry, because a drift never settles anywhere but wrong.
+      await expect(async () => {
+        const now = await place();
+        await page.waitForTimeout(150);
+        expect(await place()).toEqual(now);
+        const drift = {
+          screenX: Math.abs(now.onScreen.x - start.onScreen.x),
+          screenY: Math.abs(now.onScreen.y - start.onScreen.y),
+          roomX: Math.abs(now.inRoom.x - start.inRoom.x),
+          roomY: Math.abs(now.inRoom.y - start.inRoom.y),
+        };
+        expect(
+          Math.max(...Object.values(drift)),
+          `${id} drifted after ${cycle} open/close cycles: ${JSON.stringify(drift)}`,
+        ).toBeLessThanOrEqual(1);
+      }).toPass();
+    }
+  }
 });
 
 test("the spot warms as the label opens and settles back", async ({ page }) => {
