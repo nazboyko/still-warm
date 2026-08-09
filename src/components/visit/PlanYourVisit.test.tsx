@@ -10,6 +10,16 @@ test("visit section lists the four museum facts", () => {
   expect(labels).toEqual(["Admission", "Hours", "Location", "Access"]);
 });
 
+test("the section says why it exists before it lists anything", () => {
+  const { container } = render(<PlanYourVisit />);
+  const note = container.querySelector(".visit-note");
+  expect(note).toHaveTextContent("no admission desk");
+  // The explanation comes before the plate, not after it.
+  expect(
+    note?.compareDocumentPosition(container.querySelector(".visit-ticket")!),
+  ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+});
+
 test("access points to the ramp", () => {
   render(<PlanYourVisit />);
   expect(

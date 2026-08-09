@@ -3,11 +3,54 @@
   border-top: 1px solid var(--brass);
 }
 
-.visit-facts {
-  margin: var(--space-12) auto 0;
+/* The line that turns the section from leftover footer facts into the fiction. */
+.visit-note {
   max-width: 34rem;
+  margin: var(--space-4) auto 0;
+  text-align: center;
+  text-wrap: balance;
+  font-size: calc(var(--text-body) * 1.05);
+}
+
+/* An entrance plate, in the same language as the admission ticket the link
+   preview shows: a brass frame with a second hairline inside it, and one
+   perforation across the stub. The inner rule is an outline rather than a
+   pseudo-element, because a positioned pseudo over text leaves axe unable to
+   decide the contrast behind it. */
+.visit-ticket {
+  --ticket-pad: clamp(var(--space-4), 5vw, var(--space-8));
+
+  width: min(100%, 32rem);
+  margin: var(--space-8) auto 0;
+  padding: var(--space-6) var(--ticket-pad);
+  border: 1px solid var(--brass);
+  outline: 1px solid rgb(156 129 84 / 0.4);
+  outline-offset: -6px;
+}
+
+.visit-admit {
+  margin-bottom: var(--space-6);
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--tungsten);
+}
+
+/* Label and value on one line, sharing a gutter, so all four read at a glance
+   instead of as four stacked rows the width of the screen. */
+.visit-facts {
+  margin: 0;
   display: grid;
-  gap: var(--space-6);
+  /* minmax(0, 1fr), not 1fr: a plain fr will not shrink below its longest word,
+     and at 200% text zoom on a phone that pushed the values off the screen. */
+  grid-template-columns: clamp(3.5rem, 18vw, 6.5rem) minmax(0, 1fr);
+  gap: var(--space-3) var(--space-4);
+}
+
+.visit-facts > div {
+  display: contents;
 }
 
 .visit-facts dt {
@@ -15,12 +58,39 @@
   font-size: var(--text-utility);
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
+  text-align: right;
   color: var(--brass);
 }
 
 .visit-facts dd {
-  margin: var(--space-1) 0 0;
-  font-size: calc(var(--text-body) * 1.1);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* The perforation runs the full width of the plate, the way a real one does,
+   so it reads as a tear line rather than a rule between two rows. */
+.visit-stub {
+  margin-top: var(--space-4);
+  margin-inline: calc(var(--ticket-pad) * -1);
+  padding-top: var(--space-4);
+  padding-inline: var(--ticket-pad);
+  border-top: 1px dashed var(--brass);
+}
+
+/* Below this the gutter costs more than it gives: the values wrap to slivers. */
+@media (max-width: 22rem) {
+  .visit-facts {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+
+  .visit-facts dt {
+    text-align: left;
+  }
+
+  .visit-facts dd + dt {
+    margin-top: var(--space-3);
+  }
 }
 
 .visit .section-heading {
