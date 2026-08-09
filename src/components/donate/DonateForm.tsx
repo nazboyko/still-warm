@@ -115,14 +115,10 @@ export function DonateForm({ draft, onChange, onDonate }: DonateFormProps) {
   return (
     <form
       className="donate-form"
-      aria-labelledby="donation-desk-title"
+      aria-label={donateForm.heading}
       noValidate
       onSubmit={handleSubmit}
     >
-      <p className="desk-eyebrow">The register</p>
-      <h3 id="donation-desk-title" className="desk-title">
-        {donateForm.heading}
-      </h3>
       {errors.length > 0 ? (
         <p key={attempt} role="alert" className="desk-alert">
           {errors.map((error) => error.message).join(" ")}

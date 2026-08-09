@@ -77,22 +77,7 @@ export function DonateSection({
         />
         <p className="donate-intro">{donateIntro}</p>
         <div className="donate-panel">
-          {/* The announcement crowns the whole panel, not one column. The slot
-              is there in both states at one height, so the exhibit below never
-              moves when the words arrive. */}
-          <div className="donate-head" aria-hidden={donated ? undefined : true}>
-            {donated ? (
-              <>
-                <h3 className="preview-heading donate-head-line">
-                  {donatePreview.donated.heading}
-                </h3>
-                <p className="preview-note">{donatePreview.donated.note}</p>
-              </>
-            ) : null}
-          </div>
           <div className="donate-grid">
-            {/* The register comes first, in the DOM and on the page: you write
-                the label, then you watch it appear. */}
             {/* The exhibit hangs on the left in both states. What the visitor
                 watched while typing and what they are given at the end are the
                 same frame in the same place; only its contents change. */}
@@ -117,6 +102,12 @@ export function DonateSection({
             <div className="donate-column">
               {donated ? (
                 <>
+                  <div className="donate-column-head">
+                    <h3 className="preview-heading donate-head-line">
+                      {donatePreview.donated.heading}
+                    </h3>
+                    <p className="preview-note">{donatePreview.donated.note}</p>
+                  </div>
                   <ExhibitPlacard draft={draft} donated={donated} />
                   <div ref={afterRef} className="donate-after">
                     <GiftShop donated={donated} />

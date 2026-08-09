@@ -54,14 +54,6 @@
   min-width: 0;
 }
 
-.donate-head {
-  display: grid;
-  gap: var(--space-1);
-  /* One height whether empty or announcing, so the exhibit never moves. */
-  min-height: 3.75rem;
-  margin-bottom: var(--space-6);
-}
-
 .donate-head-line {
   display: flex;
   align-items: center;
