@@ -39,3 +39,37 @@ describe("token pairs hold WCAG AA", () => {
     );
   });
 });
+
+/* The card is plaster left slightly open, so the surface a reader actually sees
+   is plaster composited over whatever room it hangs in - and that is what AA
+   has to hold, not the token on its own. */
+function plasterOver(background: string): string {
+  const match = tokensCss.match(
+    /--plaster-open: rgb\((\d+) (\d+) (\d+) \/ ([\d.]+)\)/,
+  );
+  if (!match) throw new Error("Token --plaster-open not found");
+  const [, ...parts] = match;
+  const alpha = Number(parts[3]);
+  const channels = [0, 1, 2].map((index) => {
+    const front = Number(parts[index]);
+    const back = parseInt(background.slice(1 + index * 2, 3 + index * 2), 16);
+    return Math.round(front * alpha + back * (1 - alpha));
+  });
+  return `#${channels.map((value) => value.toString(16).padStart(2, "0")).join("")}`;
+}
+
+describe("the open card holds AA in every room it hangs in", () => {
+  // Ink covers Exhibit 000 and the reserved frame, which hang on the page
+  // itself, and the dark end of the room's scroll-driven light.
+  test.each([
+    ["room-homesickness"],
+    ["room-rainy"],
+    ["room-celebration"],
+    ["room-sunday"],
+    ["ink"],
+  ])("over %s, story and catalog text stay readable", (room) => {
+    const card = plasterOver(token(room));
+    expect(contrastRatio(token("ink"), card)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(token("beet"), card)).toBeGreaterThanOrEqual(4.5);
+  });
+});

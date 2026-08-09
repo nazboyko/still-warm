@@ -2,6 +2,12 @@
 :root {
   --ink: #191411;
   --plaster: #efe6d8;
+  /* The same plaster, left slightly open so the room's ground shows through it:
+     a card in the Sunday room sits warmer than one in the Rainy room, and none
+     of them reads as a bright block pasted on the wall. Alpha rather than a
+     gradient, because axe can composite one over a solid ancestor and not the
+     other - a gradient under text turns the contrast check incomplete. */
+  --plaster-open: rgb(239 230 216 / 0.85);
   --tungsten: #e8a94e;
   --beet: #7a2e35;
   --brass: #9c8154;
