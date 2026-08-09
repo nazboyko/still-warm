@@ -92,9 +92,15 @@ test("the donation desk stays clean in all three states", async ({ page }) => {
     .toMatch(/^(0|1)$/);
   await scan();
 
-  await page.getByRole("textbox", { name: "Dish", exact: true }).fill("Kasha");
-  await page.getByRole("textbox", { name: "Feeling" }).fill("Monday");
-  await page.getByRole("textbox", { name: "Memory" }).fill("A quiet bowl.");
+  await page
+    .getByRole("textbox", { name: "What dish feels like home?" })
+    .fill("Kasha");
+  await page
+    .getByRole("textbox", { name: "What feeling does it hold?" })
+    .fill("Monday");
+  await page
+    .getByRole("textbox", { name: "What do you remember?" })
+    .fill("A quiet bowl.");
   await scan();
 
   await page.getByRole("button", { name: "Donate the exhibit" }).click();

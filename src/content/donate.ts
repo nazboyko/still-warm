@@ -15,6 +15,7 @@ export type SubmissionField = "dish" | "feeling" | "memory";
 export interface FieldCopy {
   label: string;
   maxLength: number;
+  placeholder: string;
   hint?: string;
   error?: string;
 }
@@ -22,6 +23,7 @@ export interface FieldCopy {
 export const donateForm: {
   heading: string;
   fields: Record<SubmissionField | "donorName", FieldCopy>;
+  ideas: { label: string; options: string[] };
   submit: string;
   reset: string;
   defaultDonor: string;
@@ -29,30 +31,50 @@ export const donateForm: {
   heading: "The donation desk",
   fields: {
     dish: {
-      label: "Dish",
+      label: "What dish feels like home?",
       maxLength: 40,
+      placeholder: "e.g. Varenyky, Ramen, Jollof rice...",
       error: "This exhibit needs a name.",
     },
     feeling: {
-      label: "Feeling",
+      label: "What feeling does it hold?",
       maxLength: 24,
-      hint: "In catalog voice: HOMESICKNESS, JOY, SUNDAY...",
+      placeholder: "e.g. Homesickness, Sunday, Joy...",
+      hint: "One word, in catalog voice.",
       error: "This exhibit needs a feeling.",
     },
     memory: {
-      label: "Memory",
+      label: "What do you remember?",
       maxLength: 140,
+      placeholder:
+        "e.g. She stirred it with a wooden spoon and never once looked at a recipe.",
       hint: "One or two sentences. The placard does the rest.",
       error: "Every exhibit needs its memory.",
     },
     donorName: {
-      label: "Donated by (optional)",
+      label: "Who is donating it? (optional)",
       maxLength: 40,
+      placeholder: "e.g. Marta, or leave it blank",
     },
+  },
+  ideas: {
+    label: "Need ideas?",
+    options: ["Varenyky", "Ramen", "Jollof rice", "Grilled cheese"],
   },
   submit: "Donate the exhibit",
   reset: "Reset the form",
   defaultDonor: "a visitor",
+};
+
+export const donatePreview = {
+  waiting: {
+    heading: "Live preview",
+    note: "This is how your exhibit label will look.",
+  },
+  donated: {
+    heading: "Your exhibit is on display",
+    note: "Thank you. The museum keeps it exactly as you wrote it.",
+  },
 };
 
 export const donateStatus = {

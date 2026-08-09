@@ -66,3 +66,53 @@
   padding-left: var(--space-3);
   border-left: 3px solid var(--beet);
 }
+
+/* Four ways in for a visitor who cannot think of a dish. Buttons, not a
+   combobox: each one sets the field and nothing more. */
+.desk-ideas {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+  width: 100%;
+}
+
+.desk-ideas-label {
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
+.desk-ideas ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.desk-ideas button {
+  min-height: var(--touch-target);
+  padding-inline: var(--space-4);
+  border: 1px solid var(--brass);
+  border-radius: 999px;
+  background: none;
+  color: var(--plaster);
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: border-color var(--dur-quiet) var(--ease-soft);
+}
+
+.desk-ideas button:hover {
+  border-color: var(--tungsten);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desk-ideas button {
+    transition: none;
+  }
+}

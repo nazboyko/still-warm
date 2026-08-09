@@ -3,7 +3,11 @@ import type {
   DonatedExhibit,
   ExhibitSubmission,
 } from "../../content/donate.ts";
-import { donateForm, donateStatus } from "../../content/donate.ts";
+import {
+  donateForm,
+  donatePreview,
+  donateStatus,
+} from "../../content/donate.ts";
 import { donateIntro } from "../../content/exhibits.ts";
 import { Container } from "../layout/Container.tsx";
 import { SectionHeading } from "../layout/SectionHeading.tsx";
@@ -72,24 +76,44 @@ export function DonateSection({
           title="Donate an Exhibit"
         />
         <p className="donate-intro">{donateIntro}</p>
-        <div className="donate-grid">
-          <ReservedExhibit draft={draft} donated={donated} />
-          <div className="donate-desk">
-            {donated ? (
-              <div ref={afterRef} className="donate-after">
-                <GiftShop donated={donated} />
-                <Button onClick={resetDesk}>{donateForm.reset}</Button>
+        <div className="donate-panel">
+          <div className="donate-grid">
+            {/* The register comes first, in the DOM and on the page: you write
+                the label, then you watch it appear. */}
+            {donated ? null : (
+              <div className="donate-desk">
+                <DonateForm
+                  draft={draft}
+                  onChange={updateDraft}
+                  onDonate={donate}
+                />
               </div>
-            ) : (
-              <DonateForm
-                draft={draft}
-                onChange={updateDraft}
-                onDonate={donate}
-              />
             )}
-            <p role="status" className="donate-status">
-              {donated ? donateStatus.donated : ""}
-            </p>
+            <div className="donate-preview">
+              <h3 className="preview-heading">
+                {donated
+                  ? donatePreview.donated.heading
+                  : donatePreview.waiting.heading}
+              </h3>
+              <p className="preview-note">
+                {donated
+                  ? donatePreview.donated.note
+                  : donatePreview.waiting.note}
+              </p>
+              <ReservedExhibit draft={draft} donated={donated} />
+              {/* The actions belong to the label they act on, not to the dark
+                  below the frame. */}
+              {donated ? (
+                <div ref={afterRef} className="donate-after">
+                  <GiftShop donated={donated} />
+                  <Button onClick={resetDesk}>{donateForm.reset}</Button>
+                </div>
+              ) : null}
+              {/* Always mounted, so the live region is there to announce into. */}
+              <p role="status" className="donate-status">
+                {donated ? donateStatus.donated : ""}
+              </p>
+            </div>
           </div>
         </div>
       </Container>

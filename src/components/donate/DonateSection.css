@@ -14,11 +14,19 @@
   max-width: 40ch;
 }
 
+/* One dark panel holding both columns, on a ground of its own like the rooms
+   have, so the desk reads as a room of the museum rather than a form dropped
+   at the end of the page. */
+.donate-panel {
+  background: var(--room-celebration);
+  border: 1px solid rgb(156 129 84 / 0.3);
+  padding: clamp(var(--space-6), 4vw, var(--space-12));
+}
+
 .donate-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-12);
-  justify-items: center;
 }
 
 /* Grid items default to a min-content floor, so a long memory was widening the
@@ -30,15 +38,9 @@
 
 @media (min-width: 64rem) {
   .donate-grid {
-    /* The exhibit-in-waiting leads; the desk is where you sign the register. */
-    grid-template-columns: 1.15fr 0.85fr;
+    /* Write on the left, watch on the right. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: start;
-    justify-items: start;
-  }
-
-  .donate-grid .reserved {
-    order: -1;
-    justify-self: start;
   }
 }
 
@@ -47,6 +49,28 @@
   gap: var(--space-4);
   justify-items: start;
   width: min(100%, 26rem);
+}
+
+.donate-preview {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: start;
+}
+
+/* The preview says what it is. Without this it was simply a card that appeared
+   next to a form, and nobody could tell it was theirs. */
+.preview-heading {
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--tungsten);
+}
+
+.preview-note {
+  margin-top: calc(var(--space-2) * -1);
+  font-size: var(--text-utility);
+  color: var(--plaster);
 }
 
 .donate-status {
@@ -66,32 +90,52 @@
   justify-items: start;
 }
 
-/* Donated, on a wide screen: the frame and the visitor's placard sit side by
-   side the way every room does, with the desk's actions under the label.
-   Mobile keeps stacking - there the payoff already reads in one column. */
+/* Donated: the register is gone, so the exhibit takes the panel. The frame and
+   the visitor's placard sit side by side the way every room does, and the
+   actions gather directly under the placard they act on. The frame is the
+   taller element, so the placard column is a column of its own - otherwise the
+   buttons wait for the frame to finish and float in the dark below it.
+   Mobile keeps stacking; there the payoff already reads in one column. */
 @media (min-width: 64rem) {
   .donate[data-donated="true"] .donate-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: start;
-    row-gap: var(--space-6);
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .donate[data-donated="true"] .reserved {
+  .donate[data-donated="true"] .donate-preview {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--space-12);
+    row-gap: var(--space-4);
+    align-items: start;
+  }
+
+  .donate[data-donated="true"] .preview-heading,
+  .donate[data-donated="true"] .preview-note {
     grid-column: 1 / -1;
-    grid-row: 1;
-    width: 100%;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--space-12);
-    /* The label hangs from the top of the frame, so its actions sit close
-       under it rather than across a gap. */
-    align-items: start;
-    justify-items: start;
   }
 
-  /* Under the frame, not the label: the frame is the tall element, so its
-     actions follow it directly instead of across the label's shortfall. */
-  .donate[data-donated="true"] .donate-desk {
+  /* The frame and placard join the panel's grid directly, so the actions can
+     sit in the placard's column instead of below the whole exhibit. */
+  .donate[data-donated="true"] .reserved {
+    display: contents;
+  }
+
+  .donate[data-donated="true"] .reserved-frame {
     grid-column: 1;
-    grid-row: 2;
+    grid-row: 3 / span 3;
+  }
+
+  .donate[data-donated="true"] .reserved-placard {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .donate[data-donated="true"] .donate-after {
+    grid-column: 2;
+    grid-row: 4;
+  }
+
+  .donate[data-donated="true"] .donate-status {
+    grid-column: 2;
+    grid-row: 5;
   }
 }

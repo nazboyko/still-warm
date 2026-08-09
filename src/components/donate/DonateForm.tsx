@@ -45,6 +45,7 @@ function DeskField({
     id,
     value,
     maxLength: copy.maxLength,
+    placeholder: copy.placeholder,
     "aria-describedby": describedBy,
     "aria-invalid": error ? true : undefined,
     onChange: (
@@ -135,6 +136,26 @@ export function DonateForm({ draft, onChange, onDonate }: DonateFormProps) {
         onChange={onChange}
         fieldRef={dishRef}
       />
+      {/* Four ways in for a visitor who cannot think of a dish. They fill the
+          field and nothing else: no suggestions, no memory of what was picked. */}
+      <div
+        className="desk-ideas"
+        role="group"
+        aria-labelledby="desk-ideas-label"
+      >
+        <p id="desk-ideas-label" className="desk-ideas-label">
+          {donateForm.ideas.label}
+        </p>
+        <ul>
+          {donateForm.ideas.options.map((idea) => (
+            <li key={idea}>
+              <button type="button" onClick={() => onChange("dish", idea)}>
+                {idea}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
       <DeskField
         field="feeling"
         copy={donateForm.fields.feeling}

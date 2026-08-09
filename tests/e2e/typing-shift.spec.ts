@@ -24,10 +24,13 @@ async function shiftWhileTyping(page: Page): Promise<number> {
   });
 
   const fields: [string, string][] = [
-    ["Dish", "Borscht"],
-    ["Feeling", "Quiet evenings"],
-    ["Memory", "The pot my grandmother never washed the same day."],
-    ["Donated by (optional)", "Marta"],
+    ["What dish feels like home?", "Borscht"],
+    ["What feeling does it hold?", "Quiet evenings"],
+    [
+      "What do you remember?",
+      "The pot my grandmother never washed the same day.",
+    ],
+    ["Who is donating it? (optional)", "Marta"],
   ];
   for (const [label, value] of fields) {
     await page.getByRole("textbox", { name: label, exact: true }).click();
