@@ -94,30 +94,34 @@ test("opening a lower room while one is open does not jump", async ({
   page,
 }) => {
   await page.goto("/");
+  // A late webfont reflows the placard, so a baseline taken before the fonts
+  // land blames the toggle for the swap that follows.
+  await page.evaluate(() => document.fonts.ready);
   await triggers(page).first().click();
   await expect(page.locator("#cat-001-story")).toHaveCSS("opacity", "1");
   const thirdTrigger = triggers(page).nth(2);
   await thirdTrigger.scrollIntoViewIfNeeded();
-  // The page scrolls smoothly: measure the starting point only once the scroll
-  // has come to rest, or the label is asked to return to a spot the visitor
-  // never actually saw.
+  // Measure the starting point only once the label itself has stopped moving.
+  // Waiting on the scroll alone is not enough: the room's placard rises 10px
+  // as it arrives, so a baseline taken mid-arrival is a spot the visitor never
+  // actually saw, and the test then blames the toggle for the entrance.
   await expect
     .poll(async () => {
-      const first = await page.evaluate(() => window.scrollY);
+      const first = (await thirdTrigger.boundingBox())!.y;
       await page.waitForTimeout(120);
-      return (await page.evaluate(() => window.scrollY)) === first;
+      return (await thirdTrigger.boundingBox())!.y === first;
     })
     .toBe(true);
   const before = (await thirdTrigger.boundingBox())!.y;
   await thirdTrigger.click();
   // Engines finish the collapse above at different speeds, so assert where the
-  // label comes to rest - it must return to where the visitor clicked it. The
-  // bound is 12 because WebKit under load settles at a measured 8.27px, and
-  // the strict no-creep invariant is the soak below, which holds to 1px across
-  // five cycles in every room. This one only has to catch a thrown page.
+  // label comes to rest: it must return to where the visitor clicked it. With
+  // the hold anchored on the room rather than the arriving placard, the worst
+  // measured resting drift is 0.88px on mobile-safari and under 0.5px
+  // everywhere else, so 8 is a guard against a thrown page, not a fitted bound.
   await expect(async () => {
     const after = (await thirdTrigger.boundingBox())!.y;
-    expect(Math.abs(after - before)).toBeLessThanOrEqual(12);
+    expect(Math.abs(after - before)).toBeLessThanOrEqual(8);
   }).toPass({ timeout: 3000 });
 });
 
@@ -139,6 +143,7 @@ async function pageAtRest(page: Page) {
       new Promise<void>((resolve) => {
         let timer = 0;
         const finish = () => {
+          window.clearTimeout(ceiling);
           window.removeEventListener("scroll", restart);
           resolve();
         };
@@ -146,6 +151,9 @@ async function pageAtRest(page: Page) {
           window.clearTimeout(timer);
           timer = window.setTimeout(finish, 200);
         };
+        // A ceiling, so a page that never stops scrolling fails on the
+        // assertion that follows rather than on a bare 30s timeout.
+        const ceiling = window.setTimeout(finish, 4000);
         window.addEventListener("scroll", restart, { passive: true });
         timer = window.setTimeout(finish, 200);
       }),

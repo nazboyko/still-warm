@@ -18,9 +18,16 @@ export function Exhibition({
   const printing = usePrintExpanded();
   const anchor = useRef<{ id: ExhibitId; top: number } | null>(null);
   const pendingWalk = useRef<ExhibitId | null>(null);
+  const holdRef = useRef<number | null>(null);
 
-  function roomToggle(id: ExhibitId) {
-    return document.querySelector(`#${id} .placard-story > .placard-toggle`);
+  // Anchor on the room, never on the label inside it. The placard rises 10px
+  // on arrival, and holding the label still through that would turn its
+  // entrance into a 10px scroll of the whole page - the correction fighting an
+  // animation instead of the reflow it exists to cancel. The room block is not
+  // animated, and the label is rigid inside it, so keeping the room still
+  // keeps the label still without touching the arrival.
+  function roomBlock(id: ExhibitId) {
+    return document.getElementById(id);
   }
 
   function toggleRoom(id: ExhibitId) {
@@ -34,9 +41,9 @@ export function Exhibition({
     // scrolled the page by whatever a sub-pixel reflow happened to measure -
     // a few pixels an engine at a time, adding up with every toggle.
     const swapping = openRoomId !== null && !closing;
-    const trigger = swapping ? roomToggle(id) : null;
-    anchor.current = trigger
-      ? { id, top: trigger.getBoundingClientRect().top }
+    const block = swapping ? roomBlock(id) : null;
+    anchor.current = block
+      ? { id, top: block.getBoundingClientRect().top }
       : null;
     setOpenRoomId(closing ? null : id);
   }
@@ -96,10 +103,10 @@ export function Exhibition({
       // correction is drift the visitor keeps. Rest means six quiet frames in
       // a row; the cap only exists so nothing runs forever.
       const hold = (quiet: number, cap: number) => {
-        const trigger = roomToggle(held.id);
+        const block = roomBlock(held.id);
         let settled = quiet;
-        if (trigger) {
-          const drift = trigger.getBoundingClientRect().top - held.top;
+        if (block) {
+          const drift = block.getBoundingClientRect().top - held.top;
           // Instant, never smooth: the page's smooth scrolling would animate
           // this into exactly the drift it exists to cancel.
           if (Math.abs(drift) > 1) {
@@ -109,11 +116,16 @@ export function Exhibition({
             settled += 1;
           }
         }
-        if (settled < 6 && cap > 0) {
-          requestAnimationFrame(() => hold(settled, cap - 1));
-        }
+        holdRef.current =
+          settled < 6 && cap > 0
+            ? requestAnimationFrame(() => hold(settled, cap - 1))
+            : null;
       };
-      hold(0, 90);
+      // One hold at a time: left to overlap, a second toggle's correction runs
+      // against the first and the two chase each other for as long as both
+      // live, which is scrolling that never comes to rest.
+      if (holdRef.current !== null) cancelAnimationFrame(holdRef.current);
+      holdRef.current = requestAnimationFrame(() => hold(0, 90));
       anchor.current = null;
     }
     if (pendingWalk.current) {
