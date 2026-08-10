@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./styles/fonts.css";
 import "./styles/tokens.css";
 import "./styles/global.css";
+import "./styles/type.css";
 import App from "./App.tsx";
 import { openStaffEntrance } from "./utils/staffEntrance.ts";
 // Last, so the booklet rules outrank every component sheet.

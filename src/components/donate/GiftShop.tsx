@@ -118,7 +118,7 @@ export function GiftShop({ donated }: { donated: DonatedExhibit }) {
 
   return (
     <div className="gift-shop">
-      <Button onClick={() => void takePostcard()}>
+      <Button quiet onClick={() => void takePostcard()}>
         {giftShop.button(donated.number)}
       </Button>
       <p role="status" className="gift-shop-status">

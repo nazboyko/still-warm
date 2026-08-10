@@ -103,7 +103,7 @@ export function DonateSection({
               {donated ? (
                 <>
                   <div className="donate-column-head">
-                    <h3 className="preview-heading donate-head-line">
+                    <h3 className="preview-heading">
                       {donatePreview.donated.heading}
                     </h3>
                     <p className="preview-note">{donatePreview.donated.note}</p>
@@ -111,7 +111,9 @@ export function DonateSection({
                   <ExhibitPlacard draft={draft} donated={donated} />
                   <div ref={afterRef} className="donate-after">
                     <GiftShop donated={donated} />
-                    <Button onClick={resetDesk}>{donateForm.reset}</Button>
+                    <Button quiet onClick={resetDesk}>
+                      {donateForm.reset}
+                    </Button>
                   </div>
                 </>
               ) : (

@@ -12,10 +12,14 @@
     color: #1a1a1a;
   }
 
+  /* The catalog is the exhibition, not the paperwork: the desk's form, its
+     actions and its live status stay off the page, and the frame and label
+     they produced print as the last entry. */
   .site-header,
   .room-guide,
-  .donate-desk,
-  .gift-shop,
+  .donate-form,
+  .donate-after,
+  .donate-status,
   .skip-link,
   .placard-toggle,
   .placard-walk,

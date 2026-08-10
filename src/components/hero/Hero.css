@@ -46,16 +46,15 @@
 }
 
 .hero-eyebrow {
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
   color: var(--brass);
 }
 
+/* The vw cap is a floor guard, not a step in the scale: it never bites at any
+   normal zoom, and at 200% text zoom on a 320px screen it is what stops the
+   word WARM - which cannot be broken - from widening the whole document. */
 .hero-title {
   margin-top: var(--space-2);
-  font-size: var(--text-display);
+  font-size: min(var(--text-display), 19vw);
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }

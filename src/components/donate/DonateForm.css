@@ -13,11 +13,13 @@
   width: 100%;
 }
 
-.desk-field label {
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
+/* A field and the help that belongs to it, closer to each other than the
+   fields are to one another - otherwise the ideas read as a control of their
+   own rather than as a way into the field above them. */
+.desk-group {
+  display: grid;
+  gap: var(--space-3);
+  width: 100%;
 }
 
 .desk-field input,
@@ -51,16 +53,13 @@
 }
 
 .desk-hint {
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: 0.04em;
   color: var(--brass);
 }
 
 .desk-error,
 .desk-alert {
   padding-left: var(--space-3);
-  border-left: 3px solid var(--beet);
+  border-left: var(--rail-width) solid var(--beet);
 }
 
 /* Four ways in for a visitor who cannot think of a dish. Buttons, not a
@@ -73,10 +72,6 @@
 }
 
 .desk-ideas-label {
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
   color: var(--brass);
 }
 
@@ -89,32 +84,9 @@
   list-style: none;
 }
 
-.desk-ideas button {
-  min-height: var(--touch-target);
-  padding-inline: var(--space-4);
-  border: 1px solid var(--brass);
-  border-radius: 999px;
-  background: none;
-  color: var(--plaster);
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  transition: border-color var(--dur-quiet) var(--ease-soft);
-}
-
-.desk-ideas button:hover {
-  border-color: var(--tungsten);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .desk-ideas button {
-    transition: none;
-  }
-}
-
 /* The submit spans the desk, label centred: one full-width action to close
-   the form, the same width as the fields it completes. */
-.donate-form .button {
+   the form, the same width as the fields it completes. The ideas are choices,
+   not the action, so they keep their own width. */
+.donate-form > .button {
   width: 100%;
 }

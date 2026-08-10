@@ -133,12 +133,8 @@
    dish is still again. Museums do not animate their exhibits. */
 /* Only the parts that exist purely for the serve start hidden. The cheese
    strand and the filling glint are permanent art and must never disappear. */
-.serve-sheen,
-.serve-drop {
-  opacity: 0;
-}
-
 .serve-sheen {
+  opacity: 0;
   stroke-opacity: 0;
 }
 
@@ -154,10 +150,6 @@
 
 [data-lit="true"] .serve-glint {
   animation: serve-glint 460ms var(--ease-soft) forwards;
-}
-
-[data-lit="true"] .serve-drop {
-  animation: serve-drop 560ms var(--ease-soft) forwards;
 }
 
 @keyframes serve-sheen {
@@ -205,27 +197,6 @@
   }
 }
 
-@keyframes serve-drop {
-  0% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-
-  25% {
-    opacity: 1;
-  }
-
-  85% {
-    opacity: 1;
-    transform: translateY(26px);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   /* The light still changes state, it just arrives there at once, and no air
      moves through the beam. The lit selectors are repeated because they set
@@ -242,14 +213,12 @@
   /* No serving; the dish is simply already served. */
   [data-lit="true"] .serve-sheen,
   [data-lit="true"] .serve-stretch,
-  [data-lit="true"] .serve-glint,
-  [data-lit="true"] .serve-drop {
+  [data-lit="true"] .serve-glint {
     animation: none;
     transform: none;
   }
 
-  [data-lit="true"] .serve-sheen,
-  [data-lit="true"] .serve-drop {
+  [data-lit="true"] .serve-sheen {
     opacity: 0;
   }
 }
@@ -270,12 +239,6 @@
     justify-items: start;
   }
 
-  /* The text column fills its half, so a card's width never depends on how
-     long the curator note beside it happens to be. */
-  .room-text {
-    justify-self: stretch;
-  }
-
   /* The dish fills its half so its edge can lap onto the label behind it. */
   .room-art {
     width: 100%;
@@ -287,17 +250,17 @@
   }
 }
 
+/* One measure for the whole column, so every room's card is the same width and
+   the note under it ends where the card ends. Left to size themselves, each
+   card grew to its own longest line and the note ran past the card's edge. */
 .room-text {
   display: grid;
   gap: var(--space-4);
   justify-items: start;
+  width: min(100%, 30rem);
 }
 
 .curator-note {
-  max-width: 34rem;
   padding-left: var(--space-4);
   border-left: 1px solid var(--brass);
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: 0.04em;
 }

@@ -1,3 +1,6 @@
+/* One control in two variants. Primary is a plaster slab; quiet is the same
+   box with the room showing through it. They differ in fill and label, never
+   in proportion, and no state changes a dimension. */
 .button {
   display: inline-flex;
   align-items: center;
@@ -5,16 +8,13 @@
   text-decoration: none;
   min-width: var(--touch-target);
   min-height: var(--touch-target);
-  padding: 0 1rem;
+  padding: 0 var(--space-4);
   font: inherit;
   color: var(--ink);
   background: var(--plaster);
   border: 1px solid var(--brass);
-  border-radius: 2px;
+  border-radius: var(--radius-placard);
   cursor: pointer;
-}
-
-.button {
   transition:
     color var(--dur-quiet) var(--ease-soft),
     border-color var(--dur-quiet) var(--ease-soft);
@@ -25,11 +25,28 @@
   color: var(--beet);
 }
 
+/* The quiet variant belongs to the room rather than to a card: no fill, a
+   brass outline, a lit label. Plaster stays exclusive to placards, which is
+   the light law the rooms already follow. */
+.button-quiet {
+  color: var(--tungsten);
+  background: none;
+}
+
+.button-quiet:hover:not(:disabled) {
+  border-color: var(--tungsten);
+  color: var(--gold-light);
+}
+
 .button:active:not(:disabled) {
   transform: translateY(1px);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+
   .button:active:not(:disabled) {
     transform: none;
   }

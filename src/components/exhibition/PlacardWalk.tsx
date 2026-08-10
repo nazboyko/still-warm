@@ -25,7 +25,7 @@ export function PlacardWalk({ from, prev, next, onWalk }: PlacardWalkProps) {
             &lt;-
           </span>
           <span className="placard-walk-label">
-            <span className="placard-walk-cat">CAT. {prev.number}</span>
+            <span>CAT. {prev.number}</span>
             <span className="placard-walk-room">
               {prev.emotion.toUpperCase()}
             </span>
@@ -40,7 +40,7 @@ export function PlacardWalk({ from, prev, next, onWalk }: PlacardWalkProps) {
           onClick={() => onWalk(next.id)}
         >
           <span className="placard-walk-label">
-            <span className="placard-walk-cat">CAT. {next.number}</span>
+            <span>CAT. {next.number}</span>
             <span className="placard-walk-room">
               {next.emotion.toUpperCase()}
             </span>

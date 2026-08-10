@@ -12,10 +12,6 @@
 }
 
 .room-guide-question {
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
   color: var(--brass);
 }
 
@@ -34,40 +30,6 @@
     justify-content: flex-start;
     /* Two and two: a fourth answer alone on its own line reads as a leftover. */
     max-width: 22rem;
-  }
-}
-
-.room-guide-answers button {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--touch-target);
-  padding: 0 var(--space-4);
-  font: inherit;
-  color: var(--plaster);
-  background: none;
-  border: 1px solid var(--brass);
-  border-radius: var(--radius-placard);
-  cursor: pointer;
-}
-
-.room-guide-answers button {
-  transition:
-    color var(--dur-quiet) var(--ease-soft),
-    border-color var(--dur-quiet) var(--ease-soft);
-}
-
-.room-guide-answers button:hover {
-  border-color: var(--tungsten);
-  color: var(--tungsten);
-}
-
-.room-guide-answers button:active {
-  transform: translateY(1px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .room-guide-answers button:active {
-    transform: none;
   }
 }
 

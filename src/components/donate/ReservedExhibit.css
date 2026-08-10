@@ -1,11 +1,15 @@
 .reserved-frame {
   width: 100%;
   /* The frame keeps its shape whatever the visitor types: its size is the
-     exhibit's, never the placard's, so typing cannot shift the layout. */
+     exhibit's, never the placard's, so typing cannot shift the layout. Once
+     donated there is nothing left to type, and the frame is free to fill the
+     row instead of leaving a void under itself. */
   aspect-ratio: 280 / 190;
   display: grid;
   align-content: center;
   padding: var(--space-4);
+  /* Heavier than any hairline on the page on purpose: this is the one framed
+     object, and a frame is a thing you could lift off the wall. */
   border: 3px solid var(--brass);
   /* The reserved spot stays dimmer than any lit exhibit. */
   background: radial-gradient(
@@ -37,9 +41,6 @@
 
 .reserved-donor {
   margin-top: var(--space-2);
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: 0.04em;
   color: var(--beet);
 }
 
@@ -110,18 +111,29 @@
   }
 }
 
-/* Donated, the words are frozen: nothing will grow into the typing reserve,
-   so the label hugs what was written instead of trailing empty plaster. */
+/* Donated, the words are frozen: nothing will grow into the typing reserve, so
+   the label hugs what was written instead of trailing empty plaster, and it
+   takes the spot - every placard's edge with the light turned up on it. */
 .reserved-placard[data-donated="true"] {
   min-height: 0;
   box-shadow:
-    0 30px 60px -24px rgb(0 0 0 / 0.62),
+    var(--placard-edge),
     0 0 70px -12px rgb(232 169 78 / 0.3);
 }
 
 .reserved-frame {
   position: relative;
   isolation: isolate;
+}
+
+/* The ratio release is load-bearing, not tidying: Chromium drops the ratio
+   once the row stretches the frame, and Firefox and WebKit keep it and leave
+   the void behind. The frame grows downward only - the exhibit stays on the
+   line the visitor was already watching, so the uncovering happens where they
+   are looking and the extra room reads as mount under the work. */
+.reserved-frame[data-donated="true"] {
+  aspect-ratio: auto;
+  align-content: start;
 }
 
 .reserved-frame::after {

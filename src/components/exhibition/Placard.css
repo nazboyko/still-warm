@@ -47,10 +47,6 @@
 .placard-cat {
   /* The catalog line is typewritten, one weight everywhere - never UA bold. */
   font-weight: 400;
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
   color: var(--beet);
 }
 
@@ -73,7 +69,7 @@
 
 .placard-fields > div + div {
   padding-top: var(--space-3);
-  border-top: 1px solid rgb(156 129 84 / 0.35);
+  border-top: 1px solid var(--brass-soft);
 }
 
 .placard-fields dd {
@@ -81,10 +77,6 @@
 }
 
 .placard-fields dt {
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
   color: var(--beet);
 }
 
@@ -112,10 +104,6 @@
   border-top: 1px solid var(--brass);
   background: none;
   cursor: pointer;
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
   text-align: left;
   color: var(--beet);
   transition: color var(--dur-quiet) var(--ease-soft);
