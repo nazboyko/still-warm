@@ -13,6 +13,12 @@ async function fillDesk(page: Page, donor = "") {
   if (donor) {
     await field(page, "Who is donating it? (optional)").fill(donor);
   }
+  // Wait for the desk to have actually taken what was typed. The preview reads
+  // the same draft the validator does, so once the memory shows on the label
+  // the state behind the submit is the state we just filled - without this a
+  // submit under load can validate a draft React has not committed yet, and
+  // the donation silently does not happen.
+  await expect(page.locator(".reserved-placard")).toContainText("wooden spoon");
 }
 
 test("typing renders the placard before any submit", async ({ page }) => {
