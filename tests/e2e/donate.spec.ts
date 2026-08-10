@@ -148,19 +148,28 @@ test("the exhibit does not move when it is revealed", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
   const frame = page.locator(".reserved-frame");
+  // The frame's foot drops to meet the label column once there is something in
+  // it, so height is the one measurement allowed to change; the artwork itself
+  // is what has to hold still, and it is checked here rather than assumed.
   const where = () =>
     page.evaluate(() => {
+      const panel = document
+        .querySelector(".donate-panel")!
+        .getBoundingClientRect();
       const box = document
         .querySelector(".reserved-frame")!
         .getBoundingClientRect();
-      const panel = document
-        .querySelector(".donate-panel")!
+      const art = document
+        .querySelector(".reserved-frame svg")!
         .getBoundingClientRect();
       return {
         x: Math.round(box.left - panel.left),
         y: Math.round(box.top - panel.top),
         w: Math.round(box.width),
-        h: Math.round(box.height),
+        artX: Math.round(art.left - panel.left),
+        artY: Math.round(art.top - panel.top),
+        artW: Math.round(art.width),
+        artH: Math.round(art.height),
       };
     });
   await fillDesk(page);

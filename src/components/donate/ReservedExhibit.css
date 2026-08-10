@@ -124,10 +124,14 @@
   isolation: isolate;
 }
 
-/* Load-bearing, not tidying: Chromium drops the ratio once the row stretches
-   the frame, and Firefox and WebKit keep it and leave the void behind. */
+/* The ratio release is load-bearing, not tidying: Chromium drops the ratio
+   once the row stretches the frame, and Firefox and WebKit keep it and leave
+   the void behind. The frame grows downward only - the exhibit stays on the
+   line the visitor was already watching, so the uncovering happens where they
+   are looking and the extra room reads as mount under the work. */
 .reserved-frame[data-donated="true"] {
   aspect-ratio: auto;
+  align-content: start;
 }
 
 .reserved-frame::after {
