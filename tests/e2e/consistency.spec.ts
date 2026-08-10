@@ -69,6 +69,18 @@ test("the header keeps its height when it compacts", async ({ page }) => {
   }
 });
 
+test("the header's own line never animates the layout", async ({ page }) => {
+  // The subtitle used to grow its height over 200ms. The bar is a fixed height
+  // now, but a layout property mid-flight is the shape of every drift bug this
+  // project has shipped, so only opacity is allowed to move.
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/");
+  const animated = await page
+    .locator(".lockup-sub")
+    .evaluate((el) => getComputedStyle(el).transitionProperty);
+  expect(animated).toBe("opacity");
+});
+
 test("a ticket label sits on the first line of its value", async ({ page }) => {
   // The label used to centre against the whole value, so a value that wrapped
   // pushed its own label as much as 54px away from the line it names.

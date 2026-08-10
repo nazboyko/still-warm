@@ -51,19 +51,19 @@
 /* At the top of the page the hero eyebrow already reads "The Museum of
    Comfort"; the header holds its own line back rather than say it twice in
    one screen, and takes it up again once the hero has scrolled away. Hidden
-   by opacity, so the lockup's accessible name never changes. */
+   by opacity, so the lockup's accessible name never changes, and giving up
+   its height so the wordmark still sits on the bar's centre line.
+   The height switches, it never animates: only opacity is transitioned, so
+   nothing on the page is laid out mid-flight. */
 @media (min-width: 40rem) {
   .site-header:not([data-compact="true"]) .lockup-sub {
     opacity: 0;
-    max-height: 0;
+    height: 0;
   }
 }
 
 .lockup-sub {
-  max-height: 2rem;
-  transition:
-    opacity var(--dur-quiet) var(--ease-soft),
-    max-height var(--dur-quiet) var(--ease-soft);
+  transition: opacity var(--dur-quiet) var(--ease-soft);
 }
 
 /* The phone's first screen already says "The Museum of Comfort" in the hero;
