@@ -53,8 +53,8 @@
   padding: var(--space-6) var(--ticket-pad);
   border: 1px solid var(--brass);
   border-radius: var(--radius-ticket);
-  outline: 1px solid rgb(156 129 84 / 0.4);
-  outline-offset: -6px;
+  outline: 1px solid var(--brass-soft);
+  outline-offset: calc(var(--space-2) * -1);
 }
 
 .visit-admit {
@@ -83,6 +83,9 @@
 /* Label and value on one line, sharing a gutter, so all four read at a glance
    instead of as four stacked rows the width of the screen. */
 .visit-facts {
+  /* One line of the value's leading: the ruler both columns are set on. */
+  --fact-line: calc(var(--text-body) * var(--leading-body));
+
   margin: 0;
   display: grid;
   /* The label column is as wide as its own widest row and no wider, and both
@@ -94,7 +97,10 @@
      places across the perforation. */
   grid-template-columns: minmax(0, var(--label-col)) minmax(0, 1fr);
   gap: var(--space-4);
-  align-items: center;
+  /* Start, not centre: a value that wraps to two or three lines pushed its own
+     label to the middle of them, so the label named a line it was not beside.
+     Both sides now begin on the same line. */
+  align-items: start;
 }
 
 .visit-facts > div {
@@ -107,20 +113,23 @@
   gap: var(--space-3);
   min-width: 0;
   overflow-wrap: anywhere;
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
+  /* The label is set on the value's leading rather than its own smaller one,
+     so the two first lines sit on the same optical line. */
+  line-height: var(--fact-line);
   color: var(--brass);
 }
 
+/* The engraved mark is a circle and taller than the line it sits on, so it
+   hangs off that line instead of setting the row's height - otherwise every
+   label is pushed half a mark below the value it names. */
 .visit-mark {
   display: grid;
   place-items: center;
   flex: none;
   width: 2rem;
   height: 2rem;
-  border: 1px solid rgb(156 129 84 / 0.55);
+  margin-block: calc((var(--fact-line) - 2rem) / 2);
+  border: 1px solid var(--brass-soft);
   border-radius: 50%;
   color: var(--tungsten);
 }
