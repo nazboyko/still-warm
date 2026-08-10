@@ -3,8 +3,10 @@
   gap: var(--space-2);
 }
 
+/* Same floor guard as the hero title: idle at every normal zoom, and the thing
+   that keeps "Exhibition" inside a 320px screen at 200% text zoom. */
 .section-heading h2 {
-  font-size: var(--text-h2);
+  font-size: min(var(--text-h2), 15vw);
 }
 
 .section-heading-eyebrow {
