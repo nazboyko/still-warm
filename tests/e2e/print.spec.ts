@@ -22,6 +22,53 @@ test("printing opens every label and drops the gallery darkness", async ({
   await expect(page.locator("#cat-001-story")).toHaveCount(0);
 });
 
+test("the booklet keeps the exhibit and drops the paperwork", async ({
+  page,
+}) => {
+  // The catalog is the exhibition: the desk that produced an entry is not part
+  // of it, and neither is a live status line.
+  await page.goto("/");
+  await page.emulateMedia({ media: "print" });
+  await page.evaluate(() => window.dispatchEvent(new Event("beforeprint")));
+
+  for (const paperwork of [
+    ".donate-form",
+    ".desk-ideas .button",
+    ".desk-field input",
+    ".donate-status",
+  ]) {
+    await expect(page.locator(paperwork).first()).toBeHidden();
+  }
+  for (const exhibition of [
+    "#donate-title",
+    ".reserved-frame",
+    ".reserved-placard",
+    ".visit-ticket",
+  ]) {
+    await expect(page.locator(exhibition).first()).toBeVisible();
+  }
+});
+
+test("a donated entry prints without its buttons", async ({ page }) => {
+  await page.goto("/");
+  await page
+    .getByRole("textbox", { name: "What dish feels like home?" })
+    .fill("Kasha");
+  await page
+    .getByRole("textbox", { name: "What feeling does it hold?" })
+    .fill("Monday");
+  await page
+    .getByRole("textbox", { name: "What do you remember?" })
+    .fill("A quiet bowl.");
+  await page.getByRole("button", { name: "Donate the exhibit" }).click();
+
+  await page.emulateMedia({ media: "print" });
+  await page.evaluate(() => window.dispatchEvent(new Event("beforeprint")));
+
+  await expect(page.locator(".donate-after")).toBeHidden();
+  await expect(page.locator(".reserved-placard")).toContainText("Kasha");
+});
+
 test("the header compacts once the visitor leaves the top", async ({
   page,
 }) => {
