@@ -8,7 +8,9 @@
   display: grid;
   align-content: center;
   padding: var(--space-4);
-  border: var(--rail-width) solid var(--brass);
+  /* Heavier than any hairline on the page on purpose: this is the one framed
+     object, and a frame is a thing you could lift off the wall. */
+  border: 3px solid var(--brass);
   /* The reserved spot stays dimmer than any lit exhibit. */
   background: radial-gradient(
     ellipse at 50% 65%,
