@@ -21,23 +21,31 @@
   padding-block: var(--space-4);
   border-bottom: 1px solid var(--brass);
   background: var(--ink);
-  transition: padding-block var(--dur-quiet) var(--ease-soft);
 }
 
 /* Sticky only where it is cheap: the phone header stacks to two rows and would
-   hold 137px of a 659px screen, so there it scrolls away like any other. */
+   hold 137px of a 659px screen, so there it scrolls away like any other.
+   One height in both states. A sticky bar is still in flow, so a bar that
+   shrinks on scroll moves the whole museum up under the reader - Chromium
+   hides that behind scroll anchoring and Firefox does not. Walking away from
+   the top changes what the bar says, never how much room it takes. */
 @media (min-width: 40rem) {
   .site-header {
     position: sticky;
     top: 0;
     z-index: 5;
+    display: grid;
+    align-content: center;
+    min-height: var(--header-compact);
+    padding-block: var(--space-2);
   }
-}
 
-/* Walking away from the top: the header gives its room back to the museum,
-   but never gives up a control. */
-.site-header[data-compact="true"] {
-  padding-block: var(--space-2);
+  /* A grid item sizes to its content, and the container's auto side margins
+     would then centre a short bar instead of hanging it on the page's own
+     left edge. Given the full width back, it lines up with every section. */
+  .site-header .container {
+    width: 100%;
+  }
 }
 
 /* At the top of the page the hero eyebrow already reads "The Museum of
@@ -74,7 +82,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-header,
   .lockup-sub {
     transition: none;
   }
@@ -104,10 +111,6 @@
 }
 
 .lockup-sub {
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
   color: var(--brass);
 }
 
@@ -143,10 +146,6 @@
   min-height: var(--touch-target);
   padding-inline: var(--space-2);
   transition: color var(--dur-quiet) var(--ease-soft);
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
   text-decoration: none;
 }
 
