@@ -145,9 +145,9 @@ export function DonateForm({ draft, onChange, onDonate }: DonateFormProps) {
         <ul>
           {donateForm.ideas.options.map((idea) => (
             <li key={idea}>
-              <button type="button" onClick={() => onChange("dish", idea)}>
+              <Button quiet onClick={() => onChange("dish", idea)}>
                 {idea}
-              </button>
+              </Button>
             </li>
           ))}
         </ul>

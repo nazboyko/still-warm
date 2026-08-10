@@ -4,13 +4,7 @@
   justify-items: start;
 }
 
-.gift-shop-status {
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: 0.04em;
-}
-
 .gift-shop-status:not(:empty) {
   padding-left: var(--space-3);
-  border-left: 3px solid var(--brass);
+  border-left: var(--rail-width) solid var(--brass);
 }

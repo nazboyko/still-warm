@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { ExhibitId } from "../../content/exhibits.ts";
 import { exhibits } from "../../content/exhibits.ts";
 import { guideResponse, roomGuide } from "../../content/guide.ts";
+import { Button } from "../ui/Button.tsx";
 import "./RoomGuide.css";
 
 export function RoomGuide({ onChoose }: { onChoose: (id: ExhibitId) => void }) {
@@ -25,9 +26,9 @@ export function RoomGuide({ onChoose }: { onChoose: (id: ExhibitId) => void }) {
       <ul className="room-guide-answers">
         {roomGuide.answers.map((answer) => (
           <li key={answer.target}>
-            <button type="button" onClick={() => choose(answer.target)}>
+            <Button quiet onClick={() => choose(answer.target)}>
               {answer.label}
-            </button>
+            </Button>
           </li>
         ))}
       </ul>
