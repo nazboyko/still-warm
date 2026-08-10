@@ -81,6 +81,23 @@ test("the header's own line never animates the layout", async ({ page }) => {
   expect(animated).toBe("opacity");
 });
 
+test("the ideas belong to the field they fill", async ({ page }) => {
+  // Spaced like another field, the ideas read as a control of their own rather
+  // than as a way into the dish field above them.
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/");
+  const gaps = await page.evaluate(() => {
+    const between = (a: string, b: string) =>
+      document.querySelector(b)!.getBoundingClientRect().top -
+      document.querySelector(a)!.getBoundingClientRect().bottom;
+    return {
+      toIdeas: between(".desk-group .desk-field", ".desk-ideas"),
+      betweenFields: between(".desk-ideas", ".desk-group + .desk-field"),
+    };
+  });
+  expect(gaps.toIdeas).toBeLessThan(gaps.betweenFields);
+});
+
 test("a ticket label sits on the first line of its value", async ({ page }) => {
   // The label used to centre against the whole value, so a value that wrapped
   // pushed its own label as much as 54px away from the line it names.

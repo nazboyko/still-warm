@@ -13,6 +13,15 @@
   width: 100%;
 }
 
+/* A field and the help that belongs to it, closer to each other than the
+   fields are to one another - otherwise the ideas read as a control of their
+   own rather than as a way into the field above them. */
+.desk-group {
+  display: grid;
+  gap: var(--space-3);
+  width: 100%;
+}
+
 .desk-field input,
 .desk-field textarea {
   width: 100%;

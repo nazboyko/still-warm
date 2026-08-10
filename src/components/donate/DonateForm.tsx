@@ -124,33 +124,37 @@ export function DonateForm({ draft, onChange, onDonate }: DonateFormProps) {
           {errors.map((error) => error.message).join(" ")}
         </p>
       ) : null}
-      <DeskField
-        field="dish"
-        copy={donateForm.fields.dish}
-        value={draft.dish}
-        error={errorFor("dish")}
-        onChange={onChange}
-        fieldRef={dishRef}
-      />
-      {/* Four ways in for a visitor who cannot think of a dish. They fill the
-          field and nothing else: no suggestions, no memory of what was picked. */}
-      <div
-        className="desk-ideas"
-        role="group"
-        aria-labelledby="desk-ideas-label"
-      >
-        <p id="desk-ideas-label" className="desk-ideas-label">
-          {donateForm.ideas.label}
-        </p>
-        <ul>
-          {donateForm.ideas.options.map((idea) => (
-            <li key={idea}>
-              <Button quiet onClick={() => onChange("dish", idea)}>
-                {idea}
-              </Button>
-            </li>
-          ))}
-        </ul>
+      {/* The ideas belong to the dish field, so they are grouped with it rather
+          than spaced like another field of their own. */}
+      <div className="desk-group">
+        <DeskField
+          field="dish"
+          copy={donateForm.fields.dish}
+          value={draft.dish}
+          error={errorFor("dish")}
+          onChange={onChange}
+          fieldRef={dishRef}
+        />
+        {/* Four ways in for a visitor who cannot think of a dish. They fill the
+            field and nothing else: no suggestions, no memory of what was picked. */}
+        <div
+          className="desk-ideas"
+          role="group"
+          aria-labelledby="desk-ideas-label"
+        >
+          <p id="desk-ideas-label" className="desk-ideas-label">
+            {donateForm.ideas.label}
+          </p>
+          <ul>
+            {donateForm.ideas.options.map((idea) => (
+              <li key={idea}>
+                <Button quiet onClick={() => onChange("dish", idea)}>
+                  {idea}
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
       <DeskField
         field="feeling"
