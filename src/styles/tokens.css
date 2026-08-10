@@ -11,6 +11,9 @@
   --tungsten: #e8a94e;
   --beet: #7a2e35;
   --brass: #9c8154;
+  /* The quiet brass: hairlines inside an object, where a solid rule would
+     divide it instead of detailing it. One softness everywhere, not five. */
+  --brass-soft: rgb(156 129 84 / 0.35);
   --steam: rgb(239 230 216 / 0.1);
 
   /* Food vocabulary - the only saturated color on the page. The law: food may
@@ -30,6 +33,10 @@
   --text-body: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
   --text-utility: clamp(0.75rem, 0.72rem + 0.15vw, 0.85rem);
   --tracking-utility: 0.08em;
+  /* The same typewriter set as a sentence rather than a label: curator notes,
+     hints, statuses. Letterspacing a running line as hard as a label makes it
+     hard to read, so it gets half. */
+  --tracking-mono: 0.04em;
   --leading-display: 1.08;
   --leading-body: 1.6;
 
@@ -65,6 +72,8 @@
 
   --header-compact: 4.5rem;
   --touch-target: 44px;
+  /* The rule a message stands behind: errors in beet, statuses in brass. */
+  --rail-width: 3px;
   --radius-placard: 2px;
   /* The admission ticket is the one object on the page with real corners:
      a placard is a card pinned to a wall, a ticket is something you hold. */

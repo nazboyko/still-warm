@@ -29,10 +29,6 @@
    dark wall it measures 3.66:1, under AA however good the token looks. */
 .ramp-subtitle {
   margin-top: var(--space-2);
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
   color: var(--plaster);
 }
 

@@ -11,9 +11,5 @@
 
 .site-footer-meta {
   margin-top: var(--space-2);
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
   color: var(--brass);
 }

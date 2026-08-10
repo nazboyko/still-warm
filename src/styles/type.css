@@ -1,0 +1,41 @@
+/* The museum's typewritten voice. Every mono line on the page is one of these
+   two, written once here instead of copied into seventeen component sheets;
+   the sheets keep only what is theirs - colour, spacing, layout. */
+
+/* The label: catalogue lines, field labels, eyebrows, nav. Hand-set, spaced,
+   uppercase - the card pinned beside the work. */
+.hero-eyebrow,
+.section-heading-eyebrow,
+.display-case-label,
+.room-guide-question,
+.lockup-sub,
+.site-nav a,
+.placard-cat,
+.placard-fields dt,
+.placard-toggle,
+.placard-walk-step,
+.ramp-subtitle,
+.desk-field label,
+.desk-ideas-label,
+.preview-heading,
+.site-footer-meta,
+.visit-facts dt {
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+}
+
+/* The same machine set as a sentence: curator notes, hints, statuses, the
+   donor line. Sentence case, half the letterspacing, because these are read
+   rather than scanned. */
+.curator-note,
+.desk-hint,
+.desk-ideas .button,
+.donate-status,
+.gift-shop-status,
+.reserved-donor {
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-mono);
+}
