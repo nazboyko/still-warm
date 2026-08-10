@@ -131,6 +131,7 @@ test("a ticket label sits on the first line of its value", async ({ page }) => {
 test("the donated frame fills the column beside it", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
   await page
     .getByRole("textbox", { name: "What dish feels like home?" })
     .fill("Buckwheat with butter");
@@ -142,10 +143,29 @@ test("the donated frame fills the column beside it", async ({ page }) => {
     .fill(
       "My grandmother made it in a heavy pot and the kitchen smelled of it all morning, and nobody hurried.",
     );
+  // The preview reads the same draft the validator does, so once the memory is
+  // on the label the state behind the submit is the state we just typed.
+  await expect(page.locator(".reserved-placard")).toContainText("heavy pot");
   await page.getByRole("button", { name: "Donate the exhibit" }).click();
+  await expect(page.locator(".reserved-frame")).toHaveAttribute(
+    "data-donated",
+    "true",
+  );
 
-  const [frame] = await boxes(page, ".reserved-frame");
-  const [column] = await boxes(page, ".donate-column");
-  // The void this closed was 216px; the slack is for the grid's own rounding.
-  expect(Math.abs(frame!.bottom - column!.bottom)).toBeLessThanOrEqual(1.5);
+  // Both edges in one measurement: read separately, a font swapping in between
+  // the two reads compares a frame from one layout against a column from the
+  // next, which is a 10px disagreement that no layout ever had.
+  const gap = () =>
+    page.evaluate(() => {
+      const frame = document.querySelector(".reserved-frame")!;
+      const column = document.querySelector(".donate-column")!;
+      return (
+        column.getBoundingClientRect().bottom -
+        frame.getBoundingClientRect().bottom
+      );
+    });
+  // The void this closed was 216px. One-directional on purpose: no empty
+  // plaster under the exhibit, while a frame that has to stay taller than a
+  // short label keeps its artwork's room. The slack is the grid's rounding.
+  await expect.poll(gap).toBeLessThanOrEqual(1.5);
 });
