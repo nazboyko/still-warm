@@ -34,14 +34,16 @@ test("the reserved frame holds its look", async ({ page }) => {
 test("a donated frame holds its look", async ({ page }) => {
   await page.goto("/");
   await page
-    .getByRole("textbox", { name: "Dish", exact: true })
+    .getByRole("textbox", { name: "What dish feels like home?" })
     .fill("Borscht");
-  await page.getByRole("textbox", { name: "Feeling" }).fill("Quiet evenings");
   await page
-    .getByRole("textbox", { name: "Memory" })
+    .getByRole("textbox", { name: "What feeling does it hold?" })
+    .fill("Quiet evenings");
+  await page
+    .getByRole("textbox", { name: "What do you remember?" })
     .fill("The pot my grandmother never washed the same day.");
   await page
-    .getByRole("textbox", { name: "Donated by (optional)" })
+    .getByRole("textbox", { name: "Who is donating it? (optional)" })
     .fill("Marta");
   await page.getByRole("button", { name: "Donate the exhibit" }).click();
 

@@ -4,7 +4,7 @@
 
 An exhibition of dishes that taste like home. Walk four rooms, read the labels, and leave a memory that becomes the last exhibit.
 
-**[Visit the museum](https://still-warm.pages.dev/)**
+**[Visit the museum](https://still-warm.boyko-nazar.workers.dev/)**
 
 ![The museum's hero: a lit display case holding golden varenyky in a dark gallery](.github/media/cover.png)
 
@@ -33,7 +33,7 @@ src/
   utils/           contrast maths, the staff entrance
 ```
 
-Two rules hold the place together: content lives in `src/content/` as typed data, and every colour, size and duration comes from `src/styles/tokens.css`.
+Two rules hold the place together: content lives in `src/content/` as typed data, and the palette, type scale, spacing and timings are defined in `src/styles/tokens.css`; the hand-drawn SVG dishes carry their own literal values inline.
 
 ## Conservation notes
 
@@ -61,6 +61,6 @@ Print the page for an exhibition booklet, or open the console for the staff entr
 
 ## Credits
 
-Type: [Young Serif](https://github.com/uplaod/YoungSerif), [Familjen Grotesk](https://github.com/kosbarts/FamiljenGrotesk), [IBM Plex Mono](https://github.com/IBM/plex) - all self-hosted, all open licensed.
+Type: [Young Serif](https://github.com/noirblancrouge/YoungSerif), [Familjen Grotesk](https://github.com/Familjen-Sthlm/Familjen-Grotesk), [IBM Plex Mono](https://github.com/IBM/plex) - all self-hosted under the SIL Open Font License 1.1. The licence text for each ships beside the fonts in [`public/fonts/`](public/fonts/).
 
 Built by [Nazar Boyko](https://github.com/nazboyko). MIT licensed.

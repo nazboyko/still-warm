@@ -1,3 +1,4 @@
+import { SpotBeam } from "../../art/SpotBeam.tsx";
 import { Varenyk, VarenykDefs } from "../../art/Varenyk.tsx";
 
 /* Fried onions caught on the dough, a few caramelized darker. */
@@ -35,11 +36,6 @@ export function VarenykyArt({
           <stop offset="60%" stopColor="#e8a94e" stopOpacity="0.14" />
           <stop offset="100%" stopColor="#e8a94e" stopOpacity="0" />
         </radialGradient>
-        <linearGradient id="varenyky-cone" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#e8a94e" stopOpacity="1" />
-          <stop offset="70%" stopColor="#e8a94e" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#e8a94e" stopOpacity="0.05" />
-        </linearGradient>
         {/* Fully opaque stops: any transparency here greys against the plate. */}
         <linearGradient id="rv-cream" x1="0" y1="0" x2="0.2" y2="1">
           <stop offset="0%" style={{ stopColor: "var(--plaster)" }} />
@@ -52,11 +48,14 @@ export function VarenykyArt({
         </radialGradient>
       </defs>
 
-      <path
+      <SpotBeam
         className="art-cone"
-        d="M160 6 C144 80 122 150 100 196 H220 C198 150 176 80 160 6 Z"
-        fill="url(#varenyky-cone)"
-        opacity="0.05"
+        id="varenyky-beam"
+        x={160}
+        top={20}
+        bottom={196}
+        spread={60}
+        opacity={0.08}
       />
       <ellipse cx="160" cy="176" rx="118" ry="50" fill="url(#varenyky-glow)" />
       <ellipse

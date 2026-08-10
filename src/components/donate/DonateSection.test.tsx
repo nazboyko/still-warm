@@ -4,13 +4,13 @@ import { donateIntro, reservedExhibit } from "../../content/exhibits.ts";
 import { DonateSection } from "./DonateSection.tsx";
 
 function fillDesk() {
-  fireEvent.change(screen.getByLabelText("Dish"), {
+  fireEvent.change(screen.getByLabelText("What dish feels like home?"), {
     target: { value: "Rice pudding" },
   });
-  fireEvent.change(screen.getByLabelText("Feeling"), {
+  fireEvent.change(screen.getByLabelText("What feeling does it hold?"), {
     target: { value: "Quiet evenings" },
   });
-  fireEvent.change(screen.getByLabelText("Memory"), {
+  fireEvent.change(screen.getByLabelText("What do you remember?"), {
     target: { value: "Stirred with a wooden spoon, never a recipe in sight." },
   });
 }
@@ -39,14 +39,14 @@ test("the sketch is decorative and dotted, not an image that failed", () => {
 
 test("typing renders the visitor's placard live", () => {
   render(<DonateSection />);
-  fireEvent.change(screen.getByLabelText("Dish"), {
+  fireEvent.change(screen.getByLabelText("What dish feels like home?"), {
     target: { value: "Rice pudding" },
   });
   const placard = screen.getByRole("article");
   expect(placard).toHaveTextContent("Rice pudding");
   expect(placard).toHaveAccessibleName("CAT. 007 - RESERVED");
 
-  fireEvent.change(screen.getByLabelText("Feeling"), {
+  fireEvent.change(screen.getByLabelText("What feeling does it hold?"), {
     target: { value: "Quiet evenings" },
   });
   expect(placard).toHaveAccessibleName("CAT. 007 - QUIET EVENINGS");
@@ -84,7 +84,7 @@ test("reset returns the frame to the reserved state", () => {
     "CAT. 007 - RESERVED",
   );
   expect(screen.getByText(reservedExhibit.placard)).toBeInTheDocument();
-  expect(screen.getByLabelText("Dish")).toHaveValue("");
+  expect(screen.getByLabelText("What dish feels like home?")).toHaveValue("");
   expect(screen.getByRole("status")).toBeEmptyDOMElement();
-  expect(screen.getByLabelText("Dish")).toHaveFocus();
+  expect(screen.getByLabelText("What dish feels like home?")).toHaveFocus();
 });

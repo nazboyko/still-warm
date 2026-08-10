@@ -1,3 +1,4 @@
+import { SpotBeam } from "../art/SpotBeam.tsx";
 import type { SculptureSpec } from "./exhibitSculpture.ts";
 import { ExhibitTableau } from "./ExhibitTableau.tsx";
 
@@ -17,6 +18,17 @@ export function ReservedScene({ revealed, spec }: ReservedSceneProps) {
           <stop offset="100%" stopColor="#241b13" />
         </linearGradient>
       </defs>
+
+      {/* The same fixture the hero and every room has, so the last frame is
+          lit by the same museum. */}
+      <SpotBeam
+        id="vd-beam"
+        x={140}
+        top={26}
+        bottom={150}
+        spread={46}
+        opacity={0.12}
+      />
 
       <g className="scene-sketch">
         <g

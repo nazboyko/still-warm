@@ -1,34 +1,81 @@
+/* Exhibit 000 is wall text, not an exhibit card. It has no dish, so it cannot
+   hold up its half of a room; it stands before the exhibition as its opening
+   statement, in plaster type straight on the wall, with its own vertical space
+   on either side of it. */
 .ramp-exhibit {
-  padding-bottom: var(--space-section);
+  position: relative;
+  padding-block: var(--space-section);
 }
 
-.ramp-placard {
+.ramp-wall {
+  position: relative;
+  /* A reading measure, not the width of the screen: about 65 characters. */
+  width: min(100%, 65ch);
   margin-inline: auto;
+  text-align: center;
 }
 
+/* Entrance wall text is set larger than body copy and given room to breathe. */
+.ramp-title {
+  margin-top: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h2);
+  line-height: var(--leading-display);
+  color: var(--plaster);
+}
+
+/* Plaster, not brass: brass is a card colour, and painted at this size on the
+   dark wall it measures 3.66:1, under AA however good the token looks. */
 .ramp-subtitle {
-  margin-top: var(--space-1);
+  margin-top: var(--space-2);
   font-family: var(--font-utility);
   font-size: var(--text-utility);
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--beet);
+  color: var(--plaster);
 }
 
 .ramp-body {
-  margin-block: var(--space-4);
+  margin-top: var(--space-6);
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.4rem);
+  line-height: 1.75;
+  color: var(--plaster);
 }
 
-/* The arrival flash rides its own element, never a pseudo on an ancestor of
-   text: axe cannot resolve a background behind an absolutely positioned
-   pseudo, and that once turned a clean page into an incomplete. */
-.ramp-placard-wrap {
-  position: relative;
+/* Beet is a plaster-surface colour and has nothing like AA on the dark wall. */
+.ramp-wall .placard-cat {
+  color: var(--tungsten);
+}
+
+/* The fixture that lights the panel: warm where the beam lands just above the
+   catalog line, falling off upward and out to the edges of the wall. It fills
+   the section's own top padding and stops exactly where the text begins -
+   putting a gradient under a line makes axe unable to decide the contrast, and
+   this page treats an undecided check as a failure. */
+.ramp-light {
+  position: absolute;
+  inset-block-start: 0;
+  /* Never wider than the page: a wash that bled past the edges to soften its
+     falloff widened the document instead, at 320px and at 200% zoom. The
+     gradient's own reach is what fades it out before the wall runs out. */
+  inset-inline: 0;
+  height: var(--space-section);
+  /* The pool reaches nothing exactly where the element stops, so the light
+     dissolves into the wall instead of ending on a line above the panel. */
+  background: radial-gradient(
+    62% 55% at 50% 45%,
+    rgb(232 169 78 / 0.22),
+    rgb(232 169 78 / 0.09) 40%,
+    rgb(232 169 78 / 0.02) 72%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
 .arrive-marker {
   position: absolute;
-  inset: -6px;
+  inset: calc(var(--space-4) * -1);
   border: 2px solid var(--tungsten);
   border-radius: var(--radius-placard);
   opacity: 0;

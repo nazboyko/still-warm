@@ -46,7 +46,19 @@ test("reserved exhibit is present before the donate form exists", async ({
   page,
 }) => {
   await page.goto("/");
-  await expect(page.locator(".reserved")).toContainText(
+  await expect(page.locator(".reserved-placard")).toContainText(
     "This space is held for a memory that has not arrived yet.",
   );
+});
+
+test("nothing outside a room waits for an arrival that never comes", async ({
+  page,
+}) => {
+  await page.goto("/");
+  // Exhibit 000 and the reserved frame sit outside the rooms, so a reveal
+  // scoped to rooms must never leave either of them waiting, invisible.
+  for (const selector of [".ramp-wall", ".reserved-placard"]) {
+    await expect(page.locator(selector)).toBeVisible();
+    await expect(page.locator(selector)).toHaveCSS("opacity", "1");
+  }
 });

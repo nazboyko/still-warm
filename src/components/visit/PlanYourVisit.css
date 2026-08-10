@@ -3,14 +3,110 @@
   border-top: 1px solid var(--brass);
 }
 
-.visit-facts {
-  margin: var(--space-12) auto 0;
+/* The line that turns the section from leftover footer facts into the fiction. */
+.visit-note {
   max-width: 34rem;
+  margin: var(--space-4) auto 0;
+  text-align: center;
+  text-wrap: balance;
+  font-size: calc(var(--text-body) * 1.05);
+}
+
+/* An entrance plate, in the same language as the admission ticket the link
+   preview shows: a brass frame with a second hairline inside it, and one
+   perforation across the stub. The inner rule is an outline rather than a
+   pseudo-element, because a positioned pseudo over text leaves axe unable to
+   decide the contrast behind it. */
+.visit-plate {
+  position: relative;
+  width: min(100%, 32rem);
+  /* Room above the ticket for the light to land in without reaching the line
+     of text above it. */
+  margin: var(--space-12) auto 0;
+}
+
+/* Stops at the ticket's top edge, so no line of text is ever set over it. */
+.visit-plate-light {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 100%;
+  /* Shorter than the gap it sits in: a gradient that reaches the note above
+     leaves axe unable to decide that line's contrast, and this page counts an
+     undecided check as a failure. */
+  height: var(--space-8);
+  background: radial-gradient(
+    52% 100% at 50% 100%,
+    rgb(232 169 78 / 0.3),
+    rgb(232 169 78 / 0.1) 45%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.visit-ticket {
+  --ticket-pad: clamp(var(--space-4), 5vw, var(--space-8));
+  /* Wide enough for the icon plus ADMISSION at the largest utility
+     size, or the longest label breaks mid-word. */
+  --label-col: 8.75rem;
+
+  position: relative;
+  padding: var(--space-6) var(--ticket-pad);
+  border: 1px solid var(--brass);
+  border-radius: var(--radius-ticket);
+  outline: 1px solid rgb(156 129 84 / 0.4);
+  outline-offset: -6px;
+}
+
+.visit-admit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--tungsten);
+}
+
+.visit-admit::before,
+.visit-admit::after {
+  content: "";
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--brass);
+}
+
+/* Label and value on one line, sharing a gutter, so all four read at a glance
+   instead of as four stacked rows the width of the screen. */
+.visit-facts {
+  margin: 0;
   display: grid;
-  gap: var(--space-6);
+  /* The label column is as wide as its own widest row and no wider, and both
+     columns can shrink: a fixed track let the longer labels overflow it, and
+     right-aligning them started every row at a different place. minmax(0, ...)
+     on both, or 200% text zoom on a phone pushes the values off the screen. */
+  /* One shared track, not max-content: the stub is its own list, and sizing
+     each to its own widest label started the two value columns in different
+     places across the perforation. */
+  grid-template-columns: minmax(0, var(--label-col)) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.visit-facts > div {
+  display: contents;
 }
 
 .visit-facts dt {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-family: var(--font-utility);
   font-size: var(--text-utility);
   letter-spacing: var(--tracking-utility);
@@ -18,9 +114,56 @@
   color: var(--brass);
 }
 
+.visit-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgb(156 129 84 / 0.55);
+  border-radius: 50%;
+  color: var(--tungsten);
+}
+
+.visit-mark svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+/* Sits on the rim, punching through the border the way a fitting would. */
+.visit-fixture {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--brass);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--tungsten);
+}
+
+.visit-fixture svg {
+  width: 1.5rem;
+  height: 1rem;
+}
+
 .visit-facts dd {
-  margin: var(--space-1) 0 0;
-  font-size: calc(var(--text-body) * 1.1);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* The perforation runs the full width of the plate, the way a real one does,
+   so it reads as a tear line rather than a rule between two rows. */
+.visit-stub {
+  margin-top: var(--space-4);
+  margin-inline: calc(var(--ticket-pad) * -1);
+  padding-top: var(--space-4);
+  padding-inline: var(--ticket-pad);
+  border-top: 1px dashed var(--brass);
 }
 
 .visit .section-heading {

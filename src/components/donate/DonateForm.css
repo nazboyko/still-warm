@@ -1,22 +1,10 @@
+/* The form fills its column, so every field is the same width and the submit
+   lines up with them rather than sitting centred under them. */
 .donate-form {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-6);
   justify-items: start;
-  width: min(100%, 26rem);
-}
-
-.desk-eyebrow {
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
-  color: var(--brass);
-}
-
-.desk-title {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(1.4rem, 1.2rem + 1vw, 1.9rem);
+  width: 100%;
 }
 
 .desk-field {
@@ -45,9 +33,17 @@
   transition: border-color var(--dur-quiet) var(--ease-soft);
 }
 
+/* The field being written glows like the exhibit under its spot - additive to
+   the global focus ring, never a replacement for it. */
 .desk-field input:focus-visible,
 .desk-field textarea:focus-visible {
-  border-color: var(--plaster);
+  border-color: var(--tungsten);
+  box-shadow: 0 0 24px -6px rgb(232 169 78 / 0.4);
+}
+
+.desk-field input:hover:not(:focus-visible),
+.desk-field textarea:hover:not(:focus-visible) {
+  border-color: rgb(232 169 78 / 0.7);
 }
 
 .desk-field textarea {
@@ -65,4 +61,60 @@
 .desk-alert {
   padding-left: var(--space-3);
   border-left: 3px solid var(--beet);
+}
+
+/* Four ways in for a visitor who cannot think of a dish. Buttons, not a
+   combobox: each one sets the field and nothing more. */
+.desk-ideas {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+  width: 100%;
+}
+
+.desk-ideas-label {
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
+.desk-ideas ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.desk-ideas button {
+  min-height: var(--touch-target);
+  padding-inline: var(--space-4);
+  border: 1px solid var(--brass);
+  border-radius: 999px;
+  background: none;
+  color: var(--plaster);
+  font-family: var(--font-utility);
+  font-size: var(--text-utility);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: border-color var(--dur-quiet) var(--ease-soft);
+}
+
+.desk-ideas button:hover {
+  border-color: var(--tungsten);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desk-ideas button {
+    transition: none;
+  }
+}
+
+/* The submit spans the desk, label centred: one full-width action to close
+   the form, the same width as the fields it completes. */
+.donate-form .button {
+  width: 100%;
 }

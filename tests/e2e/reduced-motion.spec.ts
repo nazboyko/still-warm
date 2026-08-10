@@ -16,9 +16,15 @@ test("unfold becomes a crossfade under reduced motion", async ({ page }) => {
 test("the reveal is instant under reduced motion", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
-  await page.getByRole("textbox", { name: "Dish", exact: true }).fill("Kasha");
-  await page.getByRole("textbox", { name: "Feeling" }).fill("Monday");
-  await page.getByRole("textbox", { name: "Memory" }).fill("A quiet bowl.");
+  await page
+    .getByRole("textbox", { name: "What dish feels like home?" })
+    .fill("Kasha");
+  await page
+    .getByRole("textbox", { name: "What feeling does it hold?" })
+    .fill("Monday");
+  await page
+    .getByRole("textbox", { name: "What do you remember?" })
+    .fill("A quiet bowl.");
   await page.getByRole("button", { name: "Donate the exhibit" }).click();
 
   await expect(page.locator(".reserved-frame svg")).toHaveAttribute(
@@ -72,6 +78,23 @@ test("reduced motion loses no content", async ({ page }) => {
 
   expect(reducedText).toBe(fullMotionText);
   expect(reducedText).toContain("У повітрі пахне");
+});
+
+test("no air moves through the beam under reduced motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
+  await page.getByRole("button", { name: "Read the label" }).first().click();
+  const drift = await page
+    .locator("#cat-001 .art-haze")
+    .evaluate((element) => getComputedStyle(element).animationName);
+  expect(drift).toBe("none");
+  // The spot still warms for the open label, it just arrives there at once.
+  await expect(page.locator("#cat-001 .art-cone")).toHaveCSS("opacity", "0.16");
+  const settle = await page
+    .locator("#cat-001 .art-pool")
+    .evaluate((element) => getComputedStyle(element).transitionDuration);
+  expect(settle).toBe("0s");
 });
 
 test("serving details do not play under reduced motion", async ({ page }) => {

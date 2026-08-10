@@ -1,17 +1,3 @@
-.reserved {
-  display: grid;
-  /* A definite column: left to size itself the column follows the placard's
-     max-content, which drags the frame's width - and through its aspect, its
-     height - every time the visitor types. */
-  grid-template-columns: minmax(0, 1fr);
-  /* Definite, because a centred grid item is sized by its content: without this
-     the whole block narrows the moment the reserved copy gives way to a short
-     dish name, and the frame's height follows its width down. */
-  width: min(100%, 34rem);
-  gap: var(--space-4);
-  justify-items: center;
-}
-
 .reserved-frame {
   width: 100%;
   /* The frame keeps its shape whatever the visitor types: its size is the
@@ -68,7 +54,7 @@
 }
 
 [data-revealed="true"] .scene-cloche {
-  animation: cloche-lift 520ms var(--ease-soft) forwards;
+  animation: cloche-lift 560ms var(--ease-soft) forwards;
 }
 
 @keyframes cloche-lift {
@@ -94,23 +80,24 @@
 
 [data-revealed="true"] .scene-dish > * {
   opacity: 0;
-  animation: exhibit-surface 280ms var(--ease-soft) forwards;
+  animation: exhibit-surface 300ms var(--ease-soft) forwards;
 }
 
+/* The light warms into the case before anything is in it. */
 [data-revealed="true"] .dish-glow {
-  animation-delay: 200ms;
+  animation-delay: 240ms;
 }
 
 [data-revealed="true"] .dish-plate {
-  animation-delay: 250ms;
+  animation-delay: 340ms;
 }
 
 [data-revealed="true"] .dish-food {
-  animation-delay: 310ms;
+  animation-delay: 420ms;
 }
 
 [data-revealed="true"] .dish-steam {
-  animation-delay: 400ms;
+  animation-delay: 520ms;
 }
 
 @keyframes exhibit-surface {
@@ -121,6 +108,15 @@
   to {
     opacity: 1;
   }
+}
+
+/* Donated, the words are frozen: nothing will grow into the typing reserve,
+   so the label hugs what was written instead of trailing empty plaster. */
+.reserved-placard[data-donated="true"] {
+  min-height: 0;
+  box-shadow:
+    0 30px 60px -24px rgb(0 0 0 / 0.62),
+    0 0 70px -12px rgb(232 169 78 / 0.3);
 }
 
 .reserved-frame {
@@ -142,7 +138,7 @@
   transition: opacity var(--dur-quiet) var(--ease-soft);
 }
 
-[data-donated="true"] .reserved-frame::after {
+.reserved-frame[data-donated="true"]::after {
   opacity: 1;
 }
 
@@ -163,7 +159,10 @@
   }
 }
 
-/* The visitor's words settle onto the label rather than appearing mid-keystroke. */
+/* The visitor's words settle onto the label rather than appearing mid-keystroke.
+   The settle is carried by transform and never by opacity: text caught mid-fade
+   is unreadable to a visitor and reads as failing contrast to axe, which is how
+   this label kept failing the gate under load. */
 .reserved-dish,
 .reserved-text,
 .reserved-donor {
@@ -172,11 +171,11 @@
 
 @keyframes placard-settle {
   from {
-    opacity: 0;
+    transform: translateY(4px);
   }
 
   to {
-    opacity: 1;
+    transform: none;
   }
 }
 

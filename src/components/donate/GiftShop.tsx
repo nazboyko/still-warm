@@ -73,7 +73,7 @@ function downloadTextCard(exhibit: DonatedExhibit) {
   ].join("\n");
   downloadBlob(
     new Blob([text], { type: "text/plain" }),
-    postcardCard.fileName.replace(".png", ".txt"),
+    postcardCard.fileName(exhibit.number).replace(".png", ".txt"),
   );
 }
 
@@ -106,7 +106,7 @@ export function GiftShop({ donated }: { donated: DonatedExhibit }) {
     try {
       const blob = await renderPostcardBlob(donated);
       if (blob) {
-        downloadBlob(blob, postcardCard.fileName);
+        downloadBlob(blob, postcardCard.fileName(donated.number));
       } else {
         downloadTextCard(donated);
       }

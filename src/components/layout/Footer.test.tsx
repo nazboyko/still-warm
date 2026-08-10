@@ -13,7 +13,7 @@ test("links the challenge, the source, and the ramp", () => {
   render(<Footer />);
   expect(
     screen.getByRole("link", { name: "DEV Frontend Challenge" }),
-  ).toHaveAttribute("href", "https://dev.to/challenges");
+  ).toHaveAttribute("href", "https://dev.to/challenges/frontend-2026-07-29");
   expect(
     screen.getByRole("link", { name: "Source on GitHub" }),
   ).toHaveAttribute("href", "https://github.com/nazboyko/still-warm");

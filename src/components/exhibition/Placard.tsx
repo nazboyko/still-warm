@@ -27,8 +27,40 @@ export function Placard({
   const reducedMotion = useReducedMotion();
   const placardRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const guardRef = useRef<number | null>(null);
   // Only a direct close (this trigger, Escape) folds out; a spotlight swap unmounts at once.
   const [exiting, setExiting] = useState(false);
+
+  // The panel collapses after focus returns, and the shorter document can slide
+  // the trigger under the sticky header. One check is not enough: the collapse
+  // runs for a quarter second, and Firefox's scroll anchoring re-adjusts after
+  // any single frame we could pick - so stand guard across the whole collapse.
+  function keepTriggerInView() {
+    // One guard at a time. Left to overlap, consecutive closes each keep their
+    // own watch running and correct against each other - the same accumulating
+    // correction that has bitten this page three times.
+    if (guardRef.current !== null) cancelAnimationFrame(guardRef.current);
+    const watch = (clear: number, cap: number) => {
+      const trigger = triggerRef.current;
+      const header = document.querySelector(".site-header-bar");
+      let settled = clear;
+      if (trigger && header) {
+        const headerBottom = header.getBoundingClientRect().bottom;
+        if (trigger.getBoundingClientRect().top < headerBottom) {
+          trigger.scrollIntoView({ block: "nearest", behavior: "instant" });
+          settled = 0;
+        } else {
+          settled += 1;
+        }
+      }
+      // Stand down once the trigger has been clear across the whole collapse.
+      guardRef.current =
+        settled < 20 && cap > 0
+          ? requestAnimationFrame(() => watch(settled, cap - 1))
+          : null;
+    };
+    guardRef.current = requestAnimationFrame(() => watch(0, 40));
+  }
 
   function handleToggle() {
     if (isOpen && !reducedMotion) setExiting(true);
@@ -45,8 +77,9 @@ export function Placard({
       const active = document.activeElement;
       const inPlacard = Boolean(placardRef.current?.contains(active));
       if (!inPlacard && active !== document.body && active !== null) return;
-      triggerRef.current?.focus({ preventScroll: !inPlacard });
+      triggerRef.current?.focus({ preventScroll: true });
       handleToggle();
+      keepTriggerInView();
     }
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
@@ -90,7 +123,10 @@ export function Placard({
           aria-describedby={`${exhibit.id}-dish`}
           aria-expanded={isOpen}
           aria-controls={isOpen ? storyId : undefined}
-          onClick={handleToggle}
+          onClick={() => {
+            handleToggle();
+            if (isOpen) keepTriggerInView();
+          }}
         >
           <span aria-hidden="true" className="placard-fold-mark" />
           Read the label

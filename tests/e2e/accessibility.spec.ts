@@ -24,6 +24,38 @@ test("homepage has no unresolved axe incompletes", async ({ page }) => {
   expect(reportable(results.incomplete)).toEqual([]);
 });
 
+// The reserved label used to fade its lines in, which made the scan above a
+// race: on a slower engine axe caught a line mid-fade and reported it as a
+// contrast failure. A line a visitor cannot read yet is a real defect, so the
+// settle moves text rather than fading it.
+test("the label's settle moves its text instead of fading it", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const fadingFrames = await page.evaluate(() => {
+    for (const sheet of Array.from(document.styleSheets)) {
+      let rules: CSSRule[];
+      try {
+        rules = Array.from(sheet.cssRules);
+      } catch {
+        continue;
+      }
+      for (const rule of rules) {
+        if (
+          rule instanceof CSSKeyframesRule &&
+          rule.name === "placard-settle"
+        ) {
+          return Array.from(rule.cssRules)
+            .map((frame) => (frame as CSSKeyframeRule).style.opacity)
+            .filter(Boolean);
+        }
+      }
+    }
+    return null;
+  });
+  expect(fadingFrames).toEqual([]);
+});
+
 test("the donation desk stays clean in all three states", async ({ page }) => {
   await page.goto("/");
   const scan = async () => {
@@ -60,9 +92,15 @@ test("the donation desk stays clean in all three states", async ({ page }) => {
     .toMatch(/^(0|1)$/);
   await scan();
 
-  await page.getByRole("textbox", { name: "Dish", exact: true }).fill("Kasha");
-  await page.getByRole("textbox", { name: "Feeling" }).fill("Monday");
-  await page.getByRole("textbox", { name: "Memory" }).fill("A quiet bowl.");
+  await page
+    .getByRole("textbox", { name: "What dish feels like home?" })
+    .fill("Kasha");
+  await page
+    .getByRole("textbox", { name: "What feeling does it hold?" })
+    .fill("Monday");
+  await page
+    .getByRole("textbox", { name: "What do you remember?" })
+    .fill("A quiet bowl.");
   await scan();
 
   await page.getByRole("button", { name: "Donate the exhibit" }).click();

@@ -60,10 +60,21 @@
   width: min(100%, 24rem);
 }
 
-/* The spotlight warms when the label opens; the room dims by contrast. */
+/* The spotlight warms over the unfold and settles back faster than it opened,
+   so the room brightens with the story and then quietly lets go of it. */
 .room-art .art-cone,
-.room-art .art-glow-lit {
-  transition: opacity var(--dur-quiet) var(--ease-soft);
+.room-art .art-glow-lit,
+.room-art .art-pool {
+  transition:
+    opacity var(--dur-settle) var(--ease-soft),
+    transform var(--dur-settle) var(--ease-soft);
+}
+
+.room-art[data-lit="true"] .art-cone,
+.room-art[data-lit="true"] .art-glow-lit,
+.room-art[data-lit="true"] .art-pool {
+  transition-duration: var(--dur-unfold);
+  transition-timing-function: ease-out;
 }
 
 .room-art .art-glow-lit {
@@ -75,7 +86,41 @@
 }
 
 .room-art[data-lit="true"] .art-cone {
-  opacity: 0.12;
+  opacity: 0.16;
+}
+
+/* The pool on the plate opens up as the beam brightens. */
+.room-art .art-pool {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.room-art[data-lit="true"] .art-pool {
+  transform: scale(1.16);
+}
+
+/* Air moving through an open beam. Transform only, and it holds still
+   off-screen under the same rule the steam follows. */
+@media (prefers-reduced-motion: no-preference) {
+  .room-art[data-lit="true"] .art-haze {
+    transform-box: fill-box;
+    transform-origin: 50% 0%;
+    animation: beam-drift 11s var(--ease-soft) infinite alternate;
+  }
+
+  .room-art[data-steam="paused"] .art-haze {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes beam-drift {
+  from {
+    transform: translateX(-1.6px) scaleX(0.985);
+  }
+
+  to {
+    transform: translateX(1.6px) scaleX(1.025);
+  }
 }
 
 /* The light notices a visitor before they open anything. */
@@ -182,8 +227,15 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* The light still changes state, it just arrives there at once, and no air
+     moves through the beam. The lit selectors are repeated because they set
+     their own longer duration and outrank the plain ones. */
   .room-art .art-cone,
-  .room-art .art-glow-lit {
+  .room-art .art-glow-lit,
+  .room-art .art-pool,
+  .room-art[data-lit="true"] .art-cone,
+  .room-art[data-lit="true"] .art-glow-lit,
+  .room-art[data-lit="true"] .art-pool {
     transition: none;
   }
 
@@ -203,14 +255,30 @@
 }
 
 @media (min-width: 64rem) {
+  /* Side by side, not overlapping: a dish laid over the card makes the text's
+     backdrop unresolvable to axe, which our gate treats as a failure.
+     Both columns hang from the same line rather than centring, because centred
+     each one's position depended on the height of the row: unfolding a label
+     moved the dish, shifted the trigger under the reader's cursor, and the
+     scroll correction chasing that trigger leaked a little further on every
+     press. Nothing here is a function of the panel's height, so toggling is
+     idempotent rather than corrected. */
   .room-grid {
     grid-template-columns: 1fr 1fr;
     gap: var(--space-12);
+    align-items: start;
     justify-items: start;
   }
 
+  /* The text column fills its half, so a card's width never depends on how
+     long the curator note beside it happens to be. */
+  .room-text {
+    justify-self: stretch;
+  }
+
+  /* The dish fills its half so its edge can lap onto the label behind it. */
   .room-art {
-    width: min(100%, 28rem);
+    width: 100%;
   }
 
   .room-flip .room-art {

@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import type { Exhibit, ExhibitId } from "../../content/exhibits.ts";
-import { useInView } from "../../hooks/useInView.ts";
+import { useHasBeenInView, useInView } from "../../hooks/useInView.ts";
 import "../../styles/steam.css";
 import { Container } from "../layout/Container.tsx";
 import { ExhibitArt } from "./art/ExhibitArt.tsx";
@@ -28,11 +28,13 @@ export function Room({
 }: RoomProps) {
   const room = useRef<HTMLElement>(null);
   const inView = useInView(room);
+  const arrived = useHasBeenInView(room);
   return (
     <article
       ref={room}
       id={exhibit.id}
       className={`room room-${exhibit.number}${flip ? " room-flip" : ""}`}
+      data-arrived={arrived ? "true" : "false"}
       aria-labelledby={`${exhibit.id}-dish`}
     >
       <Container>

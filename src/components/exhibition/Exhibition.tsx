@@ -18,20 +18,34 @@ export function Exhibition({
   const printing = usePrintExpanded();
   const anchor = useRef<{ id: ExhibitId; top: number } | null>(null);
   const pendingWalk = useRef<ExhibitId | null>(null);
+  const holdRef = useRef<number | null>(null);
 
-  function roomToggle(id: ExhibitId) {
-    return document.querySelector(`#${id} .placard-story > .placard-toggle`);
+  // Anchor on the room, never on the label inside it. The placard rises 10px
+  // on arrival, and holding the label still through that would turn its
+  // entrance into a 10px scroll of the whole page - the correction fighting an
+  // animation instead of the reflow it exists to cancel. The room block is not
+  // animated, and the label is rigid inside it, so keeping the room still
+  // keeps the label still without touching the arrival.
+  function roomBlock(id: ExhibitId) {
+    return document.getElementById(id);
   }
 
   function toggleRoom(id: ExhibitId) {
-    // Keep the clicked label under the visitor's eye. Engines disagree about
-    // scroll anchoring - every one of them claims overflow-anchor support and
-    // Firefox still does not anchor this swap - so measure and restore instead.
-    const trigger = roomToggle(id);
-    anchor.current = trigger
-      ? { id, top: trigger.getBoundingClientRect().top }
+    const closing = openRoomId === id;
+    // Only a swap collapses another room, which can drag this one up the page.
+    // Keep the clicked label under the visitor's eye there, because engines
+    // disagree about scroll anchoring - every one claims overflow-anchor
+    // support and Firefox still does not anchor that swap.
+    // Opening or closing a single room changes nothing above its own trigger,
+    // so there is nothing to correct, and correcting anyway meant every press
+    // scrolled the page by whatever a sub-pixel reflow happened to measure -
+    // a few pixels an engine at a time, adding up with every toggle.
+    const swapping = openRoomId !== null && !closing;
+    const block = swapping ? roomBlock(id) : null;
+    anchor.current = block
+      ? { id, top: block.getBoundingClientRect().top }
       : null;
-    setOpenRoomId(openRoomId === id ? null : id);
+    setOpenRoomId(closing ? null : id);
   }
 
   function landOnRoom(id: ExhibitId) {
@@ -82,16 +96,36 @@ export function Exhibition({
   // a walk, land the opened label in view and focus its trigger instead.
   useLayoutEffect(() => {
     if (anchor.current) {
-      const trigger = roomToggle(anchor.current.id);
-      if (trigger) {
-        const drift = trigger.getBoundingClientRect().top - anchor.current.top;
-        // Instant, never smooth: this correction exists to make the swap
-        // invisible, and the page's smooth scrolling would animate it into
-        // exactly the drift it is meant to cancel.
-        if (Math.abs(drift) > 1) {
-          window.scrollBy({ top: drift, behavior: "instant" });
+      const held = anchor.current;
+      // Correct until the layout has actually come to rest, not for a fixed
+      // count of frames: on a slow machine the closing room is still shrinking
+      // when any fixed budget runs out, and whatever collapses after the last
+      // correction is drift the visitor keeps. Rest means six quiet frames in
+      // a row; the cap only exists so nothing runs forever.
+      const hold = (quiet: number, cap: number) => {
+        const block = roomBlock(held.id);
+        let settled = quiet;
+        if (block) {
+          const drift = block.getBoundingClientRect().top - held.top;
+          // Instant, never smooth: the page's smooth scrolling would animate
+          // this into exactly the drift it exists to cancel.
+          if (Math.abs(drift) > 1) {
+            window.scrollBy({ top: drift, behavior: "instant" });
+            settled = 0;
+          } else {
+            settled += 1;
+          }
         }
-      }
+        holdRef.current =
+          settled < 6 && cap > 0
+            ? requestAnimationFrame(() => hold(settled, cap - 1))
+            : null;
+      };
+      // One hold at a time: left to overlap, a second toggle's correction runs
+      // against the first and the two chase each other for as long as both
+      // live, which is scrolling that never comes to rest.
+      if (holdRef.current !== null) cancelAnimationFrame(holdRef.current);
+      holdRef.current = requestAnimationFrame(() => hold(0, 90));
       anchor.current = null;
     }
     if (pendingWalk.current) {

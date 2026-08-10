@@ -1,6 +1,8 @@
 /* A stack of pancakes under the brightest spot in the museum: uneven honey-gold
    discs carrying the pan's map, butter running down the slope, berry compote
    over the near edge, and a translucent syrup run on the far side. */
+import { SpotBeam } from "../../art/SpotBeam.tsx";
+
 const discShapes = [
   "M -62 0 Q -61 -7 -46 -11 Q -30 -14 -12 -14 Q 8 -15 26 -12 Q 46 -10 58 -6 Q 65 -3 62 2 Q 56 8 38 10 Q 14 12 -12 11 Q -38 10 -55 6 Q -64 4 -62 0 Z",
   "M -61 1 Q -63 -6 -44 -10 Q -26 -15 -6 -13 Q 14 -16 32 -11 Q 52 -9 60 -5 Q 66 -1 61 3 Q 52 9 30 10 Q 4 13 -20 10 Q -44 9 -56 5 Q -63 3 -61 1 Z",
@@ -123,11 +125,6 @@ export function PancakesArt({
           <stop offset="45%" stopColor="#e8a94e" stopOpacity="0.34" />
           <stop offset="100%" stopColor="#e8a94e" stopOpacity="0" />
         </radialGradient>
-        <linearGradient id="pancakes-cone" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#e8a94e" stopOpacity="1" />
-          <stop offset="70%" stopColor="#e8a94e" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="#e8a94e" stopOpacity="0.06" />
-        </linearGradient>
         <linearGradient id="pan-cake" x1="0" y1="0" x2="0.08" y2="1">
           <stop offset="0%" style={{ stopColor: "var(--plaster)" }} />
           <stop offset="22%" style={{ stopColor: "var(--gold-light)" }} />
@@ -180,11 +177,14 @@ export function PancakesArt({
         </radialGradient>
       </defs>
 
-      <path
+      <SpotBeam
         className="art-cone"
-        d="M160 6 C144 80 122 150 100 196 H220 C198 150 176 80 160 6 Z"
-        fill="url(#pancakes-cone)"
-        opacity="0.07"
+        id="pancakes-beam"
+        x={160}
+        top={20}
+        bottom={196}
+        spread={60}
+        opacity={0.1}
       />
       <ellipse cx="160" cy="170" rx="120" ry="56" fill="url(#pancakes-glow)" />
       <ellipse

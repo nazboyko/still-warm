@@ -2,6 +2,12 @@
 :root {
   --ink: #191411;
   --plaster: #efe6d8;
+  /* The same plaster, left slightly open so the room's ground shows through it:
+     a card in the Sunday room sits warmer than one in the Rainy room, and none
+     of them reads as a bright block pasted on the wall. Alpha rather than a
+     gradient, because axe can composite one over a solid ancestor and not the
+     other - a gradient under text turns the contrast check incomplete. */
+  --plaster-open: rgb(239 230 216 / 0.85);
   --tungsten: #e8a94e;
   --beet: #7a2e35;
   --brass: #9c8154;
@@ -40,6 +46,9 @@
 
   --dur-quiet: 200ms;
   --dur-unfold: 480ms;
+  /* Light lets go faster than it arrives: the spot warms over the unfold and
+     settles back in less, so closing a label never feels like a second event. */
+  --dur-settle: 280ms;
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
   /* Approved entrance dim; also the lever for the gate video's darker take. */
   --entrance-dim: 0.55;
@@ -57,6 +66,9 @@
   --header-compact: 4.5rem;
   --touch-target: 44px;
   --radius-placard: 2px;
+  /* The admission ticket is the one object on the page with real corners:
+     a placard is a card pinned to a wall, a ticket is something you hold. */
+  --radius-ticket: 12px;
 }
 
 /* Issue #4: tungsten fails 3:1 on light surfaces; beet holds 7.5:1 there. */

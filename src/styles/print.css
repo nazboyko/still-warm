@@ -14,7 +14,7 @@
 
   .site-header,
   .room-guide,
-  .donation-desk,
+  .donate-desk,
   .gift-shop,
   .skip-link,
   .placard-toggle,
@@ -54,6 +54,7 @@
 
   /* Ink silhouettes print; the gallery's glows and cones do not. */
   .art-cone,
+  .art-fixture,
   .art-glow-lit,
   .steam-wisp,
   .dish-glow {
@@ -61,13 +62,27 @@
   }
 
   .placard,
-  .reserved-placard,
-  .ramp-placard {
+  .reserved-placard {
     box-shadow: none;
     border: 1px solid #6b6b6b;
     background: #ffffff;
     color: #1a1a1a;
     max-width: none;
+  }
+
+  /* Exhibit 000 is wall text, so on paper it is simply text: no lamp, and its
+     plaster type turns back into ink. */
+  .ramp-light {
+    display: none;
+  }
+
+  .ramp-title,
+  .ramp-body {
+    color: #1a1a1a;
+  }
+
+  .ramp-subtitle {
+    color: #4a4a4a;
   }
 
   .placard-cat,

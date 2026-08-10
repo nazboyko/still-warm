@@ -10,7 +10,10 @@ export function Footer({ hasDonated }: { hasDonated?: boolean }) {
         </p>
         <p className="site-footer-meta">
           Built by Nazar Boyko for the{" "}
-          <a href="https://dev.to/challenges">DEV Frontend Challenge</a>.
+          <a href="https://dev.to/challenges/frontend-2026-07-29">
+            DEV Frontend Challenge
+          </a>
+          .
         </p>
         <p className="site-footer-meta">
           MIT licensed.{" "}

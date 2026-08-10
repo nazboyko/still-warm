@@ -1,17 +1,47 @@
 .placard {
-  max-width: 34rem;
+  /* Long and soft, so the card's edge dissolves into the wall instead of
+     cutting against it, with a little of its own warmth bounced back. */
+  --placard-edge:
+    0 30px 60px -24px rgb(0 0 0 / 0.62), 0 0 80px -20px rgb(232 169 78 / 0.11);
+
+  width: min(100%, 30rem);
   min-width: 0;
-  /* The walk lands the label top in view with breathing room. */
   /* The walk lands the label top in view with breathing room; the header
      clearance itself comes from html scroll-padding-top. */
   scroll-margin-top: var(--space-6);
-  padding: var(--space-6) var(--space-6) var(--space-4);
-  background: var(--plaster);
+  padding: var(--space-4) var(--space-6) var(--space-3);
+  background: var(--plaster-open);
   color: var(--ink);
-  border-top: 2px solid var(--brass);
+  /* The room is lit from above, and so is the card: its top edge catches the
+     spot, its foot falls away into the wall. Borders and shadow carry that,
+     never a gradient - a gradient under text turns axe's contrast check
+     incomplete, and a positioned pseudo on any ancestor does the same. */
+  border-top: 1px solid rgb(255 241 219 / 0.5);
+  border-bottom: 1px solid rgb(0 0 0 / 0.18);
   border-radius: var(--radius-placard);
-  /* Flat plaster: any texture gradient under text turns axe contrast checks incomplete. */
-  box-shadow: 0 10px 30px rgb(0 0 0 / 0.35);
+  box-shadow: var(--placard-edge);
+  /* Overflow hidden so the bottom flap keeps the card's rounded corners. */
+  overflow: hidden;
+}
+
+/* The card settles into place as its room arrives. */
+/* The card settles in as its room arrives. It moves but never fades: text at
+   opacity 0 is invisible to a reader and reads as failing contrast to axe, so
+   the arrival is carried entirely by transform. */
+@media (prefers-reduced-motion: no-preference) {
+  .room[data-arrived="false"] .placard {
+    transform: translateY(10px);
+  }
+
+  .room .placard {
+    transition: transform 320ms var(--ease-soft);
+  }
+}
+
+@media print {
+  .room .placard {
+    transform: none;
+  }
 }
 
 .placard-cat {
@@ -38,7 +68,16 @@
 .placard-fields {
   margin: var(--space-4) 0 0;
   display: grid;
-  gap: var(--space-2);
+  gap: var(--space-3);
+}
+
+.placard-fields > div + div {
+  padding-top: var(--space-3);
+  border-top: 1px solid rgb(156 129 84 / 0.35);
+}
+
+.placard-fields dd {
+  line-height: 1.7;
 }
 
 .placard-fields dt {
@@ -53,27 +92,33 @@
   margin: 0;
 }
 
+/* The label's own flap: full width of the card, sharing its material, sitting
+   on a brass rule - part of the object rather than a box laid on top of it. */
+/* The trigger divides the card: metadata above the rule, story below it. */
 .placard-story {
   margin-top: var(--space-4);
-  border-top: 1px solid var(--brass);
 }
 
+/* The trigger, not just the card, needs the clearance: it is what receives
+   focus when a panel closes, and the collapse can slide it under the header. */
 .placard-toggle {
-  display: inline-flex;
+  scroll-margin-top: calc(var(--header-compact) + var(--space-4));
+  display: flex;
   align-items: center;
+  width: 100%;
   min-height: var(--touch-target);
-  /* A brass tab: the quiet mono labels around it are text, this is a thing you
-     press, and it says so without needing a hover. */
-  padding-inline: var(--space-3);
-  border: 1px solid var(--brass);
-  border-radius: var(--radius-placard);
-  background: rgb(156 129 84 / 0.12);
+  padding: var(--space-2) 0;
+  border: 0;
+  border-top: 1px solid var(--brass);
+  background: none;
   cursor: pointer;
   font-family: var(--font-utility);
   font-size: var(--text-utility);
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
+  text-align: left;
   color: var(--beet);
+  transition: color var(--dur-quiet) var(--ease-soft);
 }
 
 .placard-fold-mark::before {
@@ -86,8 +131,17 @@
 }
 
 .placard-toggle:hover {
-  border-color: var(--beet);
-  background: rgb(156 129 84 / 0.22);
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .placard-toggle {
+    transition: none;
+  }
+}
+
+.placard-story-region {
+  padding-top: var(--space-2);
 }
 
 .placard-story-region p {

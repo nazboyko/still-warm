@@ -3,7 +3,11 @@ import type {
   DonatedExhibit,
   ExhibitSubmission,
 } from "../../content/donate.ts";
-import { donateForm, donateStatus } from "../../content/donate.ts";
+import {
+  donateForm,
+  donatePreview,
+  donateStatus,
+} from "../../content/donate.ts";
 import { donateIntro } from "../../content/exhibits.ts";
 import { Container } from "../layout/Container.tsx";
 import { SectionHeading } from "../layout/SectionHeading.tsx";
@@ -12,7 +16,7 @@ import { DonateForm } from "./DonateForm.tsx";
 import "./DonateSection.css";
 import { GiftShop } from "./GiftShop.tsx";
 import { makeDonatedExhibit } from "./donationRecord.ts";
-import { ReservedExhibit } from "./ReservedExhibit.tsx";
+import { ExhibitFrame, ExhibitPlacard } from "./ReservedExhibit.tsx";
 
 const emptyDraft: ExhibitSubmission = {
   dish: "",
@@ -72,24 +76,56 @@ export function DonateSection({
           title="Donate an Exhibit"
         />
         <p className="donate-intro">{donateIntro}</p>
-        <div className="donate-grid">
-          <ReservedExhibit draft={draft} donated={donated} />
-          <div className="donate-desk">
-            {donated ? (
-              <div ref={afterRef} className="donate-after">
-                <GiftShop donated={donated} />
-                <Button onClick={resetDesk}>{donateForm.reset}</Button>
-              </div>
-            ) : (
-              <DonateForm
-                draft={draft}
-                onChange={updateDraft}
-                onDonate={donate}
-              />
-            )}
-            <p role="status" className="donate-status">
-              {donated ? donateStatus.donated : ""}
-            </p>
+        <div className="donate-panel">
+          <div className="donate-grid">
+            {/* The exhibit hangs on the left in both states. What the visitor
+                watched while typing and what they are given at the end are the
+                same frame in the same place; only its contents change. */}
+            {/* Write on the right, watch on the left: the label forms beside
+                the fields as they are filled, the way every room pairs its art
+                with its words. At donation the placard crosses to the right to
+                make way for the actions; the frame itself never moves. */}
+            <div className="donate-exhibit">
+              <ExhibitFrame donated={donated} />
+              {donated ? null : (
+                <>
+                  <div className="donate-column-head">
+                    <h3 className="preview-heading">
+                      {donatePreview.waiting.heading}
+                    </h3>
+                    <p className="preview-note">{donatePreview.waiting.note}</p>
+                  </div>
+                  <ExhibitPlacard draft={draft} donated={donated} />
+                </>
+              )}
+            </div>
+            <div className="donate-column">
+              {donated ? (
+                <>
+                  <div className="donate-column-head">
+                    <h3 className="preview-heading donate-head-line">
+                      {donatePreview.donated.heading}
+                    </h3>
+                    <p className="preview-note">{donatePreview.donated.note}</p>
+                  </div>
+                  <ExhibitPlacard draft={draft} donated={donated} />
+                  <div ref={afterRef} className="donate-after">
+                    <GiftShop donated={donated} />
+                    <Button onClick={resetDesk}>{donateForm.reset}</Button>
+                  </div>
+                </>
+              ) : (
+                <DonateForm
+                  draft={draft}
+                  onChange={updateDraft}
+                  onDonate={donate}
+                />
+              )}
+              {/* Always mounted, so the live region is there to announce into. */}
+              <p role="status" className="donate-status">
+                {donated ? donateStatus.donated : ""}
+              </p>
+            </div>
           </div>
         </div>
       </Container>

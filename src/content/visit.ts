@@ -3,6 +3,9 @@ export interface VisitFact {
   value: string;
 }
 
+export const visitNote =
+  "The museum has no address, no hours and no admission desk. It has a ramp.";
+
 export const visitFacts: VisitFact[] = [
   { label: "Admission", value: "Free." },
   { label: "Hours", value: "Whenever you miss home." },
