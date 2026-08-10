@@ -19,7 +19,7 @@
    at the end of the page. */
 .donate-panel {
   background: var(--room-celebration);
-  border: 1px solid rgb(156 129 84 / 0.3);
+  border: 1px solid var(--brass-soft);
   padding: clamp(var(--space-6), 4vw, var(--space-12));
 }
 
@@ -40,6 +40,14 @@
   }
 }
 
+/* Once it holds something, the frame takes the height of the row it hangs in,
+   so the exhibit is never left short beside its own label. Only then: while
+   the desk is open the frame keeps a fixed box, because there its height would
+   otherwise follow what the visitor is typing. */
+.donate[data-donated="true"] .donate-grid {
+  align-items: stretch;
+}
+
 .donate-exhibit {
   display: grid;
   gap: var(--space-4);
@@ -54,31 +62,26 @@
   min-width: 0;
 }
 
-.donate-head-line {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.donate-head-line::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--tungsten);
-}
-
 .donate-column-head {
   display: grid;
   gap: var(--space-1);
 }
 
+/* The lit mark that says this column is the label, in both states: waiting on
+   the words and holding them. */
 .preview-heading {
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   color: var(--tungsten);
+}
+
+.preview-heading::before {
+  content: "";
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: 50%;
+  background: var(--tungsten);
 }
 
 .preview-note {
@@ -86,15 +89,9 @@
   color: var(--plaster);
 }
 
-.donate-status {
-  font-family: var(--font-utility);
-  font-size: var(--text-utility);
-  letter-spacing: 0.04em;
-}
-
 .donate-status:not(:empty) {
   padding-left: var(--space-3);
-  border-left: 3px solid var(--brass);
+  border-left: var(--rail-width) solid var(--brass);
 }
 
 /* Directly beneath the placard they act on, side by side; a narrow screen
@@ -106,18 +103,4 @@
      line, and stretching would inflate its neighbour to the wrapper's height. */
   align-items: flex-start;
   gap: var(--space-4);
-}
-
-/* The actions belong to the room, not to the placard: dark fill, brass
-   outline, a warm label. That leaves the placard the only lit object in the
-   frame, which is the light law the rooms already follow. */
-.donate-after .button {
-  background: none;
-  color: var(--tungsten);
-  border-color: var(--brass);
-}
-
-.donate-after .button:hover:not(:disabled) {
-  border-color: var(--tungsten);
-  color: var(--gold-light);
 }
