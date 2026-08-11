@@ -1,6 +1,11 @@
 import { describe, expect, test } from "vitest";
 import type { ExhibitSubmission } from "../../content/donate.ts";
-import { generateSculpture, matchFoodKind } from "./exhibitSculpture.ts";
+import {
+  foodTop,
+  generateSculpture,
+  matchFoodKind,
+  PLATE_LINE,
+} from "./exhibitSculpture.ts";
 
 const kindNames = ["dumpling", "disc", "bun", "stack", "bowl", "wedge"];
 
@@ -69,12 +74,29 @@ describe("the generated exhibit", () => {
         expect(piece.y).toBeLessThan(5);
       }
       for (const spot of spec.garnishSpots) {
-        expect(spot.x).toBeGreaterThan(108);
-        expect(spot.x).toBeLessThan(172);
         expect(spot.r).toBeLessThan(6.1);
       }
     }
     expect(kinds.size).toBe(6);
+  });
+
+  test("nothing garnishes the air beside the food", () => {
+    for (let index = 0; index < 300; index += 1) {
+      const spec = generateSculpture(
+        submission({ dish: "Kasha", memory: `garnish ${index}` }),
+      );
+      const top = foodTop(spec);
+      for (const spot of spec.garnishSpots) {
+        // Never above the highest piece, never under the plate, and always
+        // over a piece rather than out on the empty rim.
+        expect(spot.y).toBeGreaterThanOrEqual(top);
+        expect(spot.y).toBeLessThanOrEqual(PLATE_LINE);
+        const nearest = Math.min(
+          ...spec.pieces.map((piece) => Math.abs(spot.x - piece.x)),
+        );
+        expect(nearest).toBeLessThan(34);
+      }
+    }
   });
 
   test("the visitor's own word decides the shape", () => {
@@ -124,12 +146,12 @@ describe("the generated exhibit", () => {
     expect(first.pieces).not.toEqual(second.pieces);
   });
 
-  test("a bowl or a stack is plated alone", () => {
+  test("a bowl, a stack or a slice is plated alone", () => {
     for (let index = 0; index < 300; index += 1) {
       const spec = generateSculpture(
         submission({ dish: "Kasha", memory: `plate ${index}` }),
       );
-      if (spec.kind === "bowl" || spec.kind === "stack") {
+      if (["bowl", "stack", "wedge"].includes(spec.kind)) {
         expect(spec.pieces).toHaveLength(1);
         expect(spec.pieces[0]!.x).toBe(140);
       }

@@ -8,6 +8,7 @@ import { ExhibitTableau } from "./ExhibitTableau.tsx";
    in its own document and inherits none of them, so the tokens ride inside.
    The literals mirror tokens.css for environments with no computed styles. */
 const tokenFallback: Record<string, string> = {
+  ink: "#191411",
   plaster: "#efe6d8",
   tungsten: "#e8a94e",
   beet: "#7a2e35",

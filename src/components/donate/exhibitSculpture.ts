@@ -20,13 +20,34 @@ export interface SculptureSpec {
   accent: AccentTone;
 }
 
+/* The line every piece stands on, and how far each shape rises above it and
+   spreads across it at scale 1. Steam and garnish are placed from these
+   numbers, so neither can end up hanging in the air beside the food. */
+export const PLATE_LINE = 138;
+
+const footprints: Record<FoodKind, { top: number; halfWidth: number }> = {
+  dumpling: { top: 34, halfWidth: 30 },
+  disc: { top: 24, halfWidth: 38 },
+  bun: { top: 34, halfWidth: 26 },
+  stack: { top: 45, halfWidth: 34 },
+  bowl: { top: 27, halfWidth: 36 },
+  wedge: { top: 28, halfWidth: 30 },
+};
+
+export function foodTop(spec: SculptureSpec): number {
+  const { top } = footprints[spec.kind];
+  return Math.min(
+    ...spec.pieces.map((piece) => PLATE_LINE + piece.y - top * piece.scale),
+  );
+}
+
 const kinds: FoodKind[] = ["dumpling", "disc", "bun", "stack", "bowl", "wedge"];
 const garnishes: GarnishKind[] = ["berries", "dusting", "drizzle", "seeds"];
 const accents: AccentTone[] = ["beet", "toast-deep", "syrup"];
 
-/* Plated as one dish would be: a bowl or a stack stands alone, small things
-   come in a few. */
-const singles: FoodKind[] = ["bowl", "stack"];
+/* Plated as one dish would be: a bowl, a stack or a slice stands alone, small
+   things come in a few. Two slices side by side just doubles the guessing. */
+const singles: FoodKind[] = ["bowl", "stack", "wedge"];
 
 /* What the visitor typed decides the shape when we recognise it. Two passes,
    because one list sorted by length gets "naan bread" wrong: a named dish
@@ -185,13 +206,31 @@ export function generateSculpture(
   }));
 
   const garnish = garnishes[Math.floor(random() * garnishes.length)]!;
+  const { top, halfWidth } = footprints[kind];
+  // Berries arrive as one spoonful in one place; powder and seeds scatter.
+  // Two berries landing apart on a top surface read as a pair of eyes.
+  const clustered = garnish === "berries";
+  const anchor = pieces[Math.floor(random() * pieces.length)]!;
+  const cluster = random() * 1.2 - 0.6;
   const garnishSpots = Array.from(
     { length: 2 + Math.floor(random() * 3) },
-    () => ({
-      x: 110 + random() * 60,
-      y: 98 + random() * 18,
-      r: 3.4 + random() * 2.6,
-    }),
+    () => {
+      const piece = clustered
+        ? anchor
+        : pieces[Math.floor(random() * pieces.length)]!;
+      const offset = clustered
+        ? cluster + (random() * 0.36 - 0.18)
+        : random() * 2 - 1;
+      // The top of a piece is domed, so anything placed off its centre has to
+      // ride down that curve. Placed by the frame instead of by the food, a
+      // berry ends up hanging in the air beside the plate.
+      const sag = offset * offset * top * piece.scale * 0.3;
+      return {
+        x: piece.x + offset * halfWidth * piece.scale * 0.62,
+        y: PLATE_LINE + piece.y - top * piece.scale + sag + random() * 3,
+        r: 3.4 + random() * 2.6,
+      };
+    },
   );
 
   return {
