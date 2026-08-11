@@ -52,6 +52,12 @@ export function ExhibitTableau({ spec }: { spec: SculptureSpec }) {
             stopOpacity="0"
           />
         </radialGradient>
+        {/* Broth: lit where it meets the far wall, deep against the near one. */}
+        <linearGradient id="vd-broth" x1="0" y1="0" x2="0.15" y2="1">
+          <stop offset="0%" style={{ stopColor: "var(--gold-light)" }} />
+          <stop offset="35%" style={{ stopColor: "var(--tungsten)" }} />
+          <stop offset="100%" style={{ stopColor: "var(--syrup)" }} />
+        </linearGradient>
         <linearGradient id="vd-core" x1="0.12" y1="0" x2="0.72" y2="1">
           <stop
             offset="0%"

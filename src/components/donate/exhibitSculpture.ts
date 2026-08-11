@@ -30,7 +30,7 @@ const footprints: Record<FoodKind, { top: number; halfWidth: number }> = {
   disc: { top: 24, halfWidth: 38 },
   bun: { top: 34, halfWidth: 26 },
   stack: { top: 45, halfWidth: 34 },
-  bowl: { top: 26, halfWidth: 40 },
+  bowl: { top: 27, halfWidth: 36 },
   wedge: { top: 38, halfWidth: 34 },
 };
 
