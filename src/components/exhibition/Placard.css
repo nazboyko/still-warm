@@ -171,10 +171,26 @@
   padding-block: var(--space-4) var(--space-6);
 }
 
-.placard-story-region p {
-  padding-bottom: var(--space-4);
+.placard-story-region > p {
+  margin-bottom: var(--space-6);
 }
 
+/* The memory opens the way a printed label does, not the way a paragraph in a
+   box does: one letter in the display face, cut into the first three lines. */
+.placard-story-region > p:first-of-type::first-letter {
+  float: left;
+  margin-right: 0.08em;
+  font-family: var(--font-display);
+  font-size: 3.1em;
+  line-height: 0.78;
+}
+
+/* The line meant to be felt rather than read, stood behind a brass rule - the
+   same voice the curator's note uses just below the card. */
 .placard-sensory {
+  display: grid;
+  gap: var(--space-2);
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--brass);
   font-style: italic;
 }

@@ -69,6 +69,17 @@ test("room 001 marks ukrainian text with lang", () => {
   expect(ukrainian[0]).toHaveTextContent("вареники");
 });
 
+test("the sensory line gives each language its own line", () => {
+  const { container } = render(
+    <Placard exhibit={room001} isOpen={true} onToggle={noop} onWalk={noop} />,
+  );
+  const sensory = container.querySelector(".placard-sensory")!;
+  expect(sensory.children).toHaveLength(2);
+  expect(sensory.children[0]).toHaveAttribute("lang", "uk");
+  // The two used to run together behind a slash, which read as one sentence.
+  expect(sensory.textContent).not.toContain("/");
+});
+
 test("escape closes and returns focus to the trigger", () => {
   const onToggle = vi.fn();
   const { container } = render(

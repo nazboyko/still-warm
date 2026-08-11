@@ -172,14 +172,11 @@ export function Placard({
             <p>{exhibit.story}</p>
             <p className="placard-sensory">
               {exhibit.sensoryNative ? (
-                <>
-                  <span lang={exhibit.sensoryNative.lang}>
-                    {exhibit.sensoryNative.text}
-                  </span>{" "}
-                  /{" "}
-                </>
+                <span lang={exhibit.sensoryNative.lang}>
+                  {exhibit.sensoryNative.text}
+                </span>
               ) : null}
-              {exhibit.sensory}
+              <span>{exhibit.sensory}</span>
             </p>
             <PlacardWalk
               from={exhibit}
