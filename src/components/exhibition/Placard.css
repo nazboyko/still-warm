@@ -134,9 +134,10 @@
   cursor: pointer;
   text-align: left;
   color: var(--beet);
-  transition:
-    color var(--dur-quiet) var(--ease-soft),
-    background-color var(--dur-quiet) var(--ease-soft);
+  /* The fill lands at once and only the text eases: a flap you press, not a
+     panel that lights up. It also keeps one fewer transition in flight for the
+     a11y scan's settle-wait to trip over. */
+  transition: color var(--dur-quiet) var(--ease-soft);
 }
 
 /* The card clips to its rounded corners, so an outset ring on a full-bleed

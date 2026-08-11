@@ -66,18 +66,40 @@ test("the donation desk stays clean in all three states", async ({ page }) => {
     // the scroll position says - park the page inside a room's range and that
     // animation stays "running" for as long as the page sits there. Waiting on
     // either one only ever times out.
+    // Named, not counted: a bare true/false here can only ever report "it did
+    // not settle", which is why the WebKit timeout this guard threw on CI took
+    // five reproduction attempts to not explain. The list says what is stuck.
     await expect
-      .poll(() =>
-        page.evaluate(() =>
-          document.getAnimations().every((animation) => {
-            if (animation.playState !== "running") return true;
-            if (animation.timeline !== document.timeline) return true;
-            const timing = animation.effect?.getTiming();
-            return timing?.iterations === Infinity;
-          }),
-        ),
+      .poll(
+        () =>
+          page.evaluate(() =>
+            document
+              .getAnimations()
+              .filter((animation) => {
+                if (animation.playState !== "running") return false;
+                if (animation.timeline !== document.timeline) return false;
+                return animation.effect?.getTiming().iterations !== Infinity;
+              })
+              .map((animation) => {
+                const named = animation as unknown as Record<string, string>;
+                const target = animation.effect as unknown as {
+                  target?: { className?: string };
+                };
+                const timing = animation.effect?.getTiming();
+                return [
+                  named.animationName ?? named.transitionProperty ?? "?",
+                  "on",
+                  target?.target?.className ?? "?",
+                  `${timing?.duration}ms`,
+                  `at ${animation.currentTime}`,
+                ].join(" ");
+              }),
+          ),
+        // A loaded five-project matrix settles slower than a local run; the
+        // budget is for a slow machine, not for something genuinely stuck.
+        { timeout: 15000 },
       )
-      .toBe(true);
+      .toEqual([]);
     const results = await new AxeBuilder({ page }).analyze();
     expect(reportable(results.violations)).toEqual([]);
     expect(reportable(results.incomplete)).toEqual([]);
