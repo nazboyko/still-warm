@@ -13,7 +13,7 @@
   color: var(--ink);
   background: var(--plaster);
   border: 1px solid var(--brass);
-  border-radius: var(--radius-placard);
+  border-radius: var(--radius-control);
   cursor: pointer;
   transition:
     color var(--dur-quiet) var(--ease-soft),

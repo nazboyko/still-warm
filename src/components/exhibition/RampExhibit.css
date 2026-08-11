@@ -73,7 +73,7 @@
   position: absolute;
   inset: calc(var(--space-4) * -1);
   border: 2px solid var(--tungsten);
-  border-radius: var(--radius-placard);
+  border-radius: var(--radius-card);
   opacity: 0;
   pointer-events: none;
 }

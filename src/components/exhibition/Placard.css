@@ -28,7 +28,7 @@
      edge to edge (art direction, "Layout"). */
   border-top: 2px solid var(--brass);
   border-bottom: 1px solid rgb(0 0 0 / 0.18);
-  border-radius: var(--radius-placard);
+  border-radius: var(--radius-card);
   box-shadow: var(--placard-light), var(--placard-edge);
   /* Overflow hidden so the bottom flap keeps the card's rounded corners. */
   overflow: hidden;

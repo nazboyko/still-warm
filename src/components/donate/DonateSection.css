@@ -20,6 +20,7 @@
 .donate-panel {
   background: var(--room-celebration);
   border: 1px solid var(--brass-soft);
+  border-radius: var(--radius-card);
   padding: clamp(var(--space-6), 4vw, var(--space-12));
 }
 

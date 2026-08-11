@@ -32,7 +32,7 @@
   width: var(--space-8);
   height: var(--space-8);
   border: 1px solid var(--brass);
-  border-radius: var(--radius-placard);
+  border-radius: var(--radius-card);
 }
 
 .gallery-display {
@@ -76,7 +76,7 @@
   gap: var(--space-4);
   padding: var(--space-8);
   border: 1px solid var(--brass);
-  border-radius: var(--radius-placard);
+  border-radius: var(--radius-card);
 }
 
 .gallery-surface-plaster {

@@ -31,7 +31,7 @@
   color: var(--plaster);
   background: rgb(239 230 216 / 0.05);
   border: 1px solid var(--brass);
-  border-radius: var(--radius-placard);
+  border-radius: var(--radius-control);
   transition: border-color var(--dur-quiet) var(--ease-soft);
 }
 

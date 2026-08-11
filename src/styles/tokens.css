@@ -84,10 +84,12 @@
   --touch-target: 44px;
   /* The rule a message stands behind: errors in beet, statuses in brass. */
   --rail-width: 3px;
-  --radius-placard: 2px;
-  /* The admission ticket is the one object on the page with real corners:
-     a placard is a card pinned to a wall, a ticket is something you hold. */
-  --radius-ticket: 12px;
+  /* Every object on the page has real corners. Two steps, so a card and the
+     control inside it are related without being identical: the larger for
+     surfaces you read (labels, the ramp wall, the frame, the ticket), the
+     smaller for things you press or type into. */
+  --radius-card: 14px;
+  --radius-control: 10px;
 }
 
 /* Issue #4: tungsten fails 3:1 on light surfaces; beet holds 7.5:1 there. */
