@@ -27,9 +27,9 @@ export const PLATE_LINE = 138;
 
 const footprints: Record<FoodKind, { top: number; halfWidth: number }> = {
   dumpling: { top: 34, halfWidth: 30 },
-  disc: { top: 26, halfWidth: 40 },
+  disc: { top: 24, halfWidth: 38 },
   bun: { top: 34, halfWidth: 26 },
-  stack: { top: 46, halfWidth: 36 },
+  stack: { top: 45, halfWidth: 34 },
   bowl: { top: 26, halfWidth: 40 },
   wedge: { top: 38, halfWidth: 34 },
 };
