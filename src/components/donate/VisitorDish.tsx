@@ -1,44 +1,64 @@
 import type { SculptureSpec } from "./exhibitSculpture.ts";
-import { PLATE_LINE } from "./exhibitSculpture.ts";
+import { foodTop, PLATE_LINE } from "./exhibitSculpture.ts";
 import { FoodPiece } from "./food/FoodPiece.tsx";
 
 function Garnish({ spec }: { spec: SculptureSpec }) {
   const tone = `var(--${spec.accent})`;
   if (spec.garnish === "drizzle") {
+    // Sauce obeys gravity: over the near face, off the edge, gathered on the
+    // plate. Poured across the middle of the frame it reads as a strap.
+    const x = 140 + (spec.garnishSpots[0]!.x - 140) * 0.35;
+    const from = (foodTop(spec) + PLATE_LINE) / 2;
     return (
       <g>
-        {/* where the spoon started and the sauce gathered */}
         <path
-          d="M 88 128 q 9 -6 17 -2 q 5 4 -1 8 q -11 4 -16 -2 z"
-          style={{ fill: tone }}
-          fillOpacity="0.75"
+          d={`M ${x - 9} ${from} q 4 6 3 12 q -1 7 2 12 q 3 4 6 4`}
+          fill="none"
+          style={{ stroke: tone }}
+          strokeOpacity="0.8"
+          strokeWidth="3.4"
+          strokeLinecap="round"
         />
-        <g style={{ fill: tone }} fillOpacity="0.7">
-          {/* one gesture: thick, thinning, thickening again as it slows */}
-          <path d="M 102 125 C 112 117 123 116 133 121 C 139 124 145 125.5 151 125 L 151.4 127 C 145 127.8 138 126.4 131 123 C 122 119 113 120 104 129 Z" />
-          <path d="M 151 125 C 158 124.4 165 122 172 118.5 C 178 115.5 184 112.5 189 110 L 191 114.5 C 185 117.5 179 120.8 173 124 C 166 127.4 158 128.6 151.4 127 Z" />
-        </g>
-        <g
+        {/* Where it gathered. A syrup pool on a warm plate needs its own depth
+            and its own gloss, or the sauce disappears into the ceramic. */}
+        <ellipse
+          cx={x + 2}
+          cy={150.5}
+          rx="19"
+          ry="5"
+          style={{ fill: "var(--ink)" }}
+          fillOpacity="0.35"
+        />
+        <path
+          d={`M ${x - 19} 148 q 7 -5 18 -3 q 13 2 19 6 q -6 5 -19 5 q -15 0 -18 -8 z`}
+          style={{ fill: tone }}
+          fillOpacity="0.88"
+        />
+        <ellipse
+          cx={x + 27}
+          cy={150}
+          rx="4.6"
+          ry="2.2"
+          style={{ fill: tone }}
+          fillOpacity="0.66"
+        />
+        <ellipse
+          cx={x + 37}
+          cy={148.5}
+          rx="2.4"
+          ry="1.3"
+          style={{ fill: tone }}
+          fillOpacity="0.55"
+        />
+        {/* the gloss that tells sauce from a stain */}
+        <path
+          d={`M ${x - 12} 146.5 q 8 -3 16 -1`}
           fill="none"
           style={{ stroke: "var(--plaster)" }}
+          strokeOpacity="0.55"
+          strokeWidth="1.6"
           strokeLinecap="round"
-        >
-          <path
-            d="M 109 122 C 118 117 126 117 132 120"
-            strokeOpacity="0.6"
-            strokeWidth="1.6"
-          />
-          <path
-            d="M 174 122 C 180 119 184 116 188 114"
-            strokeOpacity="0.55"
-            strokeWidth="1.3"
-          />
-          <path
-            d="M 92 126 q 6 -3 11 0"
-            strokeOpacity="0.5"
-            strokeWidth="1.4"
-          />
-        </g>
+        />
       </g>
     );
   }
@@ -50,8 +70,8 @@ function Garnish({ spec }: { spec: SculptureSpec }) {
           [0, 1, 2, 3].map((step) => (
             <ellipse
               key={`${index}-${step}`}
-              cx={spot.x + (step - 1.5) * 7 + (index % 2 ? 3 : -3)}
-              cy={spot.y + (step % 2 ? 5 : -4) + index * 3}
+              cx={spot.x + (step - 1.5) * 4.5 + (index % 2 ? 2 : -2)}
+              cy={spot.y + (step % 2 ? 3 : -2.5) + index * 1.6}
               rx={0.9 + (step % 3) * 0.55}
               ry={0.7 + ((step + index) % 3) * 0.45}
               fillOpacity={0.5 + (step % 2) * 0.25}
@@ -62,37 +82,46 @@ function Garnish({ spec }: { spec: SculptureSpec }) {
     );
   }
 
+  const seeds = spec.garnish === "seeds";
   return (
     <g>
-      {spec.garnishSpots.map((spot, index) => (
-        <g key={index}>
-          <ellipse
-            cx={spot.x}
-            cy={spot.y}
-            rx={
-              (spec.garnish === "seeds" ? spot.r * 0.5 : spot.r) *
-              (index % 2 ? 1.08 : 0.94)
-            }
-            ry={
-              (spec.garnish === "seeds" ? spot.r * 0.4 : spot.r) *
-              (index % 3 ? 0.9 : 1.05)
-            }
+      {spec.garnishSpots.map((spot, index) => {
+        const rx = (seeds ? spot.r * 0.5 : spot.r) * (index % 2 ? 1.08 : 0.94);
+        const ry = (seeds ? spot.r * 0.4 : spot.r) * (index % 3 ? 0.9 : 1.05);
+        return (
+          <g
+            key={index}
             transform={`rotate(${(index % 3) * 14 - 12} ${spot.x} ${spot.y})`}
-            style={{
-              fill: spec.garnish === "seeds" ? "var(--toast-deep)" : tone,
-            }}
-          />
-          {spec.garnish === "berries" ? (
-            <circle
-              cx={spot.x + spot.r * (index % 2 ? 0.3 : -0.34)}
-              cy={spot.y - spot.r * (0.28 + (index % 3) * 0.14)}
-              r={spot.r * (0.16 + (index % 3) * 0.07)}
-              style={{ fill: "var(--plaster)" }}
-              fillOpacity={index % 2 ? 0.7 : 0.9}
+          >
+            {/* what puts it on the food instead of over it */}
+            <ellipse
+              cx={spot.x + rx * 0.18}
+              cy={spot.y + ry * 0.72}
+              rx={rx * 0.9}
+              ry={ry * 0.42}
+              style={{ fill: "var(--ink)" }}
+              fillOpacity="0.45"
             />
-          ) : null}
-        </g>
-      ))}
+            <ellipse
+              cx={spot.x}
+              cy={spot.y}
+              rx={rx}
+              ry={ry}
+              style={{ fill: seeds ? "var(--toast-deep)" : tone }}
+            />
+            {spec.garnish === "berries" ? (
+              <ellipse
+                cx={spot.x - rx * 0.32}
+                cy={spot.y - ry * 0.36}
+                rx={rx * 0.26}
+                ry={ry * 0.19}
+                style={{ fill: "var(--plaster)" }}
+                fillOpacity={index % 2 ? 0.6 : 0.78}
+              />
+            ) : null}
+          </g>
+        );
+      })}
     </g>
   );
 }

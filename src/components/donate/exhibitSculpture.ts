@@ -206,13 +206,31 @@ export function generateSculpture(
   }));
 
   const garnish = garnishes[Math.floor(random() * garnishes.length)]!;
+  const { top, halfWidth } = footprints[kind];
+  // Berries arrive as one spoonful in one place; powder and seeds scatter.
+  // Two berries landing apart on a top surface read as a pair of eyes.
+  const clustered = garnish === "berries";
+  const anchor = pieces[Math.floor(random() * pieces.length)]!;
+  const cluster = random() * 1.2 - 0.6;
   const garnishSpots = Array.from(
     { length: 2 + Math.floor(random() * 3) },
-    () => ({
-      x: 110 + random() * 60,
-      y: 98 + random() * 18,
-      r: 3.4 + random() * 2.6,
-    }),
+    () => {
+      const piece = clustered
+        ? anchor
+        : pieces[Math.floor(random() * pieces.length)]!;
+      const offset = clustered
+        ? cluster + (random() * 0.36 - 0.18)
+        : random() * 2 - 1;
+      // The top of a piece is domed, so anything placed off its centre has to
+      // ride down that curve. Placed by the frame instead of by the food, a
+      // berry ends up hanging in the air beside the plate.
+      const sag = offset * offset * top * piece.scale * 0.3;
+      return {
+        x: piece.x + offset * halfWidth * piece.scale * 0.62,
+        y: PLATE_LINE + piece.y - top * piece.scale + sag + random() * 3,
+        r: 3.4 + random() * 2.6,
+      };
+    },
   );
 
   return {
