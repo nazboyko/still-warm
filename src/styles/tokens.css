@@ -16,7 +16,6 @@
   /* The quiet brass: hairlines inside an object, where a solid rule would
      divide it instead of detailing it. One softness everywhere, not five. */
   --brass-soft: rgb(156 129 84 / 0.35);
-  --steam: rgb(239 230 216 / 0.1);
   /* A plaster control under a thumb: brass at a whisper, the only fill the
      page lays on a card. Ink over it holds 11:1. */
   --plaster-lift: rgb(156 129 84 / 0.16);
@@ -57,7 +56,6 @@
   --space-6: 1.5rem;
   --space-8: 2rem;
   --space-12: 3rem;
-  --space-16: 4rem;
   --space-section: clamp(4rem, 12vh, 8rem);
   --content-max: 72rem;
 

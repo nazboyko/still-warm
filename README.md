@@ -20,17 +20,21 @@ src/
                    the donation desk, the room guide. Typed data, never inline.
   components/
     layout/        header, footer, container, section headings
-    hero/          the display case, the entrance, "How does tonight feel?"
+    hero/          the display case and "How does tonight feel?"
+    entrance/      the caretaker switching the lights on
     exhibition/    the four rooms, the placards, the Spotlight Unfold, the walk
       art/         each dish, drawn in SVG in the calibrated food language
-    art/           the shared varenyk, used by the hero and Room 001
+    art/           the shared varenyk and the spot beam, reused by the hero,
+                   the rooms and the donated exhibit
     donate/        the donation desk, the reserved frame, the generated exhibit,
                    the gift shop postcard
+      food/        the six shapes a visitor's exhibit is plated from
     visit/         Plan Your Visit
     ui/            the one button
   hooks/           entrance state, in-view, scroll position, print expansion
-  styles/          tokens, global, steam, print
+  styles/          tokens, type, fonts, global, steam, print
   utils/           contrast maths, the staff entrance
+  dev/             a reference page of tokens and ratios, dev builds only
 ```
 
 Two rules hold the place together: content lives in `src/content/` as typed data, and the palette, type scale, spacing and timings are defined in `src/styles/tokens.css`; the hand-drawn SVG dishes carry their own literal values inline.
@@ -39,11 +43,11 @@ Two rules hold the place together: content lives in `src/content/` as typed data
 
 Accessibility is the first judging criterion, so it is built in rather than audited on:
 
-- **Every claim on Exhibit 000 is verified.** Contrast was measured live from painted pixels across 797 text runs at two viewports - zero AA failures. The keyboard routes through every room in 23 stops. Every label is exposed to a screen reader, including the generated exhibit, whose art is decorative and whose placard carries the description.
-- **Reduced motion ships with the motion**, in the same commit, for all nine animations. Body text is byte-identical between modes.
+- **Every claim on Exhibit 000 is verified.** Contrast was measured live from painted pixels across 797 text runs at two viewports - zero AA failures. The keyboard routes through every room in 27 stops. Every label is exposed to a screen reader, including the generated exhibit, whose art is decorative and whose placard carries the description.
+- **Reduced motion ships with the motion**, in the same commit, for all 14 animations - the 13 keyframed ones and the Spotlight Unfold. Body text is byte-identical between modes.
 - **axe runs in CI on every state** - and incompletes have to be empty too, not just violations.
 - **Five browser projects** on every pull request: Chromium, WebKit, Firefox, and mobile Chrome and Safari.
-- Measured on the built site: CLS 0.00 on desktop, mobile and Fast 3G; one 70ms long task under 4x CPU throttle, none over 100ms; Lighthouse accessibility 100.
+- Measured on the built site: CLS 0.00 on desktop, mobile and Fast 3G; no main-thread task over 100ms under 4x CPU throttle; Lighthouse accessibility 100.
 
 ```bash
 npm run verify   # format, lint, types, unit tests, build

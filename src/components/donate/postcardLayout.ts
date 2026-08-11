@@ -1,9 +1,9 @@
 import type { DonatedExhibit } from "../../content/donate.ts";
 import { postcardCard } from "../../content/donate.ts";
 
-export type MeasureText = (text: string, font: string, size: number) => number;
+type MeasureText = (text: string, font: string, size: number) => number;
 
-export interface PostcardLine {
+interface PostcardLine {
   text: string;
   font: string;
   size: number;

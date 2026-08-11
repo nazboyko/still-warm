@@ -1,4 +1,4 @@
-export interface VisitFact {
+interface VisitFact {
   label: string;
   value: string;
 }

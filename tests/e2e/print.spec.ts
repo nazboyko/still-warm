@@ -36,6 +36,8 @@ test("the booklet keeps the exhibit and drops the paperwork", async ({
     ".desk-ideas .button",
     ".desk-field input",
     ".donate-status",
+    // A link to a section is a control, and on paper it has nowhere to go.
+    ".hero-cta",
   ]) {
     await expect(page.locator(paperwork).first()).toBeHidden();
   }

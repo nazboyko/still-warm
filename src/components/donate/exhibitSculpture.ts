@@ -1,10 +1,10 @@
 import type { ExhibitSubmission } from "../../content/donate.ts";
 
 export type FoodKind = "dumpling" | "disc" | "bun" | "stack" | "bowl" | "wedge";
-export type GarnishKind = "berries" | "dusting" | "drizzle" | "seeds";
+type GarnishKind = "berries" | "dusting" | "drizzle" | "seeds";
 export type AccentTone = "beet" | "toast-deep" | "syrup";
 
-export interface PlacedFood {
+interface PlacedFood {
   x: number;
   y: number;
   scale: number;

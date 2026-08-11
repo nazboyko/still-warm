@@ -6,16 +6,14 @@
     <meta name="theme-color" content="#191411" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Young Serif only. Measured Aug 11: preloading both faces cost 184ms of
+         first paint and made WebKit fetch each twice, but dropping BOTH let the
+         h1 reflow on swap - a real 0.0018 shift that entrance.spec catches on
+         mobile-chrome. The display face holds the layout; the body face does
+         not, and its metric-matched fallback covers the gap. -->
     <link
       rel="preload"
       href="/fonts/young-serif-400-latin.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/familjen-grotesk-latin.woff2"
       as="font"
       type="font/woff2"
       crossorigin

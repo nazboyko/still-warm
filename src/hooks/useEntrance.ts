@@ -2,7 +2,7 @@ import { useLayoutEffect, useState } from "react";
 
 const FLAG = "still-warm-entrance";
 
-export type EntranceState = "dim" | "lit";
+type EntranceState = "dim" | "lit";
 
 function alreadyPlayed(): boolean {
   try {

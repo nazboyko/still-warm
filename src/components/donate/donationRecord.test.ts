@@ -53,4 +53,21 @@ describe("makeDonatedExhibit", () => {
     );
     expect(donated.donorName).toBe("Marta");
   });
+
+  test("trims every field, so the postcard cannot paint stray padding", () => {
+    const donated = makeDonatedExhibit(
+      {
+        dish: "   Grilled cheese  ",
+        feeling: "  Rain ",
+        memory: "  Butter in the pan.  ",
+        donorName: "  Marta  ",
+      },
+      () => 0.5,
+      new Date(2026, 7, 6),
+    );
+    expect(donated.dish).toBe("Grilled cheese");
+    expect(donated.feeling).toBe("Rain");
+    expect(donated.memory).toBe("Butter in the pan.");
+    expect(donated.donorName).toBe("Marta");
+  });
 });

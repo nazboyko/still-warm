@@ -1,6 +1,6 @@
 import type { ExhibitId } from "./exhibits.ts";
 
-export interface GuideAnswer {
+interface GuideAnswer {
   label: string;
   target: ExhibitId;
 }
