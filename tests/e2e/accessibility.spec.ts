@@ -179,6 +179,15 @@ test("a room caught mid-light is still scannable", async ({ page }) => {
       ),
     )
     .toBe(true);
+  // Parking the page compacts the header, and its subtitle fades on the way.
+  // Scan the settled bar, not a frame where that line is halfway to nothing.
+  await expect
+    .poll(() =>
+      page
+        .locator(".lockup-sub")
+        .evaluate((element) => getComputedStyle(element).opacity),
+    )
+    .toMatch(/^(0|1)$/);
   const results = await new AxeBuilder({ page }).analyze();
   expect(reportable(results.violations)).toEqual([]);
   expect(reportable(results.incomplete)).toEqual([]);

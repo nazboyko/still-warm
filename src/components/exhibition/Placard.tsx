@@ -40,6 +40,15 @@ export function Placard({
     // own watch running and correct against each other - the same accumulating
     // correction that has bitten this page three times.
     if (guardRef.current !== null) cancelAnimationFrame(guardRef.current);
+    // Whose label this is, decided once before the collapse moves anything: a
+    // trigger still on screen, or one holding focus because a panel just handed
+    // it back (WCAG 2.4.11). A label the reader has already walked past keeps
+    // its distance - scrolling the page back to it is the jump this page bans.
+    const start = triggerRef.current?.getBoundingClientRect();
+    const watched =
+      document.activeElement === triggerRef.current ||
+      (start !== undefined && start.bottom > 0 && start.top < innerHeight);
+    if (!watched) return;
     const watch = (clear: number, cap: number) => {
       const trigger = triggerRef.current;
       const header = document.querySelector(".site-header-bar");

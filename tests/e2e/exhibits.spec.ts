@@ -412,3 +412,38 @@ test("the flap is the card's whole foot, and its ring survives the clip", async 
     });
   if (feet.some((foot) => foot.clipped)) expect(offset).toBeLessThan(0);
 });
+
+test("closing a label the reader has walked past leaves the page alone", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
+  const trigger = page.locator("#cat-004 .placard-toggle");
+  await page.locator("#cat-004").scrollIntoViewIfNeeded();
+  await trigger.dispatchEvent("click");
+  await expect(trigger).toHaveAttribute("aria-expanded", "true");
+  await pageAtRest(page);
+
+  // The visitor reads on, leaving the open label behind. 600px of headroom, so
+  // the shorter document cannot clamp the scroll and be read as a jump.
+  await page.evaluate(() => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({ top: max - 600, behavior: "instant" });
+  });
+  await pageAtRest(page);
+  // What the reader sees, not what the scrollbar says: a collapse above the
+  // viewport SHOULD move scrollY, because that is scroll anchoring holding the
+  // view still. The defect is the desk sliding under their eyes.
+  const desk = page.locator("section#donate");
+  const seen = () =>
+    desk.evaluate((element) => Math.round(element.getBoundingClientRect().top));
+  const before = await seen();
+
+  await trigger.dispatchEvent("click");
+  await expect(trigger).toHaveAttribute("aria-expanded", "false");
+  await pageAtRest(page);
+  expect(
+    Math.abs((await seen()) - before),
+    "the page was pulled back to a label nobody is looking at",
+  ).toBeLessThanOrEqual(2);
+});
