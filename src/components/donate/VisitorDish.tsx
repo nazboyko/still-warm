@@ -1,7 +1,6 @@
 import type { SculptureSpec } from "./exhibitSculpture.ts";
+import { PLATE_LINE } from "./exhibitSculpture.ts";
 import { FoodPiece } from "./food/FoodPiece.tsx";
-
-const BASE = 138;
 
 function Garnish({ spec }: { spec: SculptureSpec }) {
   const tone = `var(--${spec.accent})`;
@@ -102,10 +101,13 @@ function Garnish({ spec }: { spec: SculptureSpec }) {
 export function VisitorDish({ spec }: { spec: SculptureSpec }) {
   return (
     <g className="dish-food">
-      {spec.pieces.map((piece, index) => (
+      {/* Painted right to left. The key light is upper left, so every piece
+          throws its shadow rightward, and that shadow only shows if the piece
+          it falls on was laid down first. */}
+      {[...spec.pieces].reverse().map((piece, index) => (
         <g
           key={index}
-          transform={`translate(${piece.x} ${BASE + piece.y}) rotate(${piece.rotate}) scale(${piece.scale})`}
+          transform={`translate(${piece.x} ${PLATE_LINE + piece.y}) rotate(${piece.rotate}) scale(${piece.scale})`}
         >
           <FoodPiece kind={spec.kind} accent={spec.accent} />
         </g>

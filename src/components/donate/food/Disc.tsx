@@ -1,13 +1,13 @@
-import { Contact, Spark } from "./shading.tsx";
+import { Contact, Core, Spark } from "./shading.tsx";
+
+const BODY =
+  "M -47 -10 Q -46 -21 -27 -26 Q -4 -30 20 -27 Q 42 -23 46 -12 Q 47 -3 28 0 Q 2 4 -22 1 Q -44 -1 -47 -10 Z";
 
 export function Disc() {
   return (
     <g>
       <Contact rx={44} />
-      <path
-        d="M -47 -10 Q -46 -21 -27 -26 Q -4 -30 20 -27 Q 42 -23 46 -12 Q 47 -3 28 0 Q 2 4 -22 1 Q -44 -1 -47 -10 Z"
-        fill="url(#vd-food)"
-      />
+      <path d={BODY} fill="url(#vd-food)" />
       {/* the pan's map: broad, a little off-centre, satellites unalike */}
       <ellipse
         cx="6"
@@ -15,7 +15,7 @@ export function Disc() {
         rx="23"
         ry="6"
         transform="rotate(-4 6 -17)"
-        fill="url(#vd-scorch)"
+        fill="url(#vd-sear)"
       />
       <ellipse
         cx="-26"
@@ -23,9 +23,10 @@ export function Disc() {
         rx="8"
         ry="3.4"
         transform="rotate(7 -26 -12)"
-        fill="url(#vd-scorch)"
+        fill="url(#vd-sear)"
       />
-      <ellipse cx="31" cy="-19" rx="6" ry="2.4" fill="url(#vd-scorch)" />
+      <ellipse cx="31" cy="-19" rx="6" ry="2.4" fill="url(#vd-sear)" />
+      <Core d={BODY} />
       {/* the pale turn from face to side, wavering */}
       <path
         d="M -43 -8 Q -28 -2 -8 -1 Q 14 0 28 -2 Q 38 -4 44 -10"

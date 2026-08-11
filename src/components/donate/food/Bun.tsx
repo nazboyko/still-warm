@@ -1,22 +1,23 @@
-import { Contact, Spark } from "./shading.tsx";
+import { Contact, Core, Spark } from "./shading.tsx";
+
+/* risen a little sideways, the way loaves lean in the oven */
+const BODY =
+  "M -31 1 Q -35 -16 -20 -27 Q -4 -36 14 -30 Q 33 -22 33 -3 Q 32 3 22 3 Q 0 6 -22 3 Q -30 3 -31 1 Z";
 
 export function Bun() {
   return (
     <g>
       <Contact rx={31} />
-      {/* risen a little sideways, the way loaves lean in the oven */}
-      <path
-        d="M -31 1 Q -35 -16 -20 -27 Q -4 -36 14 -30 Q 33 -22 33 -3 Q 32 3 22 3 Q 0 6 -22 3 Q -30 3 -31 1 Z"
-        fill="url(#vd-food)"
-      />
+      <path d={BODY} fill="url(#vd-food)" />
       <ellipse
         cx="-11"
         cy="-20"
         rx="12"
         ry="5"
         transform="rotate(-7 -11 -20)"
-        fill="url(#vd-scorch)"
+        fill="url(#vd-sear)"
       />
+      <Core d={BODY} />
       {/* the split: leaf-shaped, off the crown's centre */}
       <path
         d="M -18 -16 Q -3 -24 12 -12 Q -3 -8 -18 -16 Z"

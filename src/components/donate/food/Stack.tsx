@@ -1,4 +1,4 @@
-import { Contact, Spark } from "./shading.tsx";
+import { Contact, Core, Spark } from "./shading.tsx";
 
 const stackTiers = [
   {
@@ -31,6 +31,7 @@ export function Stack() {
           transform={`translate(${tier.shift[0]} ${tier.shift[1]})`}
         >
           <path d={tier.d} fill="url(#vd-food)" />
+          <Core d={tier.d} />
           <path
             d={tier.sheen}
             fill="none"
@@ -56,16 +57,16 @@ export function Stack() {
         rx="21"
         ry="5.8"
         transform="rotate(-3 1 -36)"
-        fill="url(#vd-scorch)"
+        fill="url(#vd-sear)"
       />
-      <ellipse cx="-17" cy="-33" rx="7" ry="2.6" fill="url(#vd-scorch)" />
+      <ellipse cx="-17" cy="-33" rx="7" ry="2.6" fill="url(#vd-sear)" />
       <ellipse
         cx="16"
         cy="-38"
         rx="6"
         ry="2.2"
         transform="rotate(6 16 -38)"
-        fill="url(#vd-scorch)"
+        fill="url(#vd-sear)"
       />
       {/* browned tier ends, no two alike */}
       <g

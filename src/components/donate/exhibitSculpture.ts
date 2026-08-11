@@ -20,6 +20,27 @@ export interface SculptureSpec {
   accent: AccentTone;
 }
 
+/* The line every piece stands on, and how far each shape rises above it and
+   spreads across it at scale 1. Steam and garnish are placed from these
+   numbers, so neither can end up hanging in the air beside the food. */
+export const PLATE_LINE = 138;
+
+const footprints: Record<FoodKind, { top: number; halfWidth: number }> = {
+  dumpling: { top: 26, halfWidth: 30 },
+  disc: { top: 26, halfWidth: 40 },
+  bun: { top: 32, halfWidth: 26 },
+  stack: { top: 46, halfWidth: 36 },
+  bowl: { top: 26, halfWidth: 40 },
+  wedge: { top: 38, halfWidth: 34 },
+};
+
+export function foodTop(spec: SculptureSpec): number {
+  const { top } = footprints[spec.kind];
+  return Math.min(
+    ...spec.pieces.map((piece) => PLATE_LINE + piece.y - top * piece.scale),
+  );
+}
+
 const kinds: FoodKind[] = ["dumpling", "disc", "bun", "stack", "bowl", "wedge"];
 const garnishes: GarnishKind[] = ["berries", "dusting", "drizzle", "seeds"];
 const accents: AccentTone[] = ["beet", "toast-deep", "syrup"];

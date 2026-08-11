@@ -1,5 +1,5 @@
 import type { AccentTone } from "../exhibitSculpture.ts";
-import { Contact, Spark } from "./shading.tsx";
+import { Contact, Core, Spark } from "./shading.tsx";
 
 const crumbPores: [string, number, number][] = [
   ["M -29 -6 q 5 -5 10 -1 q -4 5 -10 1 z", 0.5, 0.9],
@@ -14,6 +14,10 @@ const crumbPores: [string, number, number][] = [
 
 const CUT_FACE =
   "M -37 1 Q -18 3 1 2 Q 21 1 38 2 Q 41 -12 36 -28 Q 20 -32 -1 -33 Q -22 -32 -34 -27 Q -40 -13 -37 1 Z";
+
+/* the crust: crest off-centre, overhang heavier on the right */
+const CRUST =
+  "M -35 -27 Q -18 -33 -2 -34 Q 18 -34 37 -29 Q 40 -33 39 -38 Q 22 -45 -4 -44 Q -26 -42 -37 -35 Q -38 -30 -35 -27 Z";
 
 export function Wedge({ accent }: { accent: AccentTone }) {
   return (
@@ -66,11 +70,9 @@ export function Wedge({ accent }: { accent: AccentTone }) {
         strokeWidth="1.2"
         strokeLinecap="round"
       />
-      {/* the crust: crest off-centre, overhang heavier on the right */}
-      <path
-        d="M -35 -27 Q -18 -33 -2 -34 Q 18 -34 37 -29 Q 40 -33 39 -38 Q 22 -45 -4 -44 Q -26 -42 -37 -35 Q -38 -30 -35 -27 Z"
-        fill="url(#vd-food)"
-      />
+      <Core d={CUT_FACE} />
+      <path d={CRUST} fill="url(#vd-food)" />
+      <Core d={CRUST} />
       <path
         d="M -28 -35 Q -12 -41 8 -40"
         fill="none"
@@ -87,8 +89,8 @@ export function Wedge({ accent }: { accent: AccentTone }) {
         strokeWidth="1.3"
         strokeLinecap="round"
       />
-      <ellipse cx="10" cy="-39" rx="13" ry="3.8" fill="url(#vd-scorch)" />
-      <ellipse cx="-20" cy="-37" rx="7" ry="2.4" fill="url(#vd-scorch)" />
+      <ellipse cx="10" cy="-39" rx="13" ry="3.8" fill="url(#vd-sear)" />
+      <ellipse cx="-20" cy="-37" rx="7" ry="2.4" fill="url(#vd-sear)" />
       <Spark x={-27} y={-38} />
     </g>
   );

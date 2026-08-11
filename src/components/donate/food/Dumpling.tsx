@@ -1,18 +1,19 @@
-import { Contact, Spark } from "./shading.tsx";
+import { Contact, Core, Spark } from "./shading.tsx";
+
+/* hand-folded: the belly bulges left, the chord sags, no half mirrors */
+const BODY =
+  "M -45 8 Q -46 -9 -33 -20 Q -18 -30 1 -29 Q 22 -27 36 -16 Q 44 -8 43 6 Q 42 12 33 13 Q 2 19 -30 15 Q -43 13 -45 8 Z";
 
 export function Dumpling() {
   return (
     <g>
       <Contact rx={44} />
-      {/* hand-folded: the belly bulges left, the chord sags, no half mirrors */}
-      <path
-        d="M -45 8 Q -46 -9 -33 -20 Q -18 -30 1 -29 Q 22 -27 36 -16 Q 44 -8 43 6 Q 42 12 33 13 Q 2 19 -30 15 Q -43 13 -45 8 Z"
-        fill="url(#vd-dough)"
-      />
+      <path d={BODY} fill="url(#vd-dough)" />
       <g fill="url(#vd-bake)">
         <ellipse cx="-16" cy="-6" rx="17" ry="7" />
         <ellipse cx="16" cy="1" rx="11" ry="5" transform="rotate(-9 16 1)" />
       </g>
+      <Core d={BODY} />
       {/* one fused pleat ridge, folds of different sizes, valleys shaded */}
       <path
         d="M -37 -13 Q -24 -24 -8 -27 Q 10 -28 24 -21 Q 34 -15 39 -6"

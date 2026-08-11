@@ -1,19 +1,15 @@
 import type { AccentTone } from "../exhibitSculpture.ts";
-import { Contact, Spark } from "./shading.tsx";
+import { Contact, Core, Spark } from "./shading.tsx";
+
+const BODY = "M -62 -28 Q -56 4 0 7 Q 56 4 62 -28 Z";
 
 export function Bowl({ accent }: { accent: AccentTone }) {
   return (
     <g>
-      <Contact rx={58} />
-      <path
-        d="M -62 -28 Q -56 4 0 7 Q 56 4 62 -28 Z"
-        style={{ fill: "var(--plaster)" }}
-      />
-      <path
-        d="M -62 -28 Q -56 4 0 7 Q 56 4 62 -28 Z"
-        style={{ fill: "var(--syrup)" }}
-        fillOpacity="0.24"
-      />
+      <Contact rx={58} y={7} />
+      <path d={BODY} style={{ fill: "var(--plaster)" }} />
+      <path d={BODY} style={{ fill: "var(--syrup)" }} fillOpacity="0.24" />
+      <Core d={BODY} />
       {/* the inner wall, then the liquid sitting below the rim */}
       <ellipse
         cx="0"
