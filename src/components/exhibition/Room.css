@@ -77,8 +77,12 @@
   transition-timing-function: ease-out;
 }
 
+/* The dish is never unlit. It keeps a low warmth at rest, rises when the room
+   notices a visitor, and takes the full spot when the label opens: 0.25, 0.45,
+   1. Before this the exhibit sat cold until someone pressed something, which
+   let the label be the brightest object in the room. */
 .room-art .art-glow-lit {
-  opacity: 0;
+  opacity: 0.25;
 }
 
 .room-art[data-lit="true"] .art-glow-lit {
@@ -233,7 +237,9 @@
      press. Nothing here is a function of the panel's height, so toggling is
      idempotent rather than corrected. */
   .room-grid {
-    grid-template-columns: 1fr 1fr;
+    /* The dish takes the larger half. It is the exhibit; the card is its
+       label, and a gallery does not hang them the same size. */
+    grid-template-columns: 1.25fr 1fr;
     gap: var(--space-12);
     align-items: start;
     justify-items: start;
@@ -248,6 +254,12 @@
     order: 2;
     justify-self: end;
   }
+
+  /* The wider half follows the dish across the aisle, so alternating sides
+     never means alternating sizes. */
+  .room-flip .room-grid {
+    grid-template-columns: 1fr 1.25fr;
+  }
 }
 
 /* One measure for the whole column, so every room's card is the same width and
@@ -257,7 +269,11 @@
   display: grid;
   gap: var(--space-4);
   justify-items: start;
-  width: min(100%, 30rem);
+  /* The label is a label, not a page: narrower than the dish it describes, so
+     the eye lands on the exhibit first and the card is what you read second.
+     28rem is the floor - below it "Varenyky (вареники)" takes a second line
+     and the card grows taller than the one it replaced. */
+  width: min(100%, 28rem);
 }
 
 .curator-note {

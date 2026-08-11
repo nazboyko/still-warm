@@ -214,6 +214,8 @@ test("five open and close cycles leave every dish where it started", async ({
     // layout following the panel's height moves the second. Parking the
     // trigger and measuring against the screen only measured the test's own
     // scrolling, which is what made this fragile rather than strict.
+    // The geometry rides along so a failure on a machine nobody can reach says
+    // where the page was standing, not just that it moved.
     const state = () =>
       page.evaluate((roomId) => {
         const wall = document
@@ -222,9 +224,23 @@ test("five open and close cycles leave every dish where it started", async ({
         const art = document
           .querySelector(`#${roomId} .room-art`)!
           .getBoundingClientRect();
+        const flap = document
+          .querySelector(`#${roomId} .placard-toggle`)!
+          .getBoundingClientRect();
+        const bar = document
+          .querySelector(".site-header-bar")!
+          .getBoundingClientRect();
         return {
           scroll: Math.round(window.scrollY),
           inRoom: Math.round(art.top - wall.top),
+          where: [
+            `flapTop=${Math.round(flap.top)}`,
+            `flapBottom=${Math.round(flap.bottom)}`,
+            `headerBottom=${Math.round(bar.bottom)}`,
+            `viewport=${window.innerHeight}`,
+            `maxScroll=${Math.round(document.documentElement.scrollHeight - window.innerHeight)}`,
+            `focus=${document.activeElement?.className || document.activeElement?.tagName}`,
+          ].join(" "),
         };
       }, id);
 
@@ -250,7 +266,9 @@ test("five open and close cycles leave every dish where it started", async ({
       const now = await state();
       expect(
         Math.abs(now.scroll - closed.scroll),
-        `${id} leaked scroll after ${cycle} cycles`,
+        `${id} leaked scroll after ${cycle} cycles\n` +
+          `  closed at ${closed.scroll}: ${closed.where}\n` +
+          `  now    at ${now.scroll}: ${now.where}`,
       ).toBeLessThanOrEqual(1);
       expect(
         now.inRoom,
@@ -332,14 +350,22 @@ test("the room light warms when a visitor reaches the room", async ({
 }) => {
   await page.goto("/");
   const glow = page.locator("#cat-002 .art-glow-lit");
-  expect(await glow.evaluate((el) => getComputedStyle(el).opacity)).toBe("0");
-  await page
+  const trigger = page
     .locator("#cat-002")
-    .getByRole("button", { name: "Read the label" })
-    .focus();
+    .getByRole("button", { name: "Read the label" });
+  // Three steps, and the first one is not off: the dish keeps a low warmth at
+  // rest so the exhibit, not its label, is the lit object in the room.
+  expect(await glow.evaluate((el) => getComputedStyle(el).opacity)).toBe(
+    "0.25",
+  );
+  await trigger.focus();
   await expect
     .poll(() => glow.evaluate((el) => getComputedStyle(el).opacity))
     .toBe("0.45");
+  await trigger.click();
+  await expect
+    .poll(() => glow.evaluate((el) => getComputedStyle(el).opacity))
+    .toBe("1");
 });
 
 test("dish steam runs in view and pauses off screen", async ({ page }) => {

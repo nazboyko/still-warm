@@ -1,11 +1,12 @@
 .placard {
   /* Long and soft, so the card's edge dissolves into the wall instead of
-     cutting against it, with a little of its own warmth bounced back. The
-     short contact shadow is what stops the card floating: a printed label
-     rests against the wall, it does not hover in front of it. */
+     cutting against it. The short contact shadow is what stops the card
+     floating: a printed label rests against the wall, it does not hover in
+     front of it. No warmth bounced back - the card used to throw its own
+     tungsten bloom, and in a room where the dish is the lit thing, the label
+     does not get to glow. */
   --placard-edge:
-    0 2px 3px -2px rgb(0 0 0 / 0.55), 0 30px 60px -24px rgb(0 0 0 / 0.62),
-    0 0 80px -20px rgb(232 169 78 / 0.11);
+    0 2px 3px -2px rgb(0 0 0 / 0.55), 0 30px 60px -24px rgb(0 0 0 / 0.62);
   /* The room is lit from above, and so is the card: the lamp lands on its head
      and lets go at its foot, the same light that falls on the dish. Borders and
      shadow carry that, never a gradient - a gradient under text turns axe's
@@ -15,7 +16,7 @@
     inset 0 40px 40px -40px rgb(255 250 240 / 0.85),
     inset 0 -64px 52px -52px rgb(25 20 17 / 0.24);
 
-  width: min(100%, 30rem);
+  width: 100%;
   min-width: 0;
   /* The walk lands the label top in view with breathing room; the header
      clearance itself comes from html scroll-padding-top. */

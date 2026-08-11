@@ -7,7 +7,9 @@
      of them reads as a bright block pasted on the wall. Alpha rather than a
      gradient, because axe can composite one over a solid ancestor and not the
      other - a gradient under text turns the contrast check incomplete. */
-  --plaster-open: rgb(239 230 216 / 0.85);
+  /* 0.80 is the floor, not a taste: beet holds 4.9:1 on the card here and 4.4:1
+     at 0.75, and beet is the ink of every label on it. */
+  --plaster-open: rgb(239 230 216 / 0.8);
   --tungsten: #e8a94e;
   --beet: #7a2e35;
   --brass: #9c8154;
