@@ -12,38 +12,79 @@
     color: #1a1a1a;
   }
 
-  /* The catalog is the exhibition, not the paperwork: the desk's form, its
-     actions and its live status stay off the page, and the frame and label
-     they produced print as the last entry. */
-  .site-header,
-  .room-guide,
-  .hero-cta,
-  .donate-form,
-  .donate-after,
-  .donate-status,
-  .skip-link,
-  .placard-toggle,
-  .placard-walk,
-  .entrance-overlay {
+  /* The booklet is an allow-list, not a list of things to hide. Everything at
+     these two levels is off the page until it is named below, so a section
+     added to the site prints nothing until someone decides it belongs on
+     paper. The old rule was the opposite and the donation desk leaked into the
+     catalog twice: once through a selector that no longer matched anything,
+     and again when a rebuild introduced elements nobody added to the hide list.
+
+     Both hide rules are anchored on an id, so they outrank any component's own
+     display rule. That is deliberate: a new section cannot print itself by
+     styling itself, only by being allowed here. */
+  #root > *,
+  #main > * {
     display: none;
   }
 
-  .hero {
+  /* The wordmark heads the catalog. Its navigation does not travel to paper, a
+     sticky bar means nothing there, and the gallery's dark ground would print
+     as a black slab across the top of page one. */
+  #root > header.site-header {
+    display: block;
+    position: static;
+    min-height: 0;
     padding-block: 0 var(--space-8);
-    break-after: page;
+    border-bottom: none;
+    background: none;
   }
 
-  .hero-title {
+  .lockup-name,
+  .lockup-sub {
     color: #1a1a1a;
+    opacity: 1;
   }
 
-  /* Outranks the per-room grounds and stops the scroll-driven light. */
+  .lockup-sub {
+    color: #4a4a4a;
+  }
+
+  #root > main {
+    display: block;
+  }
+
+  /* What a catalog is: the museum's own first exhibit, the four rooms with
+     their labels open, and the practical page. */
+  #main > #exhibition,
+  #main > #visit {
+    display: block;
+  }
+
+  /* Controls are for a screen. None of them can do anything on paper. */
+  button,
+  .skip-link,
+  .site-header nav,
+  .room-guide,
+  .placard-toggle,
+  .placard-walk {
+    display: none;
+  }
+
+  .exhibition {
+    break-before: avoid;
+  }
+
+  /* Outranks the per-room grounds and stops the scroll-driven light. One room
+     per page, opened by a break BEFORE the room rather than after it: a room
+     is nearly a full page, and breaking afterwards let its bottom padding spill
+     onto the next sheet, which then broke again and left a blank page between
+     entries. A break before a block cannot trail anything. */
   .exhibition .room {
     background: #ffffff;
     animation: none;
-    padding-block: var(--space-8);
+    padding-block: 0 var(--space-8);
     break-inside: avoid;
-    break-after: page;
+    break-before: page;
   }
 
   .room-grid {
@@ -52,8 +93,7 @@
     justify-items: start;
   }
 
-  .room-art,
-  .reserved-frame svg {
+  .room-art {
     width: 40%;
   }
 
@@ -66,8 +106,7 @@
     display: none;
   }
 
-  .placard,
-  .reserved-placard {
+  .placard {
     box-shadow: none;
     border: 1px solid #6b6b6b;
     background: #ffffff;
@@ -100,23 +139,21 @@
     display: block;
   }
 
-  .visit,
-  .donate {
+  /* The page break is the divider on paper, so the screen's rule between
+     sections has nothing left to separate. */
+  .visit {
     break-before: page;
+    border-top: none;
   }
 
-  .site-footer::after {
-    content: "still-warm.boyko-nazar.workers.dev";
-    display: block;
-    margin-top: var(--space-2);
-    font-family: var(--font-utility);
-    font-size: var(--text-utility);
-    letter-spacing: var(--tracking-utility);
+  /* The ticket keeps its rule and its icons; the lamp above it and the dark
+     fitting on its rim are gallery lighting, and print as ink blots. */
+  .visit-plate-light {
+    display: none;
   }
 
-  a[href^="http"]::after {
-    content: " (" attr(href) ")";
-    font-size: 0.75em;
-    word-break: break-all;
+  .visit-fixture {
+    background: none;
+    color: #4a4a4a;
   }
 }

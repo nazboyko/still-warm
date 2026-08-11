@@ -1,57 +1,38 @@
 import { expect, test } from "./fixtures";
 
+/* Printing is an allow-list: the booklet is the exhibition, and anything the
+   site adds later stays off the page until someone decides it belongs. */
+async function openBooklet(page: import("@playwright/test").Page) {
+  await page.emulateMedia({ media: "print" });
+  await page.evaluate(() => window.dispatchEvent(new Event("beforeprint")));
+}
+
 test("printing opens every label and drops the gallery darkness", async ({
   page,
 }) => {
   await page.goto("/");
   await expect(page.locator("#cat-001-story")).toHaveCount(0);
 
-  await page.emulateMedia({ media: "print" });
-  await page.evaluate(() => window.dispatchEvent(new Event("beforeprint")));
+  await openBooklet(page);
 
   for (const id of ["cat-001", "cat-002", "cat-003", "cat-004"]) {
-    await expect(page.locator(`#${id}-story`)).toHaveCount(1);
+    await expect(page.locator(`#${id}-story`)).toBeVisible();
   }
   const room = await page
     .locator("#cat-002")
     .evaluate((element) => getComputedStyle(element).backgroundColor);
   expect(room).toBe("rgb(255, 255, 255)");
-  await expect(page.locator(".site-header")).toBeHidden();
 
   await page.evaluate(() => window.dispatchEvent(new Event("afterprint")));
   await expect(page.locator("#cat-001-story")).toHaveCount(0);
 });
 
-test("the booklet keeps the exhibit and drops the paperwork", async ({
+test("the catalogue is the exhibition, and the donation desk is not in it", async ({
   page,
 }) => {
-  // The catalog is the exhibition: the desk that produced an entry is not part
-  // of it, and neither is a live status line.
-  await page.goto("/");
-  await page.emulateMedia({ media: "print" });
-  await page.evaluate(() => window.dispatchEvent(new Event("beforeprint")));
-
-  for (const paperwork of [
-    ".donate-form",
-    ".desk-ideas .button",
-    ".desk-field input",
-    ".donate-status",
-    // A link to a section is a control, and on paper it has nowhere to go.
-    ".hero-cta",
-  ]) {
-    await expect(page.locator(paperwork).first()).toBeHidden();
-  }
-  for (const exhibition of [
-    "#donate-title",
-    ".reserved-frame",
-    ".reserved-placard",
-    ".visit-ticket",
-  ]) {
-    await expect(page.locator(exhibition).first()).toBeVisible();
-  }
-});
-
-test("a donated entry prints without its buttons", async ({ page }) => {
+  // Asserted on the section itself rather than on the classes inside it: this
+  // block has leaked into the booklet twice, both times through markup that no
+  // hide list happened to name.
   await page.goto("/");
   await page
     .getByRole("textbox", { name: "What dish feels like home?" })
@@ -64,11 +45,72 @@ test("a donated entry prints without its buttons", async ({ page }) => {
     .fill("A quiet bowl.");
   await page.getByRole("button", { name: "Donate the exhibit" }).click();
 
-  await page.emulateMedia({ media: "print" });
-  await page.evaluate(() => window.dispatchEvent(new Event("beforeprint")));
+  const desk = page.locator("main > section#donate");
+  await expect(desk).toBeVisible();
 
-  await expect(page.locator(".donate-after")).toBeHidden();
-  await expect(page.locator(".reserved-placard")).toContainText("Kasha");
+  await openBooklet(page);
+
+  await expect(desk).toBeHidden();
+  // Not one descendant of it survives, whatever the rebuild called them.
+  const survivors = await desk.evaluate(
+    (section) =>
+      [...section.querySelectorAll("*")].filter((el) =>
+        el.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true }),
+      ).length,
+  );
+  expect(survivors).toBe(0);
+  // Its own words, which is what a reader would actually notice on paper.
+  // Counted rather than asserted one by one: each phrase appears in more than
+  // one place, and none of those places may be visible.
+  for (const words of ["The last frame", "Donate an Exhibit", "Kasha"]) {
+    const onPaper = await page
+      .getByText(words, { exact: false })
+      .filter({ visible: true })
+      .count();
+    expect(onPaper, words).toBe(0);
+  }
+});
+
+test("the booklet keeps the wordmark, the rooms and the practical page", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await openBooklet(page);
+
+  for (const kept of [
+    ".lockup-name",
+    "#exhibit-000",
+    "#visit",
+    ".visit-ticket",
+  ]) {
+    await expect(page.locator(kept).first()).toBeVisible();
+  }
+  for (const id of ["cat-001", "cat-002", "cat-003", "cat-004"]) {
+    await expect(page.locator(`#${id}`)).toBeVisible();
+  }
+  // The landing page's own furniture is not catalogue content.
+  for (const dropped of [
+    "main > section.hero",
+    ".site-header nav",
+    ".skip-link",
+    ".room-guide",
+  ]) {
+    await expect(page.locator(dropped).first()).toBeHidden();
+  }
+});
+
+test("no control reaches paper", async ({ page }) => {
+  await page.goto("/");
+  await openBooklet(page);
+
+  const controls = await page.evaluate(() =>
+    [...document.querySelectorAll("button, input, textarea, select")]
+      .filter((el) =>
+        el.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true }),
+      )
+      .map((el) => el.tagName.toLowerCase()),
+  );
+  expect(controls).toEqual([]);
 });
 
 test("the header compacts once the visitor leaves the top", async ({
