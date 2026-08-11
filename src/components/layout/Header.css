@@ -9,7 +9,7 @@
   padding: var(--space-2) var(--space-4);
   background: var(--plaster);
   color: var(--ink);
-  border-radius: var(--radius-placard);
+  border-radius: var(--radius-control);
   transform: translateY(-200%);
 }
 

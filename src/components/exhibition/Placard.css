@@ -1,30 +1,57 @@
 .placard {
   /* Long and soft, so the card's edge dissolves into the wall instead of
-     cutting against it, with a little of its own warmth bounced back. */
+     cutting against it. The short contact shadow is what stops the card
+     floating: a printed label rests against the wall, it does not hover in
+     front of it. No warmth bounced back - the card used to throw its own
+     tungsten bloom, and in a room where the dish is the lit thing, the label
+     does not get to glow. */
   --placard-edge:
-    0 30px 60px -24px rgb(0 0 0 / 0.62), 0 0 80px -20px rgb(232 169 78 / 0.11);
+    0 2px 3px -2px rgb(0 0 0 / 0.55), 0 30px 60px -24px rgb(0 0 0 / 0.62);
+  /* The room is lit from above, and so is the card: the lamp lands on its head
+     and lets go at its foot, the same light that falls on the dish. Borders and
+     shadow carry that, never a gradient - a gradient under text turns axe's
+     contrast check incomplete, and a positioned pseudo on any ancestor does the
+     same. Box-shadow reads as neither, so the light costs no contrast. */
+  --placard-light:
+    inset 0 40px 40px -40px rgb(255 250 240 / 0.85),
+    inset 0 -64px 52px -52px rgb(25 20 17 / 0.24);
 
-  width: min(100%, 30rem);
+  width: 100%;
   min-width: 0;
   /* The walk lands the label top in view with breathing room; the header
      clearance itself comes from html scroll-padding-top. */
   scroll-margin-top: var(--space-6);
-  padding: var(--space-4) var(--space-6) var(--space-3);
+  padding: var(--space-6) var(--space-6) var(--space-4);
   background: var(--plaster-open);
   color: var(--ink);
-  /* The room is lit from above, and so is the card: its top edge catches the
-     spot, its foot falls away into the wall. Borders and shadow carry that,
-     never a gradient - a gradient under text turns axe's contrast check
-     incomplete, and a positioned pseudo on any ancestor does the same. */
-  border-top: 1px solid rgb(255 241 219 / 0.5);
+  /* The cap rule is the card's head: a hand-set label is mounted, not printed
+     edge to edge (art direction, "Layout"). */
+  border-top: 2px solid var(--brass);
   border-bottom: 1px solid rgb(0 0 0 / 0.18);
-  border-radius: var(--radius-placard);
-  box-shadow: var(--placard-edge);
+  border-radius: var(--radius-card);
+  box-shadow: var(--placard-light), var(--placard-edge);
   /* Overflow hidden so the bottom flap keeps the card's rounded corners. */
   overflow: hidden;
 }
 
-/* The card settles into place as its room arrives. */
+/* Opening a label turns the room's spot up, and the card's head takes it: the
+   brass warms to tungsten and the paper brightens under it. The state arrives
+   at once rather than easing, because the page animates transform and opacity
+   only - the unfold is the motion, and the light simply belongs to it. */
+.placard[data-open="true"] {
+  --placard-light:
+    inset 0 44px 44px -40px rgb(255 238 210 / 0.95),
+    inset 0 -64px 52px -52px rgb(25 20 17 / 0.18);
+
+  border-top-color: var(--tungsten);
+}
+
+/* The card ends at its flap: the trigger runs to both edges and carries the
+   card's foot, so a bottom padding here would leave a plaster strip under it. */
+.placard:has(.placard-story) {
+  padding-bottom: 0;
+}
+
 /* The card settles in as its room arrives. It moves but never fades: text at
    opacity 0 is invisible to a reader and reads as failing contrast to axe, so
    the arrival is carried entirely by transform. */
@@ -54,6 +81,7 @@
   /* "anywhere", not "break-word": only anywhere shrinks the min-content width,
      which is what stops a long dish name widening the page at 200% zoom. */
   overflow-wrap: anywhere;
+  text-wrap: balance;
   margin-top: var(--space-2);
   font-family: var(--font-display);
   font-weight: 400;
@@ -62,64 +90,76 @@
 }
 
 .placard-fields {
-  margin: var(--space-4) 0 0;
+  margin: var(--space-6) 0 0;
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-4);
 }
 
-.placard-fields > div + div {
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--brass-soft);
-}
-
-.placard-fields dd {
-  line-height: 1.7;
-}
-
+/* The field's name is the smallest voice on the card: it says what you are
+   about to read and then gets out of the line's way. */
 .placard-fields dt {
+  font-size: var(--text-utility-sm);
   color: var(--beet);
 }
 
+/* A rule between two fields makes the card a table. Space makes it a label. */
 .placard-fields dd {
   margin: 0;
+  line-height: 1.45;
+  text-wrap: pretty;
 }
 
-/* The label's own flap: full width of the card, sharing its material, sitting
-   on a brass rule - part of the object rather than a box laid on top of it. */
-/* The trigger divides the card: metadata above the rule, story below it. */
+/* The trigger divides the card: metadata above the fold, story below it. */
 .placard-story {
-  margin-top: var(--space-4);
+  margin-top: var(--space-6);
 }
 
-/* The trigger, not just the card, needs the clearance: it is what receives
-   focus when a panel closes, and the collapse can slide it under the header. */
+/* The label's own flap. It runs to both of the card's edges because it IS the
+   card's foot, not a button laid on top of one - which also hands the whole
+   width to a thumb. The trigger, not just the card, needs the scroll
+   clearance: it is what receives focus when a panel closes, and the collapse
+   can slide it under the header. */
 .placard-toggle {
   scroll-margin-top: calc(var(--header-compact) + var(--space-4));
   display: flex;
   align-items: center;
-  width: 100%;
+  gap: var(--space-3);
+  width: calc(100% + 2 * var(--space-6));
+  margin-inline: calc(-1 * var(--space-6));
   min-height: var(--touch-target);
-  padding: var(--space-2) 0;
+  padding: var(--space-3) var(--space-6);
   border: 0;
-  border-top: 1px solid var(--brass);
+  /* A perforation rather than a rule: the line you lift a paper flap along. */
+  border-top: 1px dashed var(--brass);
   background: none;
   cursor: pointer;
   text-align: left;
   color: var(--beet);
+  /* The fill lands at once and only the text eases: a flap you press, not a
+     panel that lights up. It also keeps one fewer transition in flight for the
+     a11y scan's settle-wait to trip over. */
   transition: color var(--dur-quiet) var(--ease-soft);
 }
 
+/* The card clips to its rounded corners, so an outset ring on a full-bleed
+   flap would be cut off on three sides. This one is drawn inside instead. */
+.placard-toggle:focus-visible {
+  outline-offset: calc(-1 * var(--focus-ring-offset));
+}
+
+.placard-toggle:hover,
+.placard-toggle:focus-visible {
+  background-color: var(--plaster-lift);
+  color: var(--ink);
+}
+
+/* Bracketed, like every other mark the museum sets in the typewriter face. */
 .placard-fold-mark::before {
-  content: "+";
-  margin-right: var(--space-2);
+  content: "[+]";
 }
 
 .placard-toggle[aria-expanded="true"] .placard-fold-mark::before {
-  content: "-";
-}
-
-.placard-toggle:hover {
-  color: var(--ink);
+  content: "[-]";
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -129,13 +169,29 @@
 }
 
 .placard-story-region {
-  padding-top: var(--space-2);
+  padding-block: var(--space-4) var(--space-6);
 }
 
-.placard-story-region p {
-  padding-bottom: var(--space-4);
+.placard-story-region > p {
+  margin-bottom: var(--space-6);
 }
 
+/* The memory opens the way a printed label does, not the way a paragraph in a
+   box does: one letter in the display face, cut into the first two lines. */
+.placard-story-region > p:first-of-type::first-letter {
+  float: left;
+  margin-right: 0.08em;
+  font-family: var(--font-display);
+  font-size: 3.1em;
+  line-height: 0.78;
+}
+
+/* The line meant to be felt rather than read, stood behind a brass rule - the
+   same voice the curator's note uses just below the card. */
 .placard-sensory {
+  display: grid;
+  gap: var(--space-2);
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--brass);
   font-style: italic;
 }

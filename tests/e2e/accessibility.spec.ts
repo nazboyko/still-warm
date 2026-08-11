@@ -60,20 +60,46 @@ test("the donation desk stays clean in all three states", async ({ page }) => {
   await page.goto("/");
   const scan = async () => {
     // The placard settles its lines as fields fill; axe cannot judge contrast
-    // on a line that is still fading, so let every FINITE animation finish.
-    // Steam loops forever by design - waiting for it to stop never ends, and
-    // whether a room's steam is in view here depends on font metrics per OS.
+    // on a line that is still fading, so let every TIME-DRIVEN finite animation
+    // finish. Two kinds never end and neither is a line mid-fade: steam loops
+    // forever by design, and a room's scroll-driven light is held at whatever
+    // the scroll position says - park the page inside a room's range and that
+    // animation stays "running" for as long as the page sits there. Waiting on
+    // either one only ever times out.
+    // Named, not counted: a bare true/false here can only ever report "it did
+    // not settle", which is why the WebKit timeout this guard threw on CI took
+    // five reproduction attempts to not explain. The list says what is stuck.
     await expect
-      .poll(() =>
-        page.evaluate(() =>
-          document.getAnimations().every((animation) => {
-            if (animation.playState !== "running") return true;
-            const timing = animation.effect?.getTiming();
-            return timing?.iterations === Infinity;
-          }),
-        ),
+      .poll(
+        () =>
+          page.evaluate(() =>
+            document
+              .getAnimations()
+              .filter((animation) => {
+                if (animation.playState !== "running") return false;
+                if (animation.timeline !== document.timeline) return false;
+                return animation.effect?.getTiming().iterations !== Infinity;
+              })
+              .map((animation) => {
+                const named = animation as unknown as Record<string, string>;
+                const target = animation.effect as unknown as {
+                  target?: { className?: string };
+                };
+                const timing = animation.effect?.getTiming();
+                return [
+                  named.animationName ?? named.transitionProperty ?? "?",
+                  "on",
+                  target?.target?.className ?? "?",
+                  `${timing?.duration}ms`,
+                  `at ${animation.currentTime}`,
+                ].join(" ");
+              }),
+          ),
+        // A loaded five-project matrix settles slower than a local run; the
+        // budget is for a slow machine, not for something genuinely stuck.
+        { timeout: 15000 },
       )
-      .toBe(true);
+      .toEqual([]);
     const results = await new AxeBuilder({ page }).analyze();
     expect(reportable(results.violations)).toEqual([]);
     expect(reportable(results.incomplete)).toEqual([]);
@@ -81,15 +107,17 @@ test("the donation desk stays clean in all three states", async ({ page }) => {
 
   await page.getByRole("button", { name: "Donate the exhibit" }).click();
   await expect(page.getByRole("alert")).toBeVisible();
-  // The click scrolls, the header compacts, and its subtitle fades: scan the
-  // settled page, not a frame where that line is halfway to transparent.
-  await expect
-    .poll(() =>
-      page
-        .locator(".lockup-sub")
-        .evaluate((element) => getComputedStyle(element).opacity),
-    )
-    .toMatch(/^(0|1)$/);
+  // The click scrolls and the header compacts, which fades its subtitle IN from
+  // 0. "0 or 1" passed on the 0 it starts from, before the transition had even
+  // begun - so the settle-wait found nothing running, and axe scanned a
+  // transparent line and called it a contrast failure. Under a loaded matrix
+  // that is the WebKit failure this suite kept throwing. Wait for the state the
+  // scroll position implies instead of either end of the fade.
+  await expect(page.locator(".site-header")).toHaveAttribute(
+    "data-compact",
+    "true",
+  );
+  await expect(page.locator(".lockup-sub")).toHaveCSS("opacity", "1");
   await scan();
 
   await page
@@ -118,6 +146,53 @@ test("the donation desk stays clean in all three states", async ({ page }) => {
     )
     .toBe("0");
   await scan();
+});
+
+// The scan above waits for animations to settle. Parked inside a room's range
+// the scroll-driven light never settles, so a wait that does not know the
+// difference hangs until it times out - which is how a placard height change
+// turned this into a CI-only WebKit failure.
+test("a room caught mid-light is still scannable", async ({ page }) => {
+  await page.goto("/");
+  // Firefox takes the static per-room fallback, so it has no mid-light to
+  // catch. A feature check, not a browser name: WebKit drives these too.
+  const scrollDriven = await page.evaluate(() =>
+    CSS.supports("animation-timeline", "view()"),
+  );
+  test.skip(!scrollDriven, "scroll-driven timeline engines only");
+  await page.evaluate(() => {
+    const room = document.getElementById("cat-003")!;
+    const top = room.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+      top: top - window.innerHeight + 80,
+      behavior: "instant",
+    });
+  });
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        document
+          .getAnimations()
+          .some(
+            (animation) =>
+              animation.playState === "running" &&
+              animation.timeline !== document.timeline,
+          ),
+      ),
+    )
+    .toBe(true);
+  // Parking the page compacts the header, which fades its subtitle IN. Waiting
+  // for "0 or 1" would pass on the 0 it starts from and hand axe a line that is
+  // still transparent, which axe reads as failing contrast - so wait for the
+  // state the scroll position actually implies.
+  await expect(page.locator(".site-header")).toHaveAttribute(
+    "data-compact",
+    "true",
+  );
+  await expect(page.locator(".lockup-sub")).toHaveCSS("opacity", "1");
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(reportable(results.violations)).toEqual([]);
+  expect(reportable(results.incomplete)).toEqual([]);
 });
 
 test("each expanded room stays clean", async ({ page }) => {

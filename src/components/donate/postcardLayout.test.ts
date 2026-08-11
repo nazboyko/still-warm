@@ -34,6 +34,18 @@ describe("wrapText", () => {
     ]);
   });
 
+  test("breaks a run that has no space to break on", () => {
+    // 140 characters of one word is inside what the desk accepts, and used to
+    // print straight off the right edge of the postcard.
+    const run = "asdfasdfpvyuxkcjhvj".repeat(8);
+    const lines = wrapText(run, 900, (line) => line.length * 18.7);
+    expect(lines.length).toBeGreaterThan(1);
+    for (const line of lines) {
+      expect(line.length * 18.7).toBeLessThanOrEqual(900);
+    }
+    expect(lines.join("")).toBe(run);
+  });
+
   test("never exceeds the maximum width", () => {
     const lines = wrapText(maxed.memory, 900, (line) => line.length * 18.7);
     for (const line of lines) {
@@ -72,16 +84,19 @@ describe("layoutPostcard", () => {
     expect(layout.width).toBe(1200);
     expect(layout.height).toBe(630);
     expect(layout.placard).toEqual({
-      x: 90,
-      y: 360,
-      width: 1020,
-      height: 228,
+      x: 72,
+      y: 344,
+      width: 1056,
+      height: 244,
     });
   });
 
   test("catalog line carries number and feeling in catalog voice", () => {
     const layout = layoutPostcard(donated, measure);
-    expect(layout.lines[1]!.text).toBe("CAT. V-0846 - QUIET EVENINGS");
+    // Found by its voice, not its index: the composition has moved twice and
+    // an index made this test fail for reasons that were never about the copy.
+    const catalog = layout.lines.find((line) => line.text.startsWith("CAT. "));
+    expect(catalog?.text).toBe("CAT. V-0846 - QUIET EVENINGS");
   });
 
   test("provenance line reads donor and collection date", () => {
@@ -96,8 +111,14 @@ describe("layoutPostcard", () => {
       (line) => line.font === postcardFonts.body,
     );
     expect(memoryLines.length).toBeLessThanOrEqual(3);
+    // Derived from the label, not pinned to a number: the composition has moved
+    // and a hard-coded column width made this fail for the wrong reason.
+    const inset = memoryLines[0]!.x - layout.placard.x;
+    const column = layout.placard.width - inset * 2;
     for (const line of memoryLines) {
-      expect(measure(line.text, line.font, line.size)).toBeLessThanOrEqual(900);
+      expect(measure(line.text, line.font, line.size)).toBeLessThanOrEqual(
+        column,
+      );
       expect(line.y).toBeLessThan(560);
     }
   });

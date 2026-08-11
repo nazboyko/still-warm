@@ -26,7 +26,7 @@ export function RoomGuide({ onChoose }: { onChoose: (id: ExhibitId) => void }) {
       <ul className="room-guide-answers">
         {roomGuide.answers.map((answer) => (
           <li key={answer.target}>
-            <Button quiet onClick={() => choose(answer.target)}>
+            <Button onClick={() => choose(answer.target)}>
               {answer.label}
             </Button>
           </li>

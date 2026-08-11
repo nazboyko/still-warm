@@ -7,7 +7,9 @@
      of them reads as a bright block pasted on the wall. Alpha rather than a
      gradient, because axe can composite one over a solid ancestor and not the
      other - a gradient under text turns the contrast check incomplete. */
-  --plaster-open: rgb(239 230 216 / 0.85);
+  /* 0.80 is the floor, not a taste: beet holds 4.9:1 on the card here and 4.4:1
+     at 0.75, and beet is the ink of every label on it. */
+  --plaster-open: rgb(239 230 216 / 0.8);
   --tungsten: #e8a94e;
   --beet: #7a2e35;
   --brass: #9c8154;
@@ -15,6 +17,9 @@
      divide it instead of detailing it. One softness everywhere, not five. */
   --brass-soft: rgb(156 129 84 / 0.35);
   --steam: rgb(239 230 216 / 0.1);
+  /* A plaster control under a thumb: brass at a whisper, the only fill the
+     page lays on a card. Ink over it holds 11:1. */
+  --plaster-lift: rgb(156 129 84 / 0.16);
 
   /* Food vocabulary - the only saturated color on the page. The law: food may
      use saturation, UI may not; saturated color is semantically edible. */
@@ -32,6 +37,11 @@
   --text-h2: clamp(1.8rem, 1.35rem + 2vw, 2.6rem);
   --text-body: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
   --text-utility: clamp(0.75rem, 0.72rem + 0.15vw, 0.85rem);
+  /* The subordinate label. A field's name ("Medium") ranks under the catalog
+     line that names the room, so it holds the bottom of the utility range
+     instead of matching it - the hierarchy is size, never a second color,
+     because brass fails AA on plaster and beet is the only label ink we have. */
+  --text-utility-sm: 0.75rem;
   --tracking-utility: 0.08em;
   /* The same typewriter set as a sentence rather than a label: curator notes,
      hints, statuses. Letterspacing a running line as hard as a label makes it
@@ -74,10 +84,12 @@
   --touch-target: 44px;
   /* The rule a message stands behind: errors in beet, statuses in brass. */
   --rail-width: 3px;
-  --radius-placard: 2px;
-  /* The admission ticket is the one object on the page with real corners:
-     a placard is a card pinned to a wall, a ticket is something you hold. */
-  --radius-ticket: 12px;
+  /* Every object on the page has real corners. Two steps, so a card and the
+     control inside it are related without being identical: the larger for
+     surfaces you read (labels, the ramp wall, the frame, the ticket), the
+     smaller for things you press or type into. */
+  --radius-card: 14px;
+  --radius-control: 10px;
 }
 
 /* Issue #4: tungsten fails 3:1 on light surfaces; beet holds 7.5:1 there. */

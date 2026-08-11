@@ -26,6 +26,24 @@ function loadExhibitImage(
   });
 }
 
+/* Rounded corners, or square ones on an engine too old to have roundRect. The
+   postcard degrades a corner rather than failing to render. */
+function cardPath(
+  context: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  radius: number,
+) {
+  context.beginPath();
+  if (typeof context.roundRect === "function") {
+    context.roundRect(x, y, width, height, radius);
+  } else {
+    context.rect(x, y, width, height);
+  }
+}
+
 function drawPostcard(
   context: CanvasRenderingContext2D,
   layout: PostcardLayout,
@@ -33,24 +51,63 @@ function drawPostcard(
 ) {
   context.fillStyle = layout.background;
   context.fillRect(0, 0, layout.width, layout.height);
+
+  /* The lamp, before anything it lights. */
+  const lamp = context.createRadialGradient(
+    layout.glow.x,
+    layout.glow.y,
+    0,
+    layout.glow.x,
+    layout.glow.y,
+    layout.glow.radius,
+  );
+  lamp.addColorStop(0, "rgb(232 169 78 / 0.22)");
+  lamp.addColorStop(1, "rgb(232 169 78 / 0)");
+  context.fillStyle = lamp;
+  context.fillRect(0, 0, layout.width, layout.height);
+
   if (artwork) {
     const box = layout.artwork;
+    const { color, inset, width } = layout.frame;
+    context.save();
+    cardPath(context, box.x, box.y, box.width, box.height, layout.radius);
+    context.clip();
     context.drawImage(artwork, box.x, box.y, box.width, box.height);
-    context.strokeStyle = "#9c8154";
-    context.lineWidth = 3;
-    context.strokeRect(box.x - 8, box.y - 8, box.width + 16, box.height + 16);
+    context.restore();
+    cardPath(
+      context,
+      box.x - inset,
+      box.y - inset,
+      box.width + inset * 2,
+      box.height + inset * 2,
+      layout.radius + inset,
+    );
+    context.strokeStyle = color;
+    context.lineWidth = width;
+    context.stroke();
   }
+
   const { x, y, width, height } = layout.placard;
+  cardPath(context, x, y, width, height, layout.radius);
   context.fillStyle = "#efe6d8";
-  context.fillRect(x, y, width, height);
+  context.fill();
+  /* The label's brass head, clipped so it turns the corner with the card. */
+  context.save();
+  cardPath(context, x, y, width, height, layout.radius);
+  context.clip();
   context.fillStyle = layout.topRule.color;
   context.fillRect(x, y, width, layout.topRule.height);
+  context.restore();
+
+  const spaced = "letterSpacing" in context;
   for (const line of layout.lines) {
     context.font = `${line.size}px ${line.font}`;
     context.fillStyle = line.color;
     context.textAlign = line.align;
+    if (spaced) context.letterSpacing = `${line.tracking ?? 0}px`;
     context.fillText(line.text, line.x, line.y);
   }
+  if (spaced) context.letterSpacing = "0px";
 }
 
 function downloadBlob(blob: Blob, fileName: string) {
@@ -118,7 +175,7 @@ export function GiftShop({ donated }: { donated: DonatedExhibit }) {
 
   return (
     <div className="gift-shop">
-      <Button quiet onClick={() => void takePostcard()}>
+      <Button onClick={() => void takePostcard()}>
         {giftShop.button(donated.number)}
       </Button>
       <p role="status" className="gift-shop-status">

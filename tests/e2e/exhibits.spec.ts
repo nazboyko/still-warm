@@ -77,8 +77,22 @@ test("the spotlight moves: a second room closes the first", async ({
 
 test("the walk continues to the next room", async ({ page }) => {
   await page.goto("/");
+  // A late webfont reflows the label, and the walk sits at the foot of a panel
+  // that is still folding open - the part of it that travels furthest. Clicked
+  // mid-fold, a synthetic click lands where the button was rather than where it
+  // is, and nothing opens. That passed everywhere except a loaded five-engine
+  // matrix, where it took down Firefox one run and mobile Safari the next.
+  await page.evaluate(() => document.fonts.ready);
   await triggers(page).first().click();
-  await page.getByRole("button", { name: /Next: CAT\. 002/ }).click();
+  const next = page.getByRole("button", { name: /Next: CAT\. 002/ });
+  await expect
+    .poll(async () => {
+      const settled = (await next.boundingBox())!.y;
+      await page.waitForTimeout(120);
+      return (await next.boundingBox())!.y === settled;
+    })
+    .toBe(true);
+  await next.click();
   const secondTrigger = triggers(page).nth(1);
   await expect(secondTrigger).toHaveAttribute("aria-expanded", "true");
   await expect(secondTrigger).toBeFocused();
@@ -214,6 +228,8 @@ test("five open and close cycles leave every dish where it started", async ({
     // layout following the panel's height moves the second. Parking the
     // trigger and measuring against the screen only measured the test's own
     // scrolling, which is what made this fragile rather than strict.
+    // The geometry rides along so a failure on a machine nobody can reach says
+    // where the page was standing, not just that it moved.
     const state = () =>
       page.evaluate((roomId) => {
         const wall = document
@@ -222,9 +238,23 @@ test("five open and close cycles leave every dish where it started", async ({
         const art = document
           .querySelector(`#${roomId} .room-art`)!
           .getBoundingClientRect();
+        const flap = document
+          .querySelector(`#${roomId} .placard-toggle`)!
+          .getBoundingClientRect();
+        const bar = document
+          .querySelector(".site-header-bar")!
+          .getBoundingClientRect();
         return {
           scroll: Math.round(window.scrollY),
           inRoom: Math.round(art.top - wall.top),
+          where: [
+            `flapTop=${Math.round(flap.top)}`,
+            `flapBottom=${Math.round(flap.bottom)}`,
+            `headerBottom=${Math.round(bar.bottom)}`,
+            `viewport=${window.innerHeight}`,
+            `maxScroll=${Math.round(document.documentElement.scrollHeight - window.innerHeight)}`,
+            `focus=${document.activeElement?.className || document.activeElement?.tagName}`,
+          ].join(" "),
         };
       }, id);
 
@@ -250,7 +280,9 @@ test("five open and close cycles leave every dish where it started", async ({
       const now = await state();
       expect(
         Math.abs(now.scroll - closed.scroll),
-        `${id} leaked scroll after ${cycle} cycles`,
+        `${id} leaked scroll after ${cycle} cycles\n` +
+          `  closed at ${closed.scroll}: ${closed.where}\n` +
+          `  now    at ${now.scroll}: ${now.where}`,
       ).toBeLessThanOrEqual(1);
       expect(
         now.inRoom,
@@ -332,14 +364,22 @@ test("the room light warms when a visitor reaches the room", async ({
 }) => {
   await page.goto("/");
   const glow = page.locator("#cat-002 .art-glow-lit");
-  expect(await glow.evaluate((el) => getComputedStyle(el).opacity)).toBe("0");
-  await page
+  const trigger = page
     .locator("#cat-002")
-    .getByRole("button", { name: "Read the label" })
-    .focus();
+    .getByRole("button", { name: "Read the label" });
+  // Three steps, and the first one is not off: the dish keeps a low warmth at
+  // rest so the exhibit, not its label, is the lit object in the room.
+  expect(await glow.evaluate((el) => getComputedStyle(el).opacity)).toBe(
+    "0.25",
+  );
+  await trigger.focus();
   await expect
     .poll(() => glow.evaluate((el) => getComputedStyle(el).opacity))
     .toBe("0.45");
+  await trigger.click();
+  await expect
+    .poll(() => glow.evaluate((el) => getComputedStyle(el).opacity))
+    .toBe("1");
 });
 
 test("dish steam runs in view and pauses off screen", async ({ page }) => {
@@ -381,4 +421,69 @@ test("the restored trigger is never left under the header", async ({
       expect(clear).toBeGreaterThanOrEqual(0);
     }).toPass();
   }
+});
+
+test("the flap is the card's whole foot, and its ring survives the clip", async ({
+  page,
+}) => {
+  await page.goto("/");
+  // Two ways this regresses silently: a padding change shrinks the target back
+  // to the text, and an outset ring gets cut off by the card's own overflow.
+  const feet = await page.evaluate(() =>
+    Array.from(document.querySelectorAll(".room .placard")).map((card) => {
+      const flap = card.querySelector(".placard-toggle")!;
+      return {
+        overhang: Math.abs(
+          flap.getBoundingClientRect().width -
+            card.getBoundingClientRect().width,
+        ),
+        clipped: getComputedStyle(card).overflow === "hidden",
+      };
+    }),
+  );
+  expect(feet).toHaveLength(4);
+  for (const foot of feet) expect(foot.overhang).toBeLessThanOrEqual(0.5);
+
+  const offset = await page
+    .locator("#cat-001 .placard-toggle")
+    .evaluate((flap) => {
+      flap.focus();
+      return parseFloat(getComputedStyle(flap).outlineOffset);
+    });
+  if (feet.some((foot) => foot.clipped)) expect(offset).toBeLessThan(0);
+});
+
+test("closing a label the reader has walked past leaves the page alone", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
+  const trigger = page.locator("#cat-004 .placard-toggle");
+  await page.locator("#cat-004").scrollIntoViewIfNeeded();
+  await trigger.dispatchEvent("click");
+  await expect(trigger).toHaveAttribute("aria-expanded", "true");
+  await pageAtRest(page);
+
+  // The visitor reads on, leaving the open label behind. 600px of headroom, so
+  // the shorter document cannot clamp the scroll and be read as a jump.
+  await page.evaluate(() => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({ top: max - 600, behavior: "instant" });
+  });
+  await pageAtRest(page);
+  // What the reader sees, not what the scrollbar says: a collapse above the
+  // viewport SHOULD move scrollY, because that is scroll anchoring holding the
+  // view still. The defect is the desk sliding under their eyes.
+  const desk = page.locator("section#donate");
+  const seen = () =>
+    desk.evaluate((element) => Math.round(element.getBoundingClientRect().top));
+  const before = await seen();
+
+  await trigger.dispatchEvent("click");
+  await expect(trigger).toHaveAttribute("aria-expanded", "false");
+  await pageAtRest(page);
+  expect(
+    Math.abs((await seen()) - before),
+    "the page was pulled back to a label nobody is looking at",
+  ).toBeLessThanOrEqual(2);
 });

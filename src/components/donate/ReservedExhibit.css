@@ -11,6 +11,7 @@
   /* Heavier than any hairline on the page on purpose: this is the one framed
      object, and a frame is a thing you could lift off the wall. */
   border: 3px solid var(--brass);
+  border-radius: var(--radius-card);
   /* The reserved spot stays dimmer than any lit exhibit. */
   background: radial-gradient(
     ellipse at 50% 65%,
@@ -117,6 +118,7 @@
 .reserved-placard[data-donated="true"] {
   min-height: 0;
   box-shadow:
+    var(--placard-light),
     var(--placard-edge),
     0 0 70px -12px rgb(232 169 78 / 0.3);
 }

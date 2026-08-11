@@ -38,6 +38,18 @@ test("open placard wires the region to the trigger", () => {
   expect(region).toHaveTextContent(room002.sensory);
 });
 
+test("the card marks its open state so the spot can land on it", () => {
+  const { container, rerender } = render(
+    <Placard exhibit={room002} isOpen={false} onToggle={noop} onWalk={noop} />,
+  );
+  const card = container.querySelector(".placard")!;
+  expect(card).not.toHaveAttribute("data-open");
+  rerender(
+    <Placard exhibit={room002} isOpen={true} onToggle={noop} onWalk={noop} />,
+  );
+  expect(card).toHaveAttribute("data-open", "true");
+});
+
 test("catalog fields use description semantics", () => {
   const { container } = render(
     <Placard exhibit={room002} isOpen={false} onToggle={noop} onWalk={noop} />,
@@ -55,6 +67,17 @@ test("room 001 marks ukrainian text with lang", () => {
   const ukrainian = container.querySelectorAll('[lang="uk"]');
   expect(ukrainian).toHaveLength(2);
   expect(ukrainian[0]).toHaveTextContent("вареники");
+});
+
+test("the sensory line gives each language its own line", () => {
+  const { container } = render(
+    <Placard exhibit={room001} isOpen={true} onToggle={noop} onWalk={noop} />,
+  );
+  const sensory = container.querySelector(".placard-sensory")!;
+  expect(sensory.children).toHaveLength(2);
+  expect(sensory.children[0]).toHaveAttribute("lang", "uk");
+  // The two used to run together behind a slash, which read as one sentence.
+  expect(sensory.textContent).not.toContain("/");
 });
 
 test("escape closes and returns focus to the trigger", () => {
