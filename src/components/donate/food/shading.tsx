@@ -21,15 +21,3 @@ export function Contact({ rx, y = 1 }: { rx: number; y?: number }) {
 export function Core({ d }: { d: string }) {
   return <path d={d} fill="url(#vd-core)" />;
 }
-
-export function Spark({ x, y, r = 2.4 }: { x: number; y: number; r?: number }) {
-  return (
-    <circle
-      cx={x}
-      cy={y}
-      r={r}
-      style={{ fill: "var(--plaster)" }}
-      fillOpacity="0.85"
-    />
-  );
-}
