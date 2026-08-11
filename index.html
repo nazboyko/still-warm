@@ -6,20 +6,10 @@
     <meta name="theme-color" content="#191411" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link
-      rel="preload"
-      href="/fonts/young-serif-400-latin.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/familjen-grotesk-latin.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <!-- No font preloads. Measured on Fast 3G with a 4x CPU: two font preloads
+         outrank the render-blocking CSS and cost 184ms of first paint, and
+         WebKit never matches them so Safari fetched both faces twice. The
+         metric-matched fallbacks in fonts.css hold the layout instead. -->
     <meta
       name="description"
       content="Still Warm is a museum where comfort food is the art: four rooms of dishes that taste like home, and a frame reserved for your memory."
