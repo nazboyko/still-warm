@@ -1,6 +1,8 @@
-/* One control in two variants. Primary is a plaster slab; quiet is the same
-   box with the room showing through it. They differ in fill and label, never
-   in proportion, and no state changes a dimension. */
+/* One control, one look. The page used to have a filled primary as well, but
+   it was worn by a single button - the donation submit - and read as a slab of
+   card stock adrift in a dark room. Everything now belongs to the room the way
+   the rest of the form does: no fill, a brass outline, a lit label. Plaster
+   stays exclusive to placards, which is the light law the rooms follow. */
 .button {
   display: inline-flex;
   align-items: center;
@@ -10,8 +12,8 @@
   min-height: var(--touch-target);
   padding: 0 var(--space-4);
   font: inherit;
-  color: var(--ink);
-  background: var(--plaster);
+  color: var(--tungsten);
+  background: none;
   border: 1px solid var(--brass);
   border-radius: var(--radius-control);
   cursor: pointer;
@@ -21,19 +23,6 @@
 }
 
 .button:hover:not(:disabled) {
-  border-color: var(--beet);
-  color: var(--beet);
-}
-
-/* The quiet variant belongs to the room rather than to a card: no fill, a
-   brass outline, a lit label. Plaster stays exclusive to placards, which is
-   the light law the rooms already follow. */
-.button-quiet {
-  color: var(--tungsten);
-  background: none;
-}
-
-.button-quiet:hover:not(:disabled) {
   border-color: var(--tungsten);
   color: var(--gold-light);
 }

@@ -111,9 +111,7 @@ export function DonateSection({
                   <ExhibitPlacard draft={draft} donated={donated} />
                   <div ref={afterRef} className="donate-after">
                     <GiftShop donated={donated} />
-                    <Button quiet onClick={resetDesk}>
-                      {donateForm.reset}
-                    </Button>
+                    <Button onClick={resetDesk}>{donateForm.reset}</Button>
                   </div>
                 </>
               ) : (
