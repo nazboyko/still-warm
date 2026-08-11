@@ -1,6 +1,6 @@
 export type ExhibitId = "cat-001" | "cat-002" | "cat-003" | "cat-004";
 
-export interface LocalizedText {
+interface LocalizedText {
   lang: "uk";
   text: string;
 }
