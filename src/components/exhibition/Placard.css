@@ -51,7 +51,6 @@
   padding-bottom: 0;
 }
 
-/* The card settles into place as its room arrives. */
 /* The card settles in as its room arrives. It moves but never fades: text at
    opacity 0 is invisible to a reader and reads as failing contrast to axe, so
    the arrival is carried entirely by transform. */
@@ -176,7 +175,7 @@
 }
 
 /* The memory opens the way a printed label does, not the way a paragraph in a
-   box does: one letter in the display face, cut into the first three lines. */
+   box does: one letter in the display face, cut into the first two lines. */
 .placard-story-region > p:first-of-type::first-letter {
   float: left;
   margin-right: 0.08em;
