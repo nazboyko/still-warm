@@ -107,15 +107,17 @@ test("the donation desk stays clean in all three states", async ({ page }) => {
 
   await page.getByRole("button", { name: "Donate the exhibit" }).click();
   await expect(page.getByRole("alert")).toBeVisible();
-  // The click scrolls, the header compacts, and its subtitle fades: scan the
-  // settled page, not a frame where that line is halfway to transparent.
-  await expect
-    .poll(() =>
-      page
-        .locator(".lockup-sub")
-        .evaluate((element) => getComputedStyle(element).opacity),
-    )
-    .toMatch(/^(0|1)$/);
+  // The click scrolls and the header compacts, which fades its subtitle IN from
+  // 0. "0 or 1" passed on the 0 it starts from, before the transition had even
+  // begun - so the settle-wait found nothing running, and axe scanned a
+  // transparent line and called it a contrast failure. Under a loaded matrix
+  // that is the WebKit failure this suite kept throwing. Wait for the state the
+  // scroll position implies instead of either end of the fade.
+  await expect(page.locator(".site-header")).toHaveAttribute(
+    "data-compact",
+    "true",
+  );
+  await expect(page.locator(".lockup-sub")).toHaveCSS("opacity", "1");
   await scan();
 
   await page
