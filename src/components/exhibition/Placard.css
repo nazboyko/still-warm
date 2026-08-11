@@ -81,6 +81,7 @@
   /* "anywhere", not "break-word": only anywhere shrinks the min-content width,
      which is what stops a long dish name widening the page at 200% zoom. */
   overflow-wrap: anywhere;
+  text-wrap: balance;
   margin-top: var(--space-2);
   font-family: var(--font-display);
   font-weight: 400;
@@ -89,26 +90,23 @@
 }
 
 .placard-fields {
-  margin: var(--space-4) 0 0;
+  margin: var(--space-6) 0 0;
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-4);
 }
 
-.placard-fields > div + div {
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--brass-soft);
-}
-
-.placard-fields dd {
-  line-height: 1.7;
-}
-
+/* The field's name is the smallest voice on the card: it says what you are
+   about to read and then gets out of the line's way. */
 .placard-fields dt {
+  font-size: var(--text-utility-sm);
   color: var(--beet);
 }
 
+/* A rule between two fields makes the card a table. Space makes it a label. */
 .placard-fields dd {
   margin: 0;
+  line-height: 1.45;
+  text-wrap: pretty;
 }
 
 /* The label's own flap: full width of the card, sharing its material, sitting

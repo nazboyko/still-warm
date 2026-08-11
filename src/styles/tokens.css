@@ -32,6 +32,11 @@
   --text-h2: clamp(1.8rem, 1.35rem + 2vw, 2.6rem);
   --text-body: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
   --text-utility: clamp(0.75rem, 0.72rem + 0.15vw, 0.85rem);
+  /* The subordinate label. A field's name ("Medium") ranks under the catalog
+     line that names the room, so it holds the bottom of the utility range
+     instead of matching it - the hierarchy is size, never a second color,
+     because brass fails AA on plaster and beet is the only label ink we have. */
+  --text-utility-sm: 0.75rem;
   --tracking-utility: 0.08em;
   /* The same typewriter set as a sentence rather than a label: curator notes,
      hints, statuses. Letterspacing a running line as hard as a label makes it
