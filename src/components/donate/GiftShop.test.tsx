@@ -49,17 +49,27 @@ class BrokenImage {
   }
 }
 
+/* Deliberately without roundRect: this fake is the old engine, so every run
+   also proves the postcard still draws when the corner has to be squared. */
 const makeContext = () => ({
   font: "",
   fillStyle: "",
   strokeStyle: "",
   lineWidth: 0,
   textAlign: "left",
+  letterSpacing: "",
   fillRect: vi.fn(),
-  strokeRect: vi.fn(),
   drawImage: vi.fn(),
   fillText: vi.fn(),
   measureText: vi.fn(() => ({ width: 100 })),
+  save: vi.fn(),
+  restore: vi.fn(),
+  clip: vi.fn(),
+  beginPath: vi.fn(),
+  rect: vi.fn(),
+  fill: vi.fn(),
+  stroke: vi.fn(),
+  createRadialGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
 });
 
 test("a working canvas downloads the png postcard with the exhibit", async () => {
@@ -87,7 +97,9 @@ test("a working canvas downloads the png postcard with the exhibit", async () =>
   expect(clicks).toEqual(["still-warm-V-0846.png"]);
   expect(fakeContext.fillText).toHaveBeenCalled();
   expect(fakeContext.drawImage).toHaveBeenCalledOnce();
-  expect(fakeContext.strokeRect).toHaveBeenCalledOnce();
+  // The exhibit is framed and the room is lit, not just printed on.
+  expect(fakeContext.stroke).toHaveBeenCalledOnce();
+  expect(fakeContext.createRadialGradient).toHaveBeenCalledOnce();
 });
 
 test("a failed artwork load still ships the postcard, without it", async () => {
