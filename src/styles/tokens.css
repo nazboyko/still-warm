@@ -15,6 +15,9 @@
      divide it instead of detailing it. One softness everywhere, not five. */
   --brass-soft: rgb(156 129 84 / 0.35);
   --steam: rgb(239 230 216 / 0.1);
+  /* A plaster control under a thumb: brass at a whisper, the only fill the
+     page lays on a card. Ink over it holds 11:1. */
+  --plaster-lift: rgb(156 129 84 / 0.16);
 
   /* Food vocabulary - the only saturated color on the page. The law: food may
      use saturation, UI may not; saturated color is semantically edible. */

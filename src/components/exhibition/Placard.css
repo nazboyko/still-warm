@@ -109,42 +109,56 @@
   text-wrap: pretty;
 }
 
-/* The label's own flap: full width of the card, sharing its material, sitting
-   on a brass rule - part of the object rather than a box laid on top of it. */
-/* The trigger divides the card: metadata above the rule, story below it. */
+/* The trigger divides the card: metadata above the fold, story below it. */
 .placard-story {
-  margin-top: var(--space-4);
+  margin-top: var(--space-6);
 }
 
-/* The trigger, not just the card, needs the clearance: it is what receives
-   focus when a panel closes, and the collapse can slide it under the header. */
+/* The label's own flap. It runs to both of the card's edges because it IS the
+   card's foot, not a button laid on top of one - which also hands the whole
+   width to a thumb. The trigger, not just the card, needs the scroll
+   clearance: it is what receives focus when a panel closes, and the collapse
+   can slide it under the header. */
 .placard-toggle {
   scroll-margin-top: calc(var(--header-compact) + var(--space-4));
   display: flex;
   align-items: center;
-  width: 100%;
+  gap: var(--space-3);
+  width: calc(100% + 2 * var(--space-6));
+  margin-inline: calc(-1 * var(--space-6));
   min-height: var(--touch-target);
-  padding: var(--space-2) 0;
+  padding: var(--space-3) var(--space-6);
   border: 0;
-  border-top: 1px solid var(--brass);
+  /* A perforation rather than a rule: the line you lift a paper flap along. */
+  border-top: 1px dashed var(--brass);
   background: none;
   cursor: pointer;
   text-align: left;
   color: var(--beet);
-  transition: color var(--dur-quiet) var(--ease-soft);
+  transition:
+    color var(--dur-quiet) var(--ease-soft),
+    background-color var(--dur-quiet) var(--ease-soft);
 }
 
+/* The card clips to its rounded corners, so an outset ring on a full-bleed
+   flap would be cut off on three sides. This one is drawn inside instead. */
+.placard-toggle:focus-visible {
+  outline-offset: calc(-1 * var(--focus-ring-offset));
+}
+
+.placard-toggle:hover,
+.placard-toggle:focus-visible {
+  background-color: var(--plaster-lift);
+  color: var(--ink);
+}
+
+/* Bracketed, like every other mark the museum sets in the typewriter face. */
 .placard-fold-mark::before {
-  content: "+";
-  margin-right: var(--space-2);
+  content: "[+]";
 }
 
 .placard-toggle[aria-expanded="true"] .placard-fold-mark::before {
-  content: "-";
-}
-
-.placard-toggle:hover {
-  color: var(--ink);
+  content: "[-]";
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -154,7 +168,7 @@
 }
 
 .placard-story-region {
-  padding-top: var(--space-2);
+  padding-block: var(--space-4) var(--space-6);
 }
 
 .placard-story-region p {

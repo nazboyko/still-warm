@@ -382,3 +382,33 @@ test("the restored trigger is never left under the header", async ({
     }).toPass();
   }
 });
+
+test("the flap is the card's whole foot, and its ring survives the clip", async ({
+  page,
+}) => {
+  await page.goto("/");
+  // Two ways this regresses silently: a padding change shrinks the target back
+  // to the text, and an outset ring gets cut off by the card's own overflow.
+  const feet = await page.evaluate(() =>
+    Array.from(document.querySelectorAll(".room .placard")).map((card) => {
+      const flap = card.querySelector(".placard-toggle")!;
+      return {
+        overhang: Math.abs(
+          flap.getBoundingClientRect().width -
+            card.getBoundingClientRect().width,
+        ),
+        clipped: getComputedStyle(card).overflow === "hidden",
+      };
+    }),
+  );
+  expect(feet).toHaveLength(4);
+  for (const foot of feet) expect(foot.overhang).toBeLessThanOrEqual(0.5);
+
+  const offset = await page
+    .locator("#cat-001 .placard-toggle")
+    .evaluate((flap) => {
+      flap.focus();
+      return parseFloat(getComputedStyle(flap).outlineOffset);
+    });
+  if (feet.some((foot) => foot.clipped)) expect(offset).toBeLessThan(0);
+});
