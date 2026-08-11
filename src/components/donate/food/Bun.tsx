@@ -34,6 +34,16 @@ export function Bun() {
         fill="url(#vd-sear)"
       />
       <Core d={BODY} />
+      {/* where the loaf sits down into its own shadow: a tall dome puts the
+          base gradient's dark end off the bottom of the shape entirely */}
+      <path
+        d="M -27 -1 Q -11 4 8 3 Q 22 2 29 -3"
+        fill="none"
+        style={{ stroke: "var(--syrup)" }}
+        strokeOpacity="0.5"
+        strokeWidth="3.6"
+        strokeLinecap="round"
+      />
       {/* crown light on the risen side only */}
       <path
         d="M -21 -20 Q -11 -30 4 -31"

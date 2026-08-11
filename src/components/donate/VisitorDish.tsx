@@ -142,13 +142,6 @@ export function VisitorDish({ spec }: { spec: SculptureSpec }) {
         </g>
       ))}
       <Garnish spec={spec} />
-      {/* what the plating left behind */}
-      <g style={{ fill: "var(--toast)" }} fillOpacity="0.75">
-        <ellipse cx="76" cy="146" rx="2.4" ry="1.5" />
-        <ellipse cx="92" cy="150" rx="1.7" ry="1.2" />
-        <ellipse cx="200" cy="147" rx="2.1" ry="1.4" />
-        <ellipse cx="214" cy="150" rx="1.5" ry="1.1" />
-      </g>
     </g>
   );
 }
