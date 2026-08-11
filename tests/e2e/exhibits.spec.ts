@@ -77,8 +77,22 @@ test("the spotlight moves: a second room closes the first", async ({
 
 test("the walk continues to the next room", async ({ page }) => {
   await page.goto("/");
+  // A late webfont reflows the label, and the walk sits at the foot of a panel
+  // that is still folding open - the part of it that travels furthest. Clicked
+  // mid-fold, a synthetic click lands where the button was rather than where it
+  // is, and nothing opens. That passed everywhere except a loaded five-engine
+  // matrix, where it took down Firefox one run and mobile Safari the next.
+  await page.evaluate(() => document.fonts.ready);
   await triggers(page).first().click();
-  await page.getByRole("button", { name: /Next: CAT\. 002/ }).click();
+  const next = page.getByRole("button", { name: /Next: CAT\. 002/ });
+  await expect
+    .poll(async () => {
+      const settled = (await next.boundingBox())!.y;
+      await page.waitForTimeout(120);
+      return (await next.boundingBox())!.y === settled;
+    })
+    .toBe(true);
+  await next.click();
   const secondTrigger = triggers(page).nth(1);
   await expect(secondTrigger).toHaveAttribute("aria-expanded", "true");
   await expect(secondTrigger).toBeFocused();
