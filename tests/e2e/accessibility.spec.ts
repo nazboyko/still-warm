@@ -179,15 +179,15 @@ test("a room caught mid-light is still scannable", async ({ page }) => {
       ),
     )
     .toBe(true);
-  // Parking the page compacts the header, and its subtitle fades on the way.
-  // Scan the settled bar, not a frame where that line is halfway to nothing.
-  await expect
-    .poll(() =>
-      page
-        .locator(".lockup-sub")
-        .evaluate((element) => getComputedStyle(element).opacity),
-    )
-    .toMatch(/^(0|1)$/);
+  // Parking the page compacts the header, which fades its subtitle IN. Waiting
+  // for "0 or 1" would pass on the 0 it starts from and hand axe a line that is
+  // still transparent, which axe reads as failing contrast - so wait for the
+  // state the scroll position actually implies.
+  await expect(page.locator(".site-header")).toHaveAttribute(
+    "data-compact",
+    "true",
+  );
+  await expect(page.locator(".lockup-sub")).toHaveCSS("opacity", "1");
   const results = await new AxeBuilder({ page }).analyze();
   expect(reportable(results.violations)).toEqual([]);
   expect(reportable(results.incomplete)).toEqual([]);
