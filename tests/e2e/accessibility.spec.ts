@@ -60,14 +60,18 @@ test("the donation desk stays clean in all three states", async ({ page }) => {
   await page.goto("/");
   const scan = async () => {
     // The placard settles its lines as fields fill; axe cannot judge contrast
-    // on a line that is still fading, so let every FINITE animation finish.
-    // Steam loops forever by design - waiting for it to stop never ends, and
-    // whether a room's steam is in view here depends on font metrics per OS.
+    // on a line that is still fading, so let every TIME-DRIVEN finite animation
+    // finish. Two kinds never end and neither is a line mid-fade: steam loops
+    // forever by design, and a room's scroll-driven light is held at whatever
+    // the scroll position says - park the page inside a room's range and that
+    // animation stays "running" for as long as the page sits there. Waiting on
+    // either one only ever times out.
     await expect
       .poll(() =>
         page.evaluate(() =>
           document.getAnimations().every((animation) => {
             if (animation.playState !== "running") return true;
+            if (animation.timeline !== document.timeline) return true;
             const timing = animation.effect?.getTiming();
             return timing?.iterations === Infinity;
           }),
@@ -118,6 +122,44 @@ test("the donation desk stays clean in all three states", async ({ page }) => {
     )
     .toBe("0");
   await scan();
+});
+
+// The scan above waits for animations to settle. Parked inside a room's range
+// the scroll-driven light never settles, so a wait that does not know the
+// difference hangs until it times out - which is how a placard height change
+// turned this into a CI-only WebKit failure.
+test("a room caught mid-light is still scannable", async ({ page }) => {
+  await page.goto("/");
+  // Firefox takes the static per-room fallback, so it has no mid-light to
+  // catch. A feature check, not a browser name: WebKit drives these too.
+  const scrollDriven = await page.evaluate(() =>
+    CSS.supports("animation-timeline", "view()"),
+  );
+  test.skip(!scrollDriven, "scroll-driven timeline engines only");
+  await page.evaluate(() => {
+    const room = document.getElementById("cat-003")!;
+    const top = room.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+      top: top - window.innerHeight + 80,
+      behavior: "instant",
+    });
+  });
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        document
+          .getAnimations()
+          .some(
+            (animation) =>
+              animation.playState === "running" &&
+              animation.timeline !== document.timeline,
+          ),
+      ),
+    )
+    .toBe(true);
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(reportable(results.violations)).toEqual([]);
+  expect(reportable(results.incomplete)).toEqual([]);
 });
 
 test("each expanded room stays clean", async ({ page }) => {
