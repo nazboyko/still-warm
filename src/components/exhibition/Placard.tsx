@@ -88,7 +88,12 @@ export function Placard({
   const showRegion = isOpen || exiting;
 
   return (
-    <div ref={placardRef} className="placard" data-surface="plaster">
+    <div
+      ref={placardRef}
+      className="placard"
+      data-surface="plaster"
+      data-open={isOpen ? "true" : undefined}
+    >
       <p className="placard-cat">
         CAT. {exhibit.number} - {exhibit.emotion.toUpperCase()}
       </p>

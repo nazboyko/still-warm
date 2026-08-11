@@ -1,27 +1,54 @@
 .placard {
   /* Long and soft, so the card's edge dissolves into the wall instead of
-     cutting against it, with a little of its own warmth bounced back. */
+     cutting against it, with a little of its own warmth bounced back. The
+     short contact shadow is what stops the card floating: a printed label
+     rests against the wall, it does not hover in front of it. */
   --placard-edge:
-    0 30px 60px -24px rgb(0 0 0 / 0.62), 0 0 80px -20px rgb(232 169 78 / 0.11);
+    0 2px 3px -2px rgb(0 0 0 / 0.55), 0 30px 60px -24px rgb(0 0 0 / 0.62),
+    0 0 80px -20px rgb(232 169 78 / 0.11);
+  /* The room is lit from above, and so is the card: the lamp lands on its head
+     and lets go at its foot, the same light that falls on the dish. Borders and
+     shadow carry that, never a gradient - a gradient under text turns axe's
+     contrast check incomplete, and a positioned pseudo on any ancestor does the
+     same. Box-shadow reads as neither, so the light costs no contrast. */
+  --placard-light:
+    inset 0 40px 40px -40px rgb(255 250 240 / 0.85),
+    inset 0 -64px 52px -52px rgb(25 20 17 / 0.24);
 
   width: min(100%, 30rem);
   min-width: 0;
   /* The walk lands the label top in view with breathing room; the header
      clearance itself comes from html scroll-padding-top. */
   scroll-margin-top: var(--space-6);
-  padding: var(--space-4) var(--space-6) var(--space-3);
+  padding: var(--space-6) var(--space-6) var(--space-4);
   background: var(--plaster-open);
   color: var(--ink);
-  /* The room is lit from above, and so is the card: its top edge catches the
-     spot, its foot falls away into the wall. Borders and shadow carry that,
-     never a gradient - a gradient under text turns axe's contrast check
-     incomplete, and a positioned pseudo on any ancestor does the same. */
-  border-top: 1px solid rgb(255 241 219 / 0.5);
+  /* The cap rule is the card's head: a hand-set label is mounted, not printed
+     edge to edge (art direction, "Layout"). */
+  border-top: 2px solid var(--brass);
   border-bottom: 1px solid rgb(0 0 0 / 0.18);
   border-radius: var(--radius-placard);
-  box-shadow: var(--placard-edge);
+  box-shadow: var(--placard-light), var(--placard-edge);
   /* Overflow hidden so the bottom flap keeps the card's rounded corners. */
   overflow: hidden;
+}
+
+/* Opening a label turns the room's spot up, and the card's head takes it: the
+   brass warms to tungsten and the paper brightens under it. The state arrives
+   at once rather than easing, because the page animates transform and opacity
+   only - the unfold is the motion, and the light simply belongs to it. */
+.placard[data-open="true"] {
+  --placard-light:
+    inset 0 44px 44px -40px rgb(255 238 210 / 0.95),
+    inset 0 -64px 52px -52px rgb(25 20 17 / 0.18);
+
+  border-top-color: var(--tungsten);
+}
+
+/* The card ends at its flap: the trigger runs to both edges and carries the
+   card's foot, so a bottom padding here would leave a plaster strip under it. */
+.placard:has(.placard-story) {
+  padding-bottom: 0;
 }
 
 /* The card settles into place as its room arrives. */

@@ -117,6 +117,7 @@
 .reserved-placard[data-donated="true"] {
   min-height: 0;
   box-shadow:
+    var(--placard-light),
     var(--placard-edge),
     0 0 70px -12px rgb(232 169 78 / 0.3);
 }

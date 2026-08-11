@@ -38,6 +38,18 @@ test("open placard wires the region to the trigger", () => {
   expect(region).toHaveTextContent(room002.sensory);
 });
 
+test("the card marks its open state so the spot can land on it", () => {
+  const { container, rerender } = render(
+    <Placard exhibit={room002} isOpen={false} onToggle={noop} onWalk={noop} />,
+  );
+  const card = container.querySelector(".placard")!;
+  expect(card).not.toHaveAttribute("data-open");
+  rerender(
+    <Placard exhibit={room002} isOpen={true} onToggle={noop} onWalk={noop} />,
+  );
+  expect(card).toHaveAttribute("data-open", "true");
+});
+
 test("catalog fields use description semantics", () => {
   const { container } = render(
     <Placard exhibit={room002} isOpen={false} onToggle={noop} onWalk={noop} />,
