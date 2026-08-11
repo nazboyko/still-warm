@@ -1,5 +1,5 @@
 import type { SculptureSpec } from "./exhibitSculpture.ts";
-import { FoodPiece } from "./foodPrimitives.tsx";
+import { FoodPiece } from "./food/FoodPiece.tsx";
 
 const BASE = 138;
 
