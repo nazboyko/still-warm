@@ -54,7 +54,7 @@ export const donateForm: {
     donorName: {
       label: "Who is donating it? (optional)",
       maxLength: 40,
-      placeholder: "e.g. Marta, or leave it blank",
+      placeholder: "e.g. Marta, or leave it blank.",
     },
   },
   ideas: {
