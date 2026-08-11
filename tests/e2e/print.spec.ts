@@ -78,7 +78,7 @@ test("the booklet keeps the wordmark, the rooms and the practical page", async (
   await openBooklet(page);
 
   for (const kept of [
-    ".lockup-name",
+    ".hero-title",
     "#exhibit-000",
     "#visit",
     ".visit-ticket",
@@ -90,10 +90,11 @@ test("the booklet keeps the wordmark, the rooms and the practical page", async (
   }
   // The landing page's own furniture is not catalogue content.
   for (const dropped of [
-    "main > section.hero",
-    ".site-header nav",
+    ".site-header",
     ".skip-link",
     ".room-guide",
+    ".hero-cta",
+    ".display-case-label",
   ]) {
     await expect(page.locator(dropped).first()).toBeHidden();
   }

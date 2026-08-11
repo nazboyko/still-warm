@@ -27,43 +27,46 @@
     display: none;
   }
 
-  /* The wordmark heads the catalog. Its navigation does not travel to paper, a
-     sticky bar means nothing there, and the gallery's dark ground would print
-     as a black slab across the top of page one. */
-  #root > header.site-header {
-    display: block;
-    position: static;
-    min-height: 0;
-    padding-block: 0 var(--space-8);
-    border-bottom: none;
-    background: none;
-  }
-
-  .lockup-name,
-  .lockup-sub {
-    color: #1a1a1a;
-    opacity: 1;
-  }
-
-  .lockup-sub {
-    color: #4a4a4a;
-  }
-
+  /* The site header stays off the page: the title page carries the wordmark at
+     full size, and printing the bar as well set it twice on one sheet. */
   #root > main {
     display: block;
   }
 
-  /* What a catalog is: the museum's own first exhibit, the four rooms with
-     their labels open, and the practical page. */
+  /* What a catalog is: a title page, the museum's own first exhibit, the four
+     rooms with their labels open, and the practical page. */
+  #main > .hero,
   #main > #exhibition,
   #main > #visit {
     display: block;
   }
 
+  /* The title page: the wordmark, the thesis and the exhibit under glass. The
+     case keeps its own catalog caption on screen, where it labels the dish on
+     display; on a title page it reads as though the whole booklet were Room
+     001, so it comes off. */
+  .hero {
+    padding-block: var(--space-8);
+    break-after: page;
+  }
+
+  .display-case-label,
+  .hero-cta {
+    display: none;
+  }
+
+  .hero-title,
+  .hero-thesis {
+    color: #1a1a1a;
+  }
+
+  .hero-eyebrow {
+    color: #4a4a4a;
+  }
+
   /* Controls are for a screen. None of them can do anything on paper. */
   button,
   .skip-link,
-  .site-header nav,
   .room-guide,
   .placard-toggle,
   .placard-walk {
