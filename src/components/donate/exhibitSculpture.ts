@@ -26,9 +26,9 @@ export interface SculptureSpec {
 export const PLATE_LINE = 138;
 
 const footprints: Record<FoodKind, { top: number; halfWidth: number }> = {
-  dumpling: { top: 26, halfWidth: 30 },
+  dumpling: { top: 34, halfWidth: 30 },
   disc: { top: 26, halfWidth: 40 },
-  bun: { top: 32, halfWidth: 26 },
+  bun: { top: 34, halfWidth: 26 },
   stack: { top: 46, halfWidth: 36 },
   bowl: { top: 26, halfWidth: 40 },
   wedge: { top: 38, halfWidth: 34 },

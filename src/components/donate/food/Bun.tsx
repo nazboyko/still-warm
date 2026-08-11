@@ -1,82 +1,94 @@
-import { Contact, Core, Spark } from "./shading.tsx";
+import { Contact, Core } from "./shading.tsx";
 
 /* risen a little sideways, the way loaves lean in the oven */
 const BODY =
-  "M -31 1 Q -35 -16 -20 -27 Q -4 -36 14 -30 Q 33 -22 33 -3 Q 32 3 22 3 Q 0 6 -22 3 Q -30 3 -31 1 Z";
+  "M -30 2 Q -35 -14 -22 -27 Q -8 -38 9 -35 Q 27 -31 32 -14 Q 35 -3 30 2 Q 0 6 -30 2 Z";
+
+/* Two cuts crossing off the crown's centre, each one an opening with crumb in
+   it rather than a line drawn on top. A single slit reads as a closed eye, and
+   two buns on a plate then read as a face rather than as bread. */
+const scores = [
+  {
+    open: "M -18 -15 Q -5 -27 17 -19 Q -3 -20 -18 -15 Z",
+    lip: "M -18 -15 Q -5 -27 17 -19",
+    width: 1.7,
+  },
+  {
+    open: "M -9 -31 Q 0 -19 3 -7 Q -4 -19 -9 -31 Z",
+    lip: "M -9 -31 Q 0 -19 3 -7",
+    width: 1.2,
+  },
+];
 
 export function Bun() {
   return (
     <g>
-      <Contact rx={31} />
+      <Contact rx={31} y={3} />
       <path d={BODY} fill="url(#vd-food)" />
       <ellipse
-        cx="-11"
-        cy="-20"
-        rx="12"
-        ry="5"
-        transform="rotate(-7 -11 -20)"
+        cx="-9"
+        cy="-22"
+        rx="14"
+        ry="6"
+        transform="rotate(-7 -9 -22)"
         fill="url(#vd-sear)"
       />
       <Core d={BODY} />
-      {/* the split: leaf-shaped, off the crown's centre */}
-      <path
-        d="M -18 -16 Q -3 -24 12 -12 Q -3 -8 -18 -16 Z"
-        style={{ fill: "var(--gold-light)" }}
-      />
-      <path
-        d="M -15 -15 Q -3 -21 9 -12"
-        fill="none"
-        style={{ stroke: "var(--plaster)" }}
-        strokeOpacity="0.85"
-        strokeWidth="1.9"
-        strokeLinecap="round"
-      />
-      <path
-        d="M -16 -14 Q -3 -9 10 -11"
-        fill="none"
-        style={{ stroke: "var(--syrup)" }}
-        strokeOpacity="0.55"
-        strokeWidth="2.1"
-        strokeLinecap="round"
-      />
       {/* crown light on the risen side only */}
       <path
-        d="M -22 -19 Q -12 -28 2 -29"
+        d="M -21 -20 Q -11 -30 4 -31"
         fill="none"
         style={{ stroke: "var(--plaster)" }}
-        strokeOpacity="0.55"
-        strokeWidth="4.2"
+        strokeOpacity="0.5"
+        strokeWidth="4.6"
         strokeLinecap="round"
       />
+      {scores.map((score, index) => (
+        <g key={index}>
+          <path
+            d={score.open}
+            style={{ fill: "var(--syrup)" }}
+            fillOpacity="0.6"
+          />
+          {/* the crumb that tore open along the light-facing lip */}
+          <path
+            d={score.lip}
+            fill="none"
+            style={{ stroke: "var(--gold-light)" }}
+            strokeOpacity="0.78"
+            strokeWidth={score.width}
+            strokeLinecap="round"
+          />
+        </g>
+      ))}
       {/* flour, gathered near the score, no two specks alike */}
       <g style={{ fill: "var(--plaster)" }}>
         <ellipse
-          cx="-22"
-          cy="-17"
+          cx="-20"
+          cy="-19"
           rx="2.7"
           ry="1.5"
           fillOpacity="0.7"
-          transform="rotate(-14 -22 -17)"
+          transform="rotate(-14 -20 -19)"
         />
         <ellipse
-          cx="-4"
-          cy="-25"
+          cx="-2"
+          cy="-27"
           rx="2"
           ry="1.2"
           fillOpacity="0.62"
-          transform="rotate(8 -4 -25)"
+          transform="rotate(8 -2 -27)"
         />
         <ellipse
-          cx="15"
-          cy="-16"
+          cx="16"
+          cy="-17"
           rx="2.3"
           ry="1.3"
-          fillOpacity="0.68"
-          transform="rotate(-5 15 -16)"
+          fillOpacity="0.55"
+          transform="rotate(-5 16 -17)"
         />
-        <ellipse cx="6" cy="-20" rx="1.5" ry="0.9" fillOpacity="0.55" />
+        <ellipse cx="8" cy="-23" rx="1.5" ry="0.9" fillOpacity="0.5" />
       </g>
-      <Spark x={-14} y={-24} r={2} />
     </g>
   );
 }

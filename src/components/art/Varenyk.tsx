@@ -2,7 +2,7 @@
    arc, pinched flange lobes, and one butter gloss. Drawn around its own
    origin so callers place it with translate/rotate/scale. */
 
-const BODY =
+export const BODY =
   "M -34 8 Q -33 -6 -20 -14 Q -2 -21 14 -16 Q 30 -10 33 4 Q 34 9 28 11 Q 0 16 -26 12 Q -33 11 -34 8 Z";
 const SEAM = "M -34 8 Q -33 -6 -20 -14 Q -2 -21 14 -16 Q 30 -10 33 4";
 
