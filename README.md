@@ -47,7 +47,7 @@ Accessibility is the first judging criterion, so it is built in rather than audi
 - **Reduced motion ships with the motion**, in the same commit, for all 14 animations - the 13 keyframed ones and the Spotlight Unfold. Body text is byte-identical between modes.
 - **axe runs in CI on every state** - and incompletes have to be empty too, not just violations.
 - **Five browser projects** on every pull request: Chromium, WebKit, Firefox, and mobile Chrome and Safari.
-- Measured on the built site: CLS 0.00 on desktop, mobile and Fast 3G; one 70ms long task under 4x CPU throttle, none over 100ms; Lighthouse accessibility 100.
+- Measured on the built site: CLS 0.00 on desktop, mobile and Fast 3G; no long tasks under 4x CPU throttle, where the longest main-thread task is 42.7ms; Lighthouse accessibility 100.
 
 ```bash
 npm run verify   # format, lint, types, unit tests, build
