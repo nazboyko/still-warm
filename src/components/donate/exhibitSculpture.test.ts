@@ -146,12 +146,12 @@ describe("the generated exhibit", () => {
     expect(first.pieces).not.toEqual(second.pieces);
   });
 
-  test("a bowl or a stack is plated alone", () => {
+  test("a bowl, a stack or a slice is plated alone", () => {
     for (let index = 0; index < 300; index += 1) {
       const spec = generateSculpture(
         submission({ dish: "Kasha", memory: `plate ${index}` }),
       );
-      if (spec.kind === "bowl" || spec.kind === "stack") {
+      if (["bowl", "stack", "wedge"].includes(spec.kind)) {
         expect(spec.pieces).toHaveLength(1);
         expect(spec.pieces[0]!.x).toBe(140);
       }

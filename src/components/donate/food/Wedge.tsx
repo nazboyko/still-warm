@@ -1,97 +1,104 @@
 import type { AccentTone } from "../exhibitSculpture.ts";
-import { Contact, Core, Spark } from "./shading.tsx";
+import { Contact, Core } from "./shading.tsx";
 
-const crumbPores: [string, number, number][] = [
-  ["M -29 -6 q 5 -5 10 -1 q -4 5 -10 1 z", 0.5, 0.9],
-  ["M -12 -12 q 3 -3 7 -1 q -2 5 -7 1 z", 0.6, 0.7],
-  ["M 4 -5 q 7 -4 11 1 q -5 4 -11 -1 z", 0.5, 1.1],
-  ["M 23 -10 q 3 -4 7 -1 q -3 4 -7 1 z", 0.55, 0.8],
-  ["M 31 -4 q 3 -2 5 1 q -2 3 -5 -1 z", 0.45, 0.6],
-  ["M -25 -22 q 4 -2 6 1 q -3 3 -6 -1 z", 0.6, 0.8],
-  ["M -3 -26 q 5 -3 8 0 q -3 4 -8 0 z", 0.5, 1],
-  ["M 17 -23 q 3 -3 6 -1 q -2 4 -6 1 z", 0.55, 0.7],
-];
-
-const CUT_FACE =
-  "M -37 1 Q -18 3 1 2 Q 21 1 38 2 Q 41 -12 36 -28 Q 20 -32 -1 -33 Q -22 -32 -34 -27 Q -40 -13 -37 1 Z";
-
-/* the crust: crest off-centre, overhang heavier on the right */
+/* A slice, not a brick. Two knife edges converging on a point at the near left,
+   the crust standing at the far right, and the base sitting flat on the plate.
+   Drawn without that taper it read as a block of nougat; drawn with both edges
+   bowing outward it read as a boat. */
+const TOP =
+  "M -46 -6 Q -24 -22 2 -29 Q 26 -34 40 -31 Q 48 -28 46 -21 Q 22 -16 -6 -12 Q -30 -8 -46 -6 Z";
+const CUT =
+  "M -46 -6 Q -30 -8 -6 -12 Q 22 -16 46 -21 L 47 -9 Q 22 -5 -4 -2 Q -28 0 -45 -1 Z";
 const CRUST =
-  "M -35 -27 Q -18 -33 -2 -34 Q 18 -34 37 -29 Q 40 -33 39 -38 Q 22 -45 -4 -44 Q -26 -42 -37 -35 Q -38 -30 -35 -27 Z";
+  "M 40 -31 Q 49 -29 51 -22 Q 52 -14 47 -9 Q 42 -8 40 -12 Q 46 -17 45 -23 Q 44 -28 40 -31 Z";
+
+/* crumb pockets on the cut face, no two alike, none mirrored */
+const crumbPores: [string, number, number][] = [
+  ["M -38 -4 q 4 -3 8 -1 q -4 4 -8 1 z", 0.42, 0.8],
+  ["M -22 -6 q 4 -3 7 -1 q -3 4 -7 1 z", 0.5, 0.7],
+  ["M -4 -8 q 5 -3 9 0 q -4 4 -9 0 z", 0.44, 1],
+  ["M 16 -12 q 4 -3 7 -1 q -3 4 -7 1 z", 0.5, 0.7],
+  ["M 32 -16 q 3 -2 5 0 q -2 3 -5 0 z", 0.4, 0.6],
+  ["M -30 -9 q 4 -2 6 0 q -3 3 -6 0 z", 0.46, 0.7],
+  ["M 6 -14 q 4 -3 7 0 q -3 3 -7 0 z", 0.4, 0.8],
+];
 
 export function Wedge({ accent }: { accent: AccentTone }) {
   return (
     <g>
-      <Contact rx={40} />
-      {/* the cut face: hand-cut, so nothing is straight and no side matches */}
-      <path d={CUT_FACE} style={{ fill: "var(--gold-light)" }} />
-      <path
-        d={CUT_FACE}
-        style={{ fill: "var(--plaster)" }}
-        fillOpacity="0.42"
-      />
-      {/* crumb pockets, no two alike, none mirrored */}
-      <g>
-        {crumbPores.map(([pore, opacity, weight], index) => (
-          <g key={index}>
-            <path
-              d={pore}
-              style={{ fill: "var(--toast)" }}
-              fillOpacity={opacity}
-            />
-            <path
-              d={pore}
-              fill="none"
-              style={{ stroke: "var(--plaster)" }}
-              strokeOpacity="0.65"
-              strokeWidth={weight}
-            />
-          </g>
-        ))}
-      </g>
+      {/* Raised to meet the base, which climbs to the right as the slice goes
+          back: a shadow left on the plate line reads as a hovering slice. */}
+      <Contact rx={42} y={-4} />
+      <path d={CUT} style={{ fill: "var(--gold-light)" }} />
+      <path d={CUT} style={{ fill: "var(--plaster)" }} fillOpacity="0.34" />
+      {crumbPores.map(([pore, opacity, weight], index) => (
+        <g key={index}>
+          <path
+            d={pore}
+            style={{ fill: "var(--toast)" }}
+            fillOpacity={opacity}
+          />
+          <path
+            d={pore}
+            fill="none"
+            style={{ stroke: "var(--plaster)" }}
+            strokeOpacity="0.6"
+            strokeWidth={weight}
+          />
+        </g>
+      ))}
       {/* the filling: a seam that wanders, thick then thin, parallel to nothing */}
       <path
-        d="M -35 -15 Q -27 -21 -16 -18 Q -4 -14 6 -18 Q 18 -23 28 -19 Q 34 -17 37 -20 L 38 -10 Q 30 -6 20 -9 Q 8 -13 -3 -8 Q -15 -4 -25 -9 Q -32 -12 -35 -8 Z"
+        d="M -43 -4 Q -28 -6 -6 -9 Q 18 -13 44 -18 L 45 -13 Q 20 -8 -4 -5 Q -27 -2 -44 -1 Z"
         style={{ fill: `var(--${accent})` }}
       />
       <path
-        d="M -33 -9 Q -24 -6 -14 -8 Q -2 -11 9 -9"
+        d="M -39 -4 Q -24 -6 -4 -9 Q 16 -12 34 -15"
         fill="none"
         style={{ stroke: "var(--syrup)" }}
+        strokeOpacity="0.45"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <Core d={CUT} />
+      <path d={TOP} fill="url(#vd-food)" />
+      {/* what the oven left on the surface, drifting toward the crust */}
+      <ellipse
+        cx="16"
+        cy="-25"
+        rx="20"
+        ry="5"
+        transform="rotate(-9 16 -25)"
+        fill="url(#vd-sear)"
+      />
+      <ellipse cx="-16" cy="-14" rx="9" ry="3" fill="url(#vd-sear)" />
+      <Core d={TOP} />
+      <path
+        d="M -30 -13 Q -8 -21 16 -26"
+        fill="none"
+        style={{ stroke: "var(--plaster)" }}
         strokeOpacity="0.5"
-        strokeWidth="1.9"
+        strokeWidth="2.2"
         strokeLinecap="round"
       />
-      <path
-        d="M -29 -17 Q -19 -20 -8 -17"
-        fill="none"
-        style={{ stroke: "var(--plaster)" }}
-        strokeOpacity="0.38"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-      />
-      <Core d={CUT_FACE} />
       <path d={CRUST} fill="url(#vd-food)" />
+      <ellipse
+        cx="47"
+        cy="-21"
+        rx="4"
+        ry="8"
+        transform="rotate(6 47 -21)"
+        fill="url(#vd-sear)"
+      />
+      <path
+        d="M 43 -28 Q 48 -24 48 -17"
+        fill="none"
+        style={{ stroke: "var(--plaster)" }}
+        strokeOpacity="0.5"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
       <Core d={CRUST} />
-      <path
-        d="M -28 -35 Q -12 -41 8 -40"
-        fill="none"
-        style={{ stroke: "var(--plaster)" }}
-        strokeOpacity="0.7"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-      />
-      <path
-        d="M 18 -40 Q 28 -38 34 -35"
-        fill="none"
-        style={{ stroke: "var(--plaster)" }}
-        strokeOpacity="0.4"
-        strokeWidth="1.3"
-        strokeLinecap="round"
-      />
-      <ellipse cx="10" cy="-39" rx="13" ry="3.8" fill="url(#vd-sear)" />
-      <ellipse cx="-20" cy="-37" rx="7" ry="2.4" fill="url(#vd-sear)" />
-      <Spark x={-27} y={-38} />
     </g>
   );
 }

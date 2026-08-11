@@ -31,7 +31,7 @@ const footprints: Record<FoodKind, { top: number; halfWidth: number }> = {
   bun: { top: 34, halfWidth: 26 },
   stack: { top: 45, halfWidth: 34 },
   bowl: { top: 27, halfWidth: 36 },
-  wedge: { top: 38, halfWidth: 34 },
+  wedge: { top: 28, halfWidth: 30 },
 };
 
 export function foodTop(spec: SculptureSpec): number {
@@ -45,9 +45,9 @@ const kinds: FoodKind[] = ["dumpling", "disc", "bun", "stack", "bowl", "wedge"];
 const garnishes: GarnishKind[] = ["berries", "dusting", "drizzle", "seeds"];
 const accents: AccentTone[] = ["beet", "toast-deep", "syrup"];
 
-/* Plated as one dish would be: a bowl or a stack stands alone, small things
-   come in a few. */
-const singles: FoodKind[] = ["bowl", "stack"];
+/* Plated as one dish would be: a bowl, a stack or a slice stands alone, small
+   things come in a few. Two slices side by side just doubles the guessing. */
+const singles: FoodKind[] = ["bowl", "stack", "wedge"];
 
 /* What the visitor typed decides the shape when we recognise it. Two passes,
    because one list sorted by length gets "naan bread" wrong: a named dish
