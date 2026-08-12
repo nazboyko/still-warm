@@ -12,49 +12,96 @@
     color: #1a1a1a;
   }
 
-  /* The catalog is the exhibition, not the paperwork: the desk's form, its
-     actions and its live status stay off the page, and the frame and label
-     they produced print as the last entry. */
-  .site-header,
-  .room-guide,
-  .hero-cta,
-  .donate-form,
-  .donate-after,
-  .donate-status,
-  .skip-link,
-  .placard-toggle,
-  .placard-walk,
-  .entrance-overlay {
+  /* The booklet is an allow-list, not a list of things to hide. Everything at
+     these two levels is off the page until it is named below, so a section
+     added to the site prints nothing until someone decides it belongs on
+     paper. The old rule was the opposite and the donation desk leaked into the
+     catalog twice: once through a selector that no longer matched anything,
+     and again when a rebuild introduced elements nobody added to the hide list.
+
+     Both hide rules are anchored on an id, so they outrank any component's own
+     display rule. That is deliberate: a new section cannot print itself by
+     styling itself, only by being allowed here. */
+  #root > *,
+  #main > * {
     display: none;
   }
 
+  /* The site header stays off the page: the title page carries the wordmark at
+     full size, and printing the bar as well set it twice on one sheet. */
+  #root > main {
+    display: block;
+  }
+
+  /* What a catalog is: a title page, the museum's own first exhibit, the four
+     rooms with their labels open, and the practical page. */
+  #main > .hero,
+  #main > #exhibition,
+  #main > #visit {
+    display: block;
+  }
+
+  /* The title page: the wordmark, the thesis and the exhibit under glass. The
+     case keeps its own catalog caption on screen, where it labels the dish on
+     display; on a title page it reads as though the whole booklet were Room
+     001, so it comes off. */
   .hero {
-    padding-block: 0 var(--space-8);
+    padding-block: var(--space-8);
     break-after: page;
   }
 
-  .hero-title {
+  .display-case-label,
+  .hero-cta {
+    display: none;
+  }
+
+  .hero-title,
+  .hero-thesis {
     color: #1a1a1a;
   }
 
-  /* Outranks the per-room grounds and stops the scroll-driven light. */
+  .hero-eyebrow {
+    color: #4a4a4a;
+  }
+
+  /* Controls are for a screen. None of them can do anything on paper. */
+  button,
+  .skip-link,
+  .room-guide,
+  .placard-toggle,
+  .placard-walk {
+    display: none;
+  }
+
+  .exhibition {
+    break-before: avoid;
+  }
+
+  /* Outranks the per-room grounds and stops the scroll-driven light. One room
+     per page, opened by a break BEFORE the room rather than after it: a room
+     is nearly a full page, and breaking afterwards let its bottom padding spill
+     onto the next sheet, which then broke again and left a blank page between
+     entries. A break before a block cannot trail anything. */
   .exhibition .room {
     background: #ffffff;
     animation: none;
-    padding-block: var(--space-8);
+    padding-block: 0 var(--space-8);
     break-inside: avoid;
-    break-after: page;
+    break-before: page;
   }
 
+  /* Plate left, label right, the way a catalog sets an entry - and the reason
+     an entry fits a page. Stacked, room 001 stood 1243px against Letter's 937
+     of usable height and pushed its curator note onto a sheet of its own. */
   .room-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
+    grid-template-columns: 4fr 6fr;
+    gap: var(--space-6);
+    align-items: start;
     justify-items: start;
   }
 
-  .room-art,
-  .reserved-frame svg {
-    width: 40%;
+  .room-art {
+    width: 100%;
   }
 
   /* Ink silhouettes print; the gallery's glows and cones do not. */
@@ -66,8 +113,7 @@
     display: none;
   }
 
-  .placard,
-  .reserved-placard {
+  .placard {
     box-shadow: none;
     border: 1px solid #6b6b6b;
     background: #ffffff;
@@ -96,27 +142,32 @@
     color: #4a4a4a;
   }
 
+  /* The note belongs to the entry above it. Room 001 clears Letter by only
+     46px, so if a tighter margin ever does break the room, the note goes with
+     the label rather than standing on a sheet of its own. */
+  .curator-note {
+    break-before: avoid;
+  }
+
   .placard-story-region {
     display: block;
   }
 
-  .visit,
-  .donate {
+  /* The page break is the divider on paper, so the screen's rule between
+     sections has nothing left to separate. */
+  .visit {
     break-before: page;
+    border-top: none;
   }
 
-  .site-footer::after {
-    content: "still-warm.boyko-nazar.workers.dev";
-    display: block;
-    margin-top: var(--space-2);
-    font-family: var(--font-utility);
-    font-size: var(--text-utility);
-    letter-spacing: var(--tracking-utility);
+  /* The ticket keeps its rule and its icons; the lamp above it and the dark
+     fitting on its rim are gallery lighting, and print as ink blots. */
+  .visit-plate-light {
+    display: none;
   }
 
-  a[href^="http"]::after {
-    content: " (" attr(href) ")";
-    font-size: 0.75em;
-    word-break: break-all;
+  .visit-fixture {
+    background: none;
+    color: #4a4a4a;
   }
 }

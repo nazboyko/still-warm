@@ -155,6 +155,7 @@ export function Exhibition({
             exhibit={exhibit}
             flip={index % 2 === 1}
             isOpen={printing || openRoomId === exhibit.id}
+            printing={printing}
             prev={exhibits[index - 1]}
             next={exhibits[index + 1]}
             onToggle={() => toggleRoom(exhibit.id)}
