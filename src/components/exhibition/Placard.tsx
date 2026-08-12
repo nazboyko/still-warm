@@ -6,9 +6,40 @@ import { PlacardWalk } from "./PlacardWalk.tsx";
 
 const foldEase = [0.22, 1, 0.36, 1] as const;
 
+/* What the label says once it is open, shared by the unfolding panel and the
+   static one the booklet prints. */
+function PlacardStory({
+  exhibit,
+  prev,
+  next,
+  onWalk,
+}: {
+  exhibit: Exhibit;
+  prev?: Exhibit;
+  next?: Exhibit;
+  onWalk: (id: ExhibitId) => void;
+}) {
+  return (
+    <>
+      <p>{exhibit.story}</p>
+      <p className="placard-sensory">
+        {exhibit.sensoryNative ? (
+          <span lang={exhibit.sensoryNative.lang}>
+            {exhibit.sensoryNative.text}
+          </span>
+        ) : null}
+        <span>{exhibit.sensory}</span>
+      </p>
+      <PlacardWalk from={exhibit} prev={prev} next={next} onWalk={onWalk} />
+    </>
+  );
+}
+
 interface PlacardProps {
   exhibit: Exhibit;
   isOpen: boolean;
+  /* The booklet renders the open label statically; screens animate it. */
+  printing?: boolean;
   prev?: Exhibit;
   next?: Exhibit;
   onToggle: () => void;
@@ -18,6 +49,7 @@ interface PlacardProps {
 export function Placard({
   exhibit,
   isOpen,
+  printing = false,
   prev,
   next,
   onToggle,
@@ -145,7 +177,21 @@ export function Placard({
           <span aria-hidden="true" className="placard-fold-mark" />
           Read the label
         </button>
-        {showRegion ? (
+        {/* A booklet is not an animation. Motion writes opacity and transform
+            inline, and the browser takes its print snapshot as soon as
+            beforeprint returns - mid-unfold, which printed the story at 0.57
+            opacity and tilted 17 degrees. Printing renders the finished
+            state instead, with nothing to catch halfway. */}
+        {printing ? (
+          <div id={storyId} className="placard-story-region">
+            <PlacardStory
+              exhibit={exhibit}
+              prev={prev}
+              next={next}
+              onWalk={onWalk}
+            />
+          </div>
+        ) : showRegion ? (
           <m.div
             id={storyId}
             className="placard-story-region"
@@ -178,17 +224,8 @@ export function Placard({
             }
             onAnimationComplete={() => setExiting(false)}
           >
-            <p>{exhibit.story}</p>
-            <p className="placard-sensory">
-              {exhibit.sensoryNative ? (
-                <span lang={exhibit.sensoryNative.lang}>
-                  {exhibit.sensoryNative.text}
-                </span>
-              ) : null}
-              <span>{exhibit.sensory}</span>
-            </p>
-            <PlacardWalk
-              from={exhibit}
+            <PlacardStory
+              exhibit={exhibit}
               prev={prev}
               next={next}
               onWalk={onWalk}

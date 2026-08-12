@@ -90,14 +90,18 @@
     break-before: page;
   }
 
+  /* Plate left, label right, the way a catalog sets an entry - and the reason
+     an entry fits a page. Stacked, room 001 stood 1243px against Letter's 937
+     of usable height and pushed its curator note onto a sheet of its own. */
   .room-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
+    grid-template-columns: 4fr 6fr;
+    gap: var(--space-6);
+    align-items: start;
     justify-items: start;
   }
 
   .room-art {
-    width: 40%;
+    width: 100%;
   }
 
   /* Ink silhouettes print; the gallery's glows and cones do not. */
@@ -136,6 +140,13 @@
   .placard-fields dt,
   .curator-note {
     color: #4a4a4a;
+  }
+
+  /* The note belongs to the entry above it. Room 001 clears Letter by only
+     46px, so if a tighter margin ever does break the room, the note goes with
+     the label rather than standing on a sheet of its own. */
+  .curator-note {
+    break-before: avoid;
   }
 
   .placard-story-region {

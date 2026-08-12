@@ -100,6 +100,32 @@ test("the booklet keeps the wordmark, the rooms and the practical page", async (
   }
 });
 
+test("the label is fully inked the instant printing starts", async ({
+  page,
+}) => {
+  // No wait after beforeprint on purpose. The browser snapshots the page
+  // immediately, and the unfold used to be caught mid-flight: the story
+  // printed at 0.57 opacity, tilted 17 degrees, and read as grey. Waiting here
+  // would hide exactly the bug this asserts.
+  await page.goto("/");
+  await page.emulateMedia({ media: "print" });
+  await page.evaluate(() => window.dispatchEvent(new Event("beforeprint")));
+
+  const story = await page.evaluate(() => {
+    const region = document.getElementById("cat-001-story");
+    if (!region) return null;
+    return {
+      opacity: getComputedStyle(region).opacity,
+      transform: getComputedStyle(region).transform,
+      inline: region.getAttribute("style"),
+    };
+  });
+  expect(story).not.toBeNull();
+  expect(story!.opacity).toBe("1");
+  expect(story!.transform).toBe("none");
+  expect(story!.inline).toBeNull();
+});
+
 test("no control reaches paper", async ({ page }) => {
   await page.goto("/");
   await openBooklet(page);

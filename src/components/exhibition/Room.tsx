@@ -11,6 +11,7 @@ interface RoomProps {
   exhibit: Exhibit;
   flip: boolean;
   isOpen: boolean;
+  printing?: boolean;
   prev?: Exhibit;
   next?: Exhibit;
   onToggle: () => void;
@@ -21,6 +22,7 @@ export function Room({
   exhibit,
   flip,
   isOpen,
+  printing = false,
   prev,
   next,
   onToggle,
@@ -44,6 +46,7 @@ export function Room({
             <Placard
               exhibit={exhibit}
               isOpen={isOpen}
+              printing={printing}
               prev={prev}
               next={next}
               onToggle={onToggle}
