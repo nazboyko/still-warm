@@ -7,14 +7,13 @@
      does not get to glow. */
   --placard-edge:
     0 2px 3px -2px rgb(0 0 0 / 0.55), 0 30px 60px -24px rgb(0 0 0 / 0.62);
-  /* The room is lit from above, and so is the card: the lamp lands on its head
-     and lets go at its foot, the same light that falls on the dish. Borders and
-     shadow carry that, never a gradient - a gradient under text turns axe's
-     contrast check incomplete, and a positioned pseudo on any ancestor does the
-     same. Box-shadow reads as neither, so the light costs no contrast. */
-  --placard-light:
-    inset 0 40px 40px -40px rgb(255 250 240 / 0.85),
-    inset 0 -64px 52px -52px rgb(25 20 17 / 0.24);
+  /* The room is lit from above, and so is the card: the lamp lands on its head.
+     There used to be a matching shadow at the foot, and it cost real contrast -
+     the flap IS the foot, so that shadow sat directly under "Read the label"
+     and took beet from 4.9:1 to 3.9:1. axe and Lighthouse both passed it,
+     because they read the card's declared colour and never the painted pixel.
+     The head light is measured the same way now: see contrast.spec.ts. */
+  --placard-light: inset 0 40px 40px -40px rgb(255 250 240 / 0.85);
 
   width: 100%;
   min-width: 0;
@@ -39,9 +38,7 @@
    at once rather than easing, because the page animates transform and opacity
    only - the unfold is the motion, and the light simply belongs to it. */
 .placard[data-open="true"] {
-  --placard-light:
-    inset 0 44px 44px -40px rgb(255 238 210 / 0.95),
-    inset 0 -64px 52px -52px rgb(25 20 17 / 0.18);
+  --placard-light: inset 0 44px 44px -40px rgb(255 238 210 / 0.95);
 
   border-top-color: var(--tungsten);
 }
